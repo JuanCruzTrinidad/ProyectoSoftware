@@ -6,5 +6,6 @@
         "**/.project": true,
         "**/.settings": true,
         "**/.factorypath": true
-    }
+    },
+    "git.ignoreLimitWarning": true
 }
