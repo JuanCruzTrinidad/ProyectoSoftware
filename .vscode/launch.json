@@ -6,7 +6,7 @@
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
-            "mainClass": "com.unla.deporteonline.DeporteonlineApplication",
+            "mainclassName": "com.unla.deporteonline.DeporteonlineApplication",
             "projectName": "deporteonline",
             "args": ""
         }
