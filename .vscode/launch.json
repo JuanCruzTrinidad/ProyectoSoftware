@@ -9,6 +9,16 @@
             "mainclassName": "com.unla.deporteonline.DeporteonlineApplication",
             "projectName": "deporteonline",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-DeporteonlineApplication<deporteonline>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.unla.deporteonline.DeporteonlineApplication",
+            "projectName": "deporteonline",
+            "args": ""
         }
     ]
 }

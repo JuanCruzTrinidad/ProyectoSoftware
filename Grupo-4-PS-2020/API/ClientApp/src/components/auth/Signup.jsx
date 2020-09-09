@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import "../../styles/floating-labels.css";
 
-export const Login = () => {
+export const Signup = () => {
+
+  // states
+  const [name, setname] = useState("");
+  const [lastname, setlastname] = useState("");
+  const [birthdate, setbirthdate] = useState('');
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
 
-  const handleSubmitForm = () => {
-    const data = { email, password };
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+    const data = { name, lastname, birthdate, email, password };
     console.log(data);
   };
 
@@ -34,8 +39,44 @@ export const Login = () => {
               className="h3 mb-3 font-weight-normal"
               style={{ color: "#0E141B" }}
             >
-              Deportes Online
+              Sign up
             </h1>
+          </div>
+          <div className="form-label-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Name"
+              required={true}
+              autoFocus={true}
+              value={name}
+              onChange={e => {setname(e.target.value)}}
+            />
+            <label htmlFor="inputName">Name</label>
+          </div>
+          <div className="form-label-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Lastname"
+              required={true}
+              autoFocus={true}
+              value={lastname}
+              onChange={e => {setlastname(e.target.value)}}
+            />
+            <label htmlFor="inputLastname">Lastname</label>
+          </div>
+          <div className="form-label-group">
+            <input
+              type="date"
+              className="form-control"
+              placeholder="Birthdate"
+              required={true}
+              autoFocus={true}
+              value={birthdate}
+              onChange={e => {setbirthdate(e.target.value)}}
+            />
+            <label htmlFor="inputBirthdate">Birthdate</label>
           </div>
           <div className="form-label-group">
             <input
@@ -70,11 +111,14 @@ export const Login = () => {
             style={{ "background-color": "#00A5CF", color: "white", fontWeight: 'bold'}}
             type="submit"
           >
-            Sign in
+            Sign up
           </button>
           <div className="mb-3">
-            <a style={{ float: "right", paddingTop: "4px", color: '#457B9D' }} href="http://">
-              Recuperar contraseña
+            <a
+              style={{ float: "right", paddingTop: "4px", color: "#457B9D" }}
+              href="http://localhost:3000/login"
+            >
+              Ya tienes cuenta? Entra!
             </a>
           </div>
         </form>

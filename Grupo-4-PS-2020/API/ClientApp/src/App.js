@@ -1,10 +1,11 @@
 import React from 'react';
 import productoAxios from './config/axios';
-import {  BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Navbar } from './components/ui/Navbar';
 import { Auth } from './pages/Auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Home } from './pages/Home';
+import SignupPage from './pages/SignupPage';
 
 function App() {
   const consultarAPI = () => {
@@ -23,11 +24,14 @@ function App() {
     <Router>
         <Navbar/>
         <Switch>
-          <Route exact strict path="/Login">
-            <Auth/>
-          </Route>
           <Route exact strict path="/Home">
-            <Home/>
+            <Home />
+          </Route>
+          <Route exact strict path="/Login">
+            <Auth />
+          </Route>
+          <Route exact strict path="/signup">
+            <SignupPage />
           </Route>
         </Switch>
       </Router>
