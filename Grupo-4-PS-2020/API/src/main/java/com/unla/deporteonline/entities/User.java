@@ -36,7 +36,7 @@ public class User {
 
    public User() {}
     
- /* @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
  
@@ -52,7 +52,7 @@ public class User {
         this.islogged = islogged;
         this.userRoles = userRoles;
     }
-*/
+
     public int getId() {
         return id;
     }
@@ -109,14 +109,14 @@ public class User {
         this.islogged = islogged;
     }
 
- /*   public Set<UserRole> getUserRoles() {
+    public Set<UserRole> getUserRoles() {
         return userRoles;
     }
 
     public void setUserRoles(Set<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
-*/
+
     public User(int id, String name, String lastname, LocalDate birthdate, String email, String password,
             boolean islogged) {
         this.id = id;
