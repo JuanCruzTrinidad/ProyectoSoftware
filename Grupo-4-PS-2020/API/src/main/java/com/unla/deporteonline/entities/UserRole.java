@@ -3,7 +3,7 @@ package com.unla.deporteonline.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name= "user_role", uniqueConstraints=@UniqueConstraint(columnNames={"role","user_id"}))
+@Table(name= "user_role", uniqueConstraints=@UniqueConstraint(columnNames={"role", "user_id"}))
 public class UserRole {
     
     @Id
@@ -20,7 +20,7 @@ public class UserRole {
     public UserRole(){}
 
 	public UserRole(int id, User user, String role) {
-		this.id = id;
+		this.setId(id);
 		this.user = user;
 		this.role = role;
 	}
@@ -49,6 +49,4 @@ public class UserRole {
         this.role = role;
     }
 
-    
-    
 }

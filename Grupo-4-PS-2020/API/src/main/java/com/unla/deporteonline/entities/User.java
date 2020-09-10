@@ -3,8 +3,6 @@ package com.unla.deporteonline.entities;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-//import java.util.AbstractSet;
-
 import javax.persistence.*;
 
 @Entity
@@ -15,41 +13,43 @@ public class User {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
-    @Column(name= "name")
-    //@NotNull
+    @Column(name= "name", nullable = false)
     private String name;
 
-    @Column(name= "lastname")
+    @Column(name= "lastname", nullable = false)
     private String lastname;
 
-    @Column(name= "birthdate")
+    @Column(name= "birthdate", nullable = false)
     private LocalDate birthdate;
 
-    @Column(name= "email")
+    @Column(name= "email", nullable = false)
     private String email;
 
-    @Column(name= "password")
+    @Column(name= "password", nullable = false)
     private String password;
+
+    @Column(name= "enabled")
+    private boolean enabled;
 
     @Column(name= "islogged")
     private boolean islogged;
-
-   public User() {}
     
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
- 
 
-    public User(int id, String name, String lastname, LocalDate birthdate, String email, String password,
+    public User() {}
+
+    public User(int id, String name, String lastname, LocalDate birthdate, String email, String password, boolean enabled,
             boolean islogged, Set<UserRole> userRoles) {
-        this.id = id;
+        this.setId(id);
         this.name = name;
         this.lastname = lastname;
         this.birthdate = birthdate;
         this.email = email;
         this.password = password;
         this.islogged = islogged;
+        this.enabled = enabled;
         this.userRoles = userRoles;
     }
 
@@ -109,6 +109,14 @@ public class User {
         this.islogged = islogged;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public Set<UserRole> getUserRoles() {
         return userRoles;
     }
@@ -116,18 +124,5 @@ public class User {
     public void setUserRoles(Set<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
-
-    public User(int id, String name, String lastname, LocalDate birthdate, String email, String password,
-            boolean islogged) {
-        this.id = id;
-        this.name = name;
-        this.lastname = lastname;
-        this.birthdate = birthdate;
-        this.email = email;
-        this.password = password;
-        this.islogged = islogged;
-    }
-
-    
 
 }
