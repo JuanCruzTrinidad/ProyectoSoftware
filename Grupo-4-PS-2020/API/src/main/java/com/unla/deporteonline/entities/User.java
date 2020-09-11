@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="user")
 public class User {
@@ -36,6 +38,7 @@ public class User {
     @Column(name= "islogged")
     private boolean islogged;
     
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 

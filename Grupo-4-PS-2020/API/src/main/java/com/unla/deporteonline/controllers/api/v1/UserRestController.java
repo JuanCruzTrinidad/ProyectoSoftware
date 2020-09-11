@@ -5,10 +5,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.unla.deporteonline.entities.User;
+import com.unla.deporteonline.services.IUserService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +24,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
 @CrossOrigin("*")
+//@RequestMapping("/api/v1/user")
 public class UserRestController {
 
+	@Autowired
+	@Qualifier("userService")
+	private IUserService userService;
+
+	
     @PostMapping("/user")
     public String login(@RequestParam("user") String username, @RequestParam("password") String pwd) {
 
@@ -53,4 +63,10 @@ public class UserRestController {
 
 		return "Bearer " + token;
 	}
+
+	@GetMapping("/allusers")
+	public List<User> findAll() {
+		return userService.findAll();
+	}
+
 }
