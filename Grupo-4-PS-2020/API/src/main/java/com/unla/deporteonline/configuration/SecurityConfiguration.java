@@ -1,40 +1,77 @@
-// package com.unla.deporteonline.configuration;
+package com.unla.deporteonline.configuration;
 
-// import com.unla.deporteonline.services.implementation.UserService;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-// import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.beans.factory.annotation.Qualifier;
-// import org.springframework.context.annotation.Configuration;
-// import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-// import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-// import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-// @Configuration
-// @EnableWebSecurity
-// public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    
-//     @Autowired
-//     @Qualifier("userService")
-//     private UserService userService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-//     @Autowired
-//     public void configureGlobal (AuthenticationManagerBuilder auth) throws Exception {
-//         auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
-//     }
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
-//     @Autowired
-//     public void configure(HttpSecurity http) throws Exception{
-//         http.authorizeRequests()
-//             .antMatchers("/ClientApp/*").permitAll()
-//             .anyRequest().authenticated()
-//         .and()
-//             .formLogin().loginPage("/login").loginProcessingUrl("/loginprocess")
-//             .usernameParameter("email").passwordParameter("password")
-//             .defaultSuccessUrl("/loginsuccess").permitAll()
-//         .and()
-//             .logout().logoutUrl("/logout").logoutSuccessUrl("/logout").permitAll();
+public class SecurityConfiguration extends OncePerRequestFilter {
 
-//     }
-// }
+	private final String HEADER = "Authorization";
+	private final String PREFIX = "Bearer ";
+	private final String SECRET = "mySecretKey";
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+		try {
+			if (existeJWTToken(request, response)) {
+				Claims claims = validateToken(request);
+				if (claims.get("authorities") != null) {
+					setUpSpringAuthentication(claims);
+				} else {
+					SecurityContextHolder.clearContext();
+				}
+			} else {
+					SecurityContextHolder.clearContext();
+			}
+			chain.doFilter(request, response);
+		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
+			return;
+		}
+	}	
+
+	private Claims validateToken(HttpServletRequest request) {
+		String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");
+		return Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(jwtToken).getBody();
+	}
+
+	/**
+	 * Metodo para autenticarnos dentro del flujo de Spring
+	 * 
+	 * @param claims
+	 */
+	private void setUpSpringAuthentication(Claims claims) {
+		@SuppressWarnings("unchecked")
+		List<String> authorities = (List) claims.get("authorities");
+
+		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,
+				authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+		SecurityContextHolder.getContext().setAuthentication(auth);
+
+	}
+
+	private boolean existeJWTToken(HttpServletRequest request, HttpServletResponse res) {
+		String authenticationHeader = request.getHeader(HEADER);
+		if (authenticationHeader == null || !authenticationHeader.startsWith(PREFIX))
+			return false;
+		return true;
+	}
+
+}
