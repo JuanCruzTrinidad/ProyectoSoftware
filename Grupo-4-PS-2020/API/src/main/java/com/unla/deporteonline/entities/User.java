@@ -30,23 +30,23 @@ public class User {
     @Column(name= "password", nullable = false)
     private String password;
 
-    private String token;
-
     @Column(name= "enabled")
     private boolean enabled;
 
     @Column(name= "islogged")
     private boolean islogged;
-    
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private Set<UserRole> userRoles = new HashSet<UserRole>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "role_user", 
+            joinColumns = @JoinColumn(name = "user_id"), 
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<Role>();
 
 
     public User() {}
 
     public User(int id, String name, String lastname, LocalDate birthdate, String email, String password, boolean enabled,
-            boolean islogged, Set<UserRole> userRoles, String token) {
+            boolean islogged, Set<Role> roles) {
         this.setId(id);
         this.name = name;
         this.lastname = lastname;
@@ -55,8 +55,7 @@ public class User {
         this.password = password;
         this.islogged = islogged;
         this.enabled = enabled;
-        this.userRoles = userRoles;
-        this.token = token;
+        this.roles = roles;
     }
 
     public int getId() {
@@ -123,20 +122,12 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Set<UserRole> getUserRoles() {
-        return userRoles;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setUserRoles(Set<UserRole> userRoles) {
-        this.userRoles = userRoles;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
 }

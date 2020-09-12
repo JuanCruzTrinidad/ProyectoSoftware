@@ -27,7 +27,7 @@ public class DeporteonlineApplication {
 			http.csrf().disable()
 				.addFilterAfter(new SecurityConfiguration(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/user").permitAll()
+				.antMatchers(HttpMethod.GET, "/user/login").permitAll()
 				.anyRequest().authenticated();
 		}
 	}

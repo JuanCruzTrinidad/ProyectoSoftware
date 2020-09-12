@@ -21,10 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jdk.jfr.ContentType;
 
 @RestController
 @CrossOrigin("*")
-//@RequestMapping("/api/v1/user")
+@RequestMapping("/user")
 public class UserRestController {
 
 	@Autowired
@@ -32,15 +33,22 @@ public class UserRestController {
 	private IUserService userService;
 
 	
-    @PostMapping("/user")
+	@GetMapping("/login")
     public String login(@RequestParam("user") String username, @RequestParam("password") String pwd) {
 
-        String token = getJWTToken(username);
-        User user = new User();
-        user.setEmail(username);
-        user.setToken(token);
-        return user.getToken();
 
+		//userService.saveUser(user);
+		
+        return getJWTToken(username);
+
+    }
+
+	@PostMapping(value ="/newUser", consumes="application/json")
+    public Object newUser(@RequestBody User newUser) {
+
+		newUser.setEnabled(true);
+		System.out.println("User: " + newUser.toString());
+		return userService.saveUser(newUser);
     }
 
     private String getJWTToken(String username) {

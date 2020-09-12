@@ -8,4 +8,6 @@ public interface IUserService {
     
     public List<User> findAll();
 
+    public Object saveUser(User user);
+
 }
