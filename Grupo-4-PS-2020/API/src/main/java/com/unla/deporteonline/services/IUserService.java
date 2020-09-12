@@ -10,4 +10,6 @@ public interface IUserService {
 
     public Object saveUser(User user);
 
+    public User findByEmailAndPassword(String email, String password);
+
 }

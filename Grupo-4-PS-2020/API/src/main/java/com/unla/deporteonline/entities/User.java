@@ -36,7 +36,7 @@ public class User {
     @Column(name= "islogged")
     private boolean islogged;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "role_user", 
             joinColumns = @JoinColumn(name = "user_id"), 
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -114,7 +114,7 @@ public class User {
         this.islogged = islogged;
     }
 
-    public boolean isEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 

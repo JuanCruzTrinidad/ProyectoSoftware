@@ -2,10 +2,13 @@ package com.unla.deporteonline.controllers.api.v1;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import com.unla.deporteonline.entities.User;
 import com.unla.deporteonline.services.IUserService;
+
+import com.unla.deporteonline.exception.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,13 +37,10 @@ public class UserRestController {
 
 	
 	@GetMapping("/login")
-    public String login(@RequestParam("user") String username, @RequestParam("password") String pwd) {
-
-
-		//userService.saveUser(user);
-		
-        return getJWTToken(username);
-
+    public String login(@RequestParam("email") String email, @RequestParam("password") String password) {
+		User user = userService.findByEmailAndPassword(email, password);
+			if(user == null) throw new ValidationException("Usuario no valido");
+        return getJWTToken(user.getEmail());
     }
 
 	@PostMapping(value ="/newUser", consumes="application/json")

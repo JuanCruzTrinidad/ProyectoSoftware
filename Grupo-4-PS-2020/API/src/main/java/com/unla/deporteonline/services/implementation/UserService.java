@@ -30,6 +30,10 @@ public class UserService implements UserDetailsService, IUserService {
 		return userRepository.findAll();
 	}
 
+	public com.unla.deporteonline.entities.User findByEmailAndPassword(String email, String password) {
+		return userRepository.findByEmailAndPassword(email, password);
+	}
+
 	public Object saveUser(com.unla.deporteonline.entities.User user) {
 		return userRepository.saveAndFlush(user);
 	}
@@ -42,7 +46,7 @@ public class UserService implements UserDetailsService, IUserService {
 	}
 	
 	private User buildUser(com.unla.deporteonline.entities.User user, List<GrantedAuthority> grantedAuthorities) {
-        return new User(user.getEmail(), user.getPassword(), user.isEnabled(),
+        return new User(user.getEmail(), user.getPassword(), user.getEnabled(),
 						true, true, true, //accountNonExpired, credentialsNonExpired, accountNonLocked,
 						grantedAuthorities);
 	}

@@ -18,8 +18,6 @@ public class Role {
     @Column(name= "name", nullable = false)
     private String name;
 
-    
-
     public Role() {}
 
     public Role(int id, String name) {
