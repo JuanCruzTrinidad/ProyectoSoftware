@@ -2,6 +2,8 @@ package com.unla.deporteonline.entities;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name= "user_role", uniqueConstraints=@UniqueConstraint(columnNames={"role", "user_id"}))
 public class UserRole {
@@ -10,6 +12,7 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
