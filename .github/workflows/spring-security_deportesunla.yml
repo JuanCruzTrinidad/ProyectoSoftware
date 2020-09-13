@@ -6,7 +6,7 @@ name: Build and deploy JAR app to Azure Web App - deportesunla
 on:
   push:
     branches:
-      - spring-security.\Grupo-4-PS-2020\API\*
+      - spring-security\Grupo-4-PS-2020\API\*
 
 jobs:
   build-and-deploy:
