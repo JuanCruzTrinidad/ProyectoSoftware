@@ -8,4 +8,8 @@ public interface IUserService {
     
     public List<User> findAll();
 
+    public Object saveUser(User user);
+
+    public User findByEmailAndPassword(String email, String password);
+
 }
