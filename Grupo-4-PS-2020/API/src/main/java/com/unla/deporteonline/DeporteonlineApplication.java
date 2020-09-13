@@ -24,11 +24,13 @@ public class DeporteonlineApplication {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
+
 			http.csrf().disable()
 				.addFilterAfter(new SecurityConfiguration(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/user/login").permitAll()
+				.antMatchers(HttpMethod.POST, "/user/login","/user/newUser" ).permitAll()
 				.anyRequest().authenticated();
+			http.cors();
 		}
 	}
 

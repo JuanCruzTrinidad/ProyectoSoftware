@@ -12,19 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/test")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TestRestController {
 
 	@GetMapping("/hello")
-	public ResponseEntity<String> testHello(){
+	
+	public String testHello(){
 		String aux = "Hola muy buenas tardes";
-		return new ResponseEntity<String>(aux, HttpStatus.OK);
+		return aux;
 	}
 
 	@PostMapping("/helloPost")
 	public ResponseEntity<String> postHello (@RequestBody Item item){
-		String aux = "Usuario: " + item.getName() +"Contraseña: "+item.getPassword();
+		//String aux = "Usuario: " + item.getName() +"Contraseña: "+item.getPassword();
 		if(!item.getPassword().isEmpty()){
 			return new ResponseEntity<String>("Logeado", HttpStatus.OK);
 		}

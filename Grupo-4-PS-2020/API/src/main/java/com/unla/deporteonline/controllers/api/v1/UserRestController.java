@@ -2,7 +2,6 @@ package com.unla.deporteonline.controllers.api.v1;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import com.unla.deporteonline.entities.User;
@@ -24,19 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jdk.jfr.ContentType;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserRestController {
 
 	@Autowired
 	@Qualifier("userService")
 	private IUserService userService;
 
-	
-	@GetMapping("/login")
+	//cambie esto a post, porque sin desde el js no podemos mandale parametros al backend.
+	@PostMapping("/login")
     public String login(@RequestParam("email") String email, @RequestParam("password") String password) {
 		User user = userService.findByEmailAndPassword(email, password);
 			if(user == null) throw new ValidationException("Usuario no valido");

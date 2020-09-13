@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
+import { productoAxios } from "../../config/axios";
 
 export const Signup = () => {
 
+  const history = useHistory();
   // states
   const [name, setname] = useState("");
   const [lastname, setlastname] = useState("");
@@ -13,6 +16,29 @@ export const Signup = () => {
     e.preventDefault();
     const data = { name, lastname, birthdate, email, password };
     console.log(data);
+    productoAxios.post("/user/newUser", data, {
+      headers:{ 
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE, PUT",
+          'Access-Control-Allow-Headers': "append,delete,entries,foreach,get,has,keys,set,values,Authorization"
+
+      }
+  }).then(res => {
+    let formData = new FormData();
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    productoAxios.post("/user/login", formData)
+    .then(
+      ({data}) => {
+        localStorage.setItem("token", data);
+        history.push("/Home")
+    }
+  ).catch(err => console.log(err))
+}
+).catch(res => console.log(res));
+
+
+  localStorage.setItem("user", data.email)
   };
 
   const handleChangeEmail = ({ target }) => {
@@ -116,7 +142,10 @@ export const Signup = () => {
           <div className="mb-3">
             <a
               style={{ float: "right", paddingTop: "4px", color: "#457B9D" }}
-              href="http://localhost:3000/login"
+              onClick={e => {
+                e.preventDefault()
+                history.push("/Login")
+              }}
             >
               Ya tienes cuenta? Entra!
             </a>

@@ -1,13 +1,28 @@
 import React, { useState } from "react";
 import "../../styles/floating-labels.css";
+import {productoAxios} from '../../config/axios';
+import { useHistory } from "react-router";
 
-export const Login = () => {
+export const Login = ({settokenJWT}) => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+  const history = useHistory()
+  const handleSubmitForm = (e) => {
+    e.preventDefault()
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+    productoAxios.post("/user/login", formData)
+    .then(
+      ({data}) => {
+        settokenJWT(data);
+        localStorage.setItem("token", data);
+        history.push("/Home")
+    }
+  )
+    .catch(err => console.log(err));
 
-  const handleSubmitForm = () => {
-    const data = { email, password };
-    console.log(data);
+    
   };
 
   const handleChangeEmail = ({ target }) => {
@@ -68,11 +83,16 @@ export const Login = () => {
           <button
             className="btn btn-lg btn-block boton"
             style={{ "background-color": "#00A5CF", color: "white", fontWeight: 'bold'}}
-            type="submit"
           >
-            Sign in
+            Ingresar
           </button>
           <div className="mb-3">
+          <a style={{ float: "right", paddingTop: "4px", color: '#457B9D' }} onClick={e => {
+            e.preventDefault();
+            history.push("/signup");
+          }}>
+              ¿No tenes cuenta? Registrate!
+            </a>
             <a style={{ float: "right", paddingTop: "4px", color: '#457B9D' }} href="http://">
               Recuperar contraseña
             </a>

@@ -1,5 +1,5 @@
-import React from 'react';
-import productoAxios from './config/axios';
+import React, { useState } from 'react';
+import {productoAxios} from './config/axios';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Navbar } from './components/ui/Navbar';
 import { Auth } from './pages/Auth';
@@ -8,13 +8,7 @@ import { Home } from './pages/Home';
 import SignupPage from './pages/SignupPage';
 
 function App() {
-  const consultarAPI = () => {
-    productoAxios.get('test/hello')
-        .then(res => {
-          console.log(res.data);
-        })
-        .catch(error => console.log(error));
-  }
+  const [tokenJWT, settokenJWT] = useState('')
 
   //consultarAPI();
   //un poco de react rout, basicamente es un pinche switch. Cada route es una ruta que se genera cuando se va a ese lugar
@@ -25,10 +19,10 @@ function App() {
         <Navbar/>
         <Switch>
           <Route exact strict path="/Home">
-            <Home />
+            <Home tokenJWT={tokenJWT} />
           </Route>
           <Route exact strict path="/Login">
-            <Auth />
+            <Auth settokenJWT={settokenJWT} />
           </Route>
           <Route exact strict path="/signup">
             <SignupPage />
