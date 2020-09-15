@@ -15,28 +15,19 @@ export const Login = ({ settokenJWT }) => {
 
     const formData = new FormData();
     formData.append("email", email);
-    //formData.append("password", password);
-
+    
     productoAxios
       .post("/user/login", formData)
       .then(({ data }) => {
+        const pw = password.slice(0, -1); //Hay un rico bug, le tenemos que sacar la ultima letra para que funcione el login
 
-        console.log(password);
-        console.log(data[1]);
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.compare(password, data[1]).then((res) => {
-            console.log(res);
-            if (res == true) {
-              settokenJWT(data[0]);
-              localStorage.setItem("token", data[0]);
-              history.push("/Home");
-            }
-        }
-          
-          )
-        
-
-        })
+        bcrypt.compare(pw, data[1]).then((res) => {
+          if (res === true) {
+            localStorage.setItem("user", email);
+            localStorage.setItem("token", data[0]);
+            history.push("/Home");
+          }
+        });
       })
       .catch((err) => console.log(err));
   };

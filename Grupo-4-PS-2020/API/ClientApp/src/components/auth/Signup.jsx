@@ -4,7 +4,9 @@ import { productoAxios } from "../../config/axios";
 import bcrypt from "bcryptjs";
 
 export const Signup = () => {
+
   const history = useHistory();
+
   // states
   const [name, setname] = useState("");
   const [lastname, setlastname] = useState("");
@@ -15,9 +17,10 @@ export const Signup = () => {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
+
     const password = hashpw;
-    const data = { name, lastname, birthdate, email, password };
-    console.log(data);
+    const data = { name, lastname, birthdate, email, password }; //Los datos que se guardan en la bd
+
     productoAxios
       .post("/user/newUser", data, {
         headers: {
@@ -30,16 +33,13 @@ export const Signup = () => {
       .then((res) => {
         let formData = new FormData();
         formData.append("email", data.email);
-        //formData.append('password', data.password);
 
         productoAxios
           .post("/user/login", formData)
           .then(({ data }) => {
-            console.log(data[1]);
-            console.log(passwordd);
-            
-            bcrypt.compare(passwordd, data[1]).then((res) => {
-              console.log(res);
+            const pw = passwordd.slice(0, -1); //Hay un rico bug, le tenemos que sacar la ultima letra para que funcione el login
+
+            bcrypt.compare(pw, data[1]).then((res) => {
               if(res === true) {
                 localStorage.setItem("token", data[0]);
                 history.push("/Home");
@@ -59,7 +59,6 @@ export const Signup = () => {
 
   const handleChangePassword = ({ target }) => {
     setpasswordd(target.value);
-
     //Encriptacion de la password
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(passwordd, salt, (err, hash) => {
