@@ -1,5 +1,6 @@
 package com.unla.deporteonline.controllers.api.v1;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,12 +35,36 @@ public class UserRestController {
 	private IUserService userService;
 
 	//cambie esto a post, porque sin desde el js no podemos mandale parametros al backend.
+	// @PostMapping("/login")
+    // public String login(@RequestParam("email") String email, @RequestParam("password") String password) {
+	// 	List<String> lista = new ArrayList<String>();
+		
+	// 	User user = userService.findByEmailAndPassword(email, password);
+	// 	if(user == null) throw new ValidationException("Usuario no valido");
+
+	// 	//Pasar como parametro la pw y hacer la comparacion entre hashs en el front. Si da true que se haga el login, si no no.
+	// 	lista.add(getJWTToken(user.getEmail()));
+	// 	lista.add(user.getPassword());
+
+    //     return getJWTToken(user.getEmail());
+	// }
+
+	//cambie esto a post, porque sin desde el js no podemos mandale parametros al backend.
 	@PostMapping("/login")
-    public String login(@RequestParam("email") String email, @RequestParam("password") String password) {
-		User user = userService.findByEmailAndPassword(email, password);
-			if(user == null) throw new ValidationException("Usuario no valido");
-        return getJWTToken(user.getEmail());
-    }
+	public List<String> login(@RequestParam("email") String email) {
+		List<String> lista = new ArrayList<String>();
+		
+		//User user = userService.findByEmailAndPassword(email, password);
+		User user = userService.findByEmail(email);
+		if(user == null) throw new ValidationException("Usuario no valido");
+
+		//Pasar como parametro la pw y hacer la comparacion entre hashs en el front. Si da true que se haga el login, si no no.
+		lista.add(getJWTToken(user.getEmail()));
+		lista.add(user.getPassword());
+
+		//return getJWTToken(user.getEmail());
+		return lista;
+	}
 
 	@PostMapping(value ="/newUser", consumes="application/json")
     public Object newUser(@RequestBody User newUser) {

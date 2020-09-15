@@ -1,44 +1,56 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { productoAxios } from "../../config/axios";
+import bcrypt from "bcryptjs";
 
 export const Signup = () => {
-
   const history = useHistory();
   // states
   const [name, setname] = useState("");
   const [lastname, setlastname] = useState("");
-  const [birthdate, setbirthdate] = useState('');
+  const [birthdate, setbirthdate] = useState("");
   const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
+  const [passwordd, setpasswordd] = useState("");
+  const [hashpw, sethashpw] = useState("");
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
+    const password = hashpw;
     const data = { name, lastname, birthdate, email, password };
     console.log(data);
-    productoAxios.post("/user/newUser", data, {
-      headers:{ 
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE, PUT",
-          'Access-Control-Allow-Headers': "append,delete,entries,foreach,get,has,keys,set,values,Authorization"
+    productoAxios
+      .post("/user/newUser", data, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+        },
+      })
+      .then((res) => {
+        let formData = new FormData();
+        formData.append("email", data.email);
+        //formData.append('password', data.password);
 
-      }
-  }).then(res => {
-    let formData = new FormData();
-    formData.append('email', data.email);
-    formData.append('password', data.password);
-    productoAxios.post("/user/login", formData)
-    .then(
-      ({data}) => {
-        localStorage.setItem("token", data);
-        history.push("/Home")
-    }
-  ).catch(err => console.log(err))
-}
-).catch(res => console.log(res));
+        productoAxios
+          .post("/user/login", formData)
+          .then(({ data }) => {
+            console.log(data[1]);
+            console.log(passwordd);
+            
+            bcrypt.compare(passwordd, data[1]).then((res) => {
+              console.log(res);
+              if(res === true) {
+                localStorage.setItem("token", data[0]);
+                history.push("/Home");
+              }
+            });
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((res) => console.log(res));
 
-
-  localStorage.setItem("user", data.email)
+    localStorage.setItem("user", data.email);
   };
 
   const handleChangeEmail = ({ target }) => {
@@ -46,7 +58,14 @@ export const Signup = () => {
   };
 
   const handleChangePassword = ({ target }) => {
-    setpassword(target.value);
+    setpasswordd(target.value);
+
+    //Encriptacion de la password
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(passwordd, salt, (err, hash) => {
+        sethashpw(hash);
+      });
+    });
   };
 
   return (
@@ -76,7 +95,9 @@ export const Signup = () => {
               required={true}
               autoFocus={true}
               value={name}
-              onChange={e => {setname(e.target.value)}}
+              onChange={(e) => {
+                setname(e.target.value);
+              }}
             />
             <label htmlFor="inputName">Name</label>
           </div>
@@ -88,7 +109,9 @@ export const Signup = () => {
               required={true}
               autoFocus={true}
               value={lastname}
-              onChange={e => {setlastname(e.target.value)}}
+              onChange={(e) => {
+                setlastname(e.target.value);
+              }}
             />
             <label htmlFor="inputLastname">Lastname</label>
           </div>
@@ -100,7 +123,9 @@ export const Signup = () => {
               required={true}
               autoFocus={true}
               value={birthdate}
-              onChange={e => {setbirthdate(e.target.value)}}
+              onChange={(e) => {
+                setbirthdate(e.target.value);
+              }}
             />
             <label htmlFor="inputBirthdate">Birthdate</label>
           </div>
@@ -122,7 +147,7 @@ export const Signup = () => {
               className="form-control"
               placeholder="Password"
               required={true}
-              value={password}
+              value={passwordd}
               onChange={handleChangePassword}
             />
             <label htmlFor="inputPassword">Password</label>
@@ -134,7 +159,11 @@ export const Signup = () => {
           </div>
           <button
             className="btn btn-lg btn-block boton"
-            style={{ "background-color": "#00A5CF", color: "white", fontWeight: 'bold'}}
+            style={{
+              "background-color": "#00A5CF",
+              color: "white",
+              fontWeight: "bold",
+            }}
             type="submit"
           >
             Sign up
@@ -142,9 +171,9 @@ export const Signup = () => {
           <div className="mb-3">
             <a
               style={{ float: "right", paddingTop: "4px", color: "#457B9D" }}
-              onClick={e => {
-                e.preventDefault()
-                history.push("/Login")
+              onClick={(e) => {
+                e.preventDefault();
+                history.push("/Login");
               }}
             >
               Ya tienes cuenta? Entra!

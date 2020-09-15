@@ -1,28 +1,44 @@
 import React, { useState } from "react";
 import "../../styles/floating-labels.css";
-import {productoAxios} from '../../config/axios';
+import { productoAxios } from "../../config/axios";
 import { useHistory } from "react-router";
+import bcrypt from "bcryptjs";
 
-export const Login = ({settokenJWT}) => {
+export const Login = ({ settokenJWT }) => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const history = useHistory()
-  const handleSubmitForm = (e) => {
-    e.preventDefault()
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('password', password);
-    productoAxios.post("/user/login", formData)
-    .then(
-      ({data}) => {
-        settokenJWT(data);
-        localStorage.setItem("token", data);
-        history.push("/Home")
-    }
-  )
-    .catch(err => console.log(err));
 
-    
+  const history = useHistory();
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("email", email);
+    //formData.append("password", password);
+
+    productoAxios
+      .post("/user/login", formData)
+      .then(({ data }) => {
+
+        console.log(password);
+        console.log(data[1]);
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.compare(password, data[1]).then((res) => {
+            console.log(res);
+            if (res == true) {
+              settokenJWT(data[0]);
+              localStorage.setItem("token", data[0]);
+              history.push("/Home");
+            }
+        }
+          
+          )
+        
+
+        })
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleChangeEmail = ({ target }) => {
@@ -82,18 +98,28 @@ export const Login = ({settokenJWT}) => {
           </div>
           <button
             className="btn btn-lg btn-block boton"
-            style={{ "background-color": "#00A5CF", color: "white", fontWeight: 'bold'}}
+            style={{
+              "background-color": "#00A5CF",
+              color: "white",
+              fontWeight: "bold",
+            }}
           >
             Ingresar
           </button>
           <div className="mb-3">
-          <a style={{ float: "right", paddingTop: "4px", color: '#457B9D' }} onClick={e => {
-            e.preventDefault();
-            history.push("/signup");
-          }}>
+            <a
+              style={{ float: "right", paddingTop: "4px", color: "#457B9D" }}
+              onClick={(e) => {
+                e.preventDefault();
+                history.push("/signup");
+              }}
+            >
               ¿No tenes cuenta? Registrate!
             </a>
-            <a style={{ float: "right", paddingTop: "4px", color: '#457B9D' }} href="http://">
+            <a
+              style={{ float: "right", paddingTop: "4px", color: "#457B9D" }}
+              href="http://"
+            >
               Recuperar contraseña
             </a>
           </div>
