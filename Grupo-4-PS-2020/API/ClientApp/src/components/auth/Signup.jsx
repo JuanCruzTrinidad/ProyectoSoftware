@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { productoAxios } from "../../config/axios";
+import { apiAxios } from "../../config/axios";
 import bcrypt from "bcryptjs";
 
 export const Signup = () => {
@@ -21,7 +21,7 @@ export const Signup = () => {
     const password = hashpw;
     const data = { name, lastname, birthdate, email, password }; //Los datos que se guardan en la bd
 
-    productoAxios
+    apiAxios
       .post("/user/newUser", data, {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -34,7 +34,7 @@ export const Signup = () => {
         let formData = new FormData();
         formData.append("email", data.email);
 
-        productoAxios
+        apiAxios
           .post("/user/login", formData)
           .then(({ data }) => {
             const pw = passwordd.slice(0, -1); //Hay un rico bug, le tenemos que sacar la ultima letra para que funcione el login
@@ -83,7 +83,7 @@ export const Signup = () => {
               className="h3 mb-3 font-weight-normal"
               style={{ color: "#0E141B" }}
             >
-              Sign up
+              Registro
             </h1>
           </div>
           <div className="form-label-group">
@@ -98,7 +98,7 @@ export const Signup = () => {
                 setname(e.target.value);
               }}
             />
-            <label htmlFor="inputName">Name</label>
+            <label htmlFor="inputName">Nombre</label>
           </div>
           <div className="form-label-group">
             <input
@@ -112,7 +112,7 @@ export const Signup = () => {
                 setlastname(e.target.value);
               }}
             />
-            <label htmlFor="inputLastname">Lastname</label>
+            <label htmlFor="inputLastname">Apellido</label>
           </div>
           <div className="form-label-group">
             <input
@@ -126,7 +126,7 @@ export const Signup = () => {
                 setbirthdate(e.target.value);
               }}
             />
-            <label htmlFor="inputBirthdate">Birthdate</label>
+            <label htmlFor="inputBirthdate">Fecha de nacimiento</label>
           </div>
           <div className="form-label-group">
             <input
@@ -138,7 +138,7 @@ export const Signup = () => {
               value={email}
               onChange={handleChangeEmail}
             />
-            <label htmlFor="inputEmail">Email address</label>
+            <label htmlFor="inputEmail">Email</label>
           </div>
           <div className="form-label-group">
             <input
@@ -149,27 +149,27 @@ export const Signup = () => {
               value={passwordd}
               onChange={handleChangePassword}
             />
-            <label htmlFor="inputPassword">Password</label>
+            <label htmlFor="inputPassword">Contraseña</label>
           </div>
-          <div className="checkbox mb-3">
+          <div className="checkbox mb-2">
             <label>
-              <input type="checkbox" value="remember-me" /> Remember me
+              <input type="checkbox" value="remember-me" /> Recuerdame
             </label>
           </div>
           <button
             className="btn btn-lg btn-block boton"
             style={{
-              "background-color": "#00A5CF",
+              "backgroundColor": "#00A5CF",
               color: "white",
               fontWeight: "bold",
             }}
             type="submit"
           >
-            Sign up
+            Registrarse
           </button>
           <div className="mb-3">
             <a
-              style={{ float: "right", paddingTop: "4px", color: "#457B9D" }}
+              style={{ float: "right", paddingTop: "4px", color: "#457B9D", cursor: "pointer" }}
               onClick={(e) => {
                 e.preventDefault();
                 history.push("/Login");

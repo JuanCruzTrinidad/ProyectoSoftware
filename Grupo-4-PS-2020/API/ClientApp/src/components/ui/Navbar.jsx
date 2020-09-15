@@ -53,6 +53,18 @@ export const Navbar = () => {
                   Login
                 </a>
               </li>
+              <li style={{ float: "inline-end" }}>
+                <a
+                  className="nav-link"
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.push("/signup");
+                  }}
+                >
+                  Registrarse
+                </a>
+              </li>
             </ul>
           </div>
         </nav>

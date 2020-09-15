@@ -1,5 +1,5 @@
 import axios from 'axios';
 
-export const productoAxios = axios.create({
+export const apiAxios = axios.create({
     baseURL: "http://localhost:8080/"
 });

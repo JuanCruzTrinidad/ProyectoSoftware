@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import {productoAxios} from './config/axios';
+import {apiAxios} from './config/axios';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Navbar } from './components/ui/Navbar';
 import { Auth } from './pages/Auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Home } from './pages/Home';
 import SignupPage from './pages/SignupPage';
+import { RecoverPassword } from './components/auth/RecoverPassword';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -26,6 +27,9 @@ function App() {
           </Route>
           <Route exact strict path="/signup">
             <SignupPage />
+          </Route>
+          <Route exact strict path="/recoverpw">
+            <RecoverPassword />
           </Route>
         </Switch>
       </Router>

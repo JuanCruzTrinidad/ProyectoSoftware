@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/floating-labels.css";
-import { productoAxios } from "../../config/axios";
+import { apiAxios } from "../../config/axios";
 import { useHistory } from "react-router";
 import bcrypt from "bcryptjs";
 
@@ -16,7 +16,7 @@ export const Login = ({ settokenJWT }) => {
     const formData = new FormData();
     formData.append("email", email);
     
-    productoAxios
+    apiAxios
       .post("/user/login", formData)
       .then(({ data }) => {
         const pw = password.slice(0, -1); //Hay un rico bug, le tenemos que sacar la ultima letra para que funcione el login
@@ -82,7 +82,7 @@ export const Login = ({ settokenJWT }) => {
             />
             <label htmlFor="inputPassword">Password</label>
           </div>
-          <div className="checkbox mb-3">
+          <div className="checkbox mb-2">
             <label>
               <input type="checkbox" value="remember-me" /> Remember me
             </label>
@@ -99,7 +99,7 @@ export const Login = ({ settokenJWT }) => {
           </button>
           <div className="mb-3">
             <a
-              style={{ float: "right", paddingTop: "4px", color: "#457B9D" }}
+              style={{ float: "right", paddingTop: "4px", color: "#457B9D", cursor: "pointer" }}
               onClick={(e) => {
                 e.preventDefault();
                 history.push("/signup");
@@ -108,8 +108,11 @@ export const Login = ({ settokenJWT }) => {
               ¿No tenes cuenta? Registrate!
             </a>
             <a
-              style={{ float: "right", paddingTop: "4px", color: "#457B9D" }}
-              href="http://"
+              style={{ float: "left", paddingTop: "4px", color: "#457B9D", cursor: "pointer" }}
+              onClick={(e) => {
+                e.preventDefault();
+                history.push("/recoverpw");
+              }}
             >
               Recuperar contraseña
             </a>

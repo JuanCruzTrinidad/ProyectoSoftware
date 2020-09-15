@@ -1,11 +1,11 @@
 import React from 'react'
-import { productoAxios } from '../config/axios';
+import { apiAxios } from '../config/axios';
 
 export const Home = ({tokenJWT}) => {
     const falopa = () =>{
         console.log(tokenJWT)
         var token = localStorage.getItem("token");
-        productoAxios.get("api/v1/test/hello",  {
+        apiAxios.get("api/v1/test/hello",  {
             headers:{ 
                 'Authorization': token,
                 'Access-Control-Allow-Origin': '*',
