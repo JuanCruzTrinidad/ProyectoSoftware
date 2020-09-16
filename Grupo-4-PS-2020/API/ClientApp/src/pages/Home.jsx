@@ -1,5 +1,6 @@
 import React from 'react'
 import { apiAxios } from '../config/axios';
+import Slider from '../components/ui/SliderHome';
 
 export const Home = ({tokenJWT}) => {
     const falopa = () =>{
@@ -21,8 +22,15 @@ export const Home = ({tokenJWT}) => {
     }
     return (
         <div>
-            <h2>Hola soy un home</h2>
             <button onClick={falopa}> falopa </button>
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-12">
+                        <Slider />
+                    </div>
+                </div>
+            </div>
+            
         </div>
     )
 }
