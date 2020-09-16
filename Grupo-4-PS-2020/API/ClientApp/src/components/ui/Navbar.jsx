@@ -1,8 +1,9 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 
 export const Navbar = () => {
   const history = useHistory();
+  const token = localStorage.getItem("token");
 
   return (
     <>
@@ -11,7 +12,11 @@ export const Navbar = () => {
           className="navbar navbar-expand-lg navbar-light"
           style={{ backgroundColor: "#25A18E" }}
         >
-          <a className="navbar-brand" href="#" style={{ color: "#0E141B" }}>
+          <a className="navbar-brand" style={{ color: "#0E141B", cursor: "pointer" }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              history.push("/Home");
+                            }}>
             Deportes Online
           </a>
           <button
@@ -26,7 +31,7 @@ export const Navbar = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
+            {/* <ul className="navbar-nav">
               <li className="nav-item active">
                 <a
                   className="nav-link"
@@ -39,7 +44,8 @@ export const Navbar = () => {
                   Home{" "}
                 </a>
               </li>
-            </ul>
+            </ul> */}
+            { token === null ?
             <ul className="navbar-nav ml-auto">
               <li style={{ float: "inline-end" }}>
                 <a
@@ -50,7 +56,7 @@ export const Navbar = () => {
                     history.push("/Login");
                   }}
                 >
-                  Login
+                  Ingresar
                 </a>
               </li>
               <li style={{ float: "inline-end" }}>
@@ -66,6 +72,25 @@ export const Navbar = () => {
                 </a>
               </li>
             </ul>
+            :
+            <ul className="navbar-nav ml-auto">
+              <li style={{ float: "inline-end" }}>
+                <a
+                  className="nav-link"
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("token");
+                    history.replace("/Home")
+                    window.location.reload();
+                  }}
+                >
+                  Desconectarse
+                </a>
+              </li>
+            </ul>
+            }
           </div>
         </nav>
       </div>

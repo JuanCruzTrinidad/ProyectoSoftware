@@ -11,7 +11,6 @@ export const Home = ({tokenJWT}) => {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': "POST, GET, OPTIONS, DELETE, PUT",
                 'Access-Control-Allow-Headers': "append,delete,entries,foreach,get,has,keys,set,values,Authorization"
-
             }
         })
             .then(res => {

@@ -57,6 +57,7 @@ public class UserRestController {
 		//User user = userService.findByEmailAndPassword(email, password);
 		User user = userService.findByEmail(email);
 		if(user == null) throw new ValidationException("Usuario no valido");
+			
 
 		//Pasar como parametro la pw y hacer la comparacion entre hashs en el front. Si da true que se haga el login, si no no.
 		lista.add(getJWTToken(user.getEmail()));

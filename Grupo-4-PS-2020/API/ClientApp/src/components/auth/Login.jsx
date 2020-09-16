@@ -4,7 +4,7 @@ import { apiAxios } from "../../config/axios";
 import { useHistory } from "react-router";
 import bcrypt from "bcryptjs";
 
-export const Login = ({ settokenJWT }) => {
+export const Login = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
 
@@ -20,16 +20,21 @@ export const Login = ({ settokenJWT }) => {
       .post("/user/login", formData)
       .then(({ data }) => {
         const pw = password.slice(0, -1); //Hay un rico bug, le tenemos que sacar la ultima letra para que funcione el login
-
         bcrypt.compare(pw, data[1]).then((res) => {
           if (res === true) {
+            console.log(data[0])
             localStorage.setItem("user", email);
             localStorage.setItem("token", data[0]);
-            history.push("/Home");
+            history.replace("/Home");
+            window.location.reload();
           }
         });
       })
-      .catch((err) => console.log(err));
+      .catch(() => (
+        <div class="alert alert-danger" role="alert">
+        Usuario no valido.
+      </div>)
+      );
   };
 
   const handleChangeEmail = ({ target }) => {
@@ -63,28 +68,28 @@ export const Login = ({ settokenJWT }) => {
             <input
               type="email"
               className="form-control"
-              placeholder="Email address"
+              placeholder="Email"
               required={true}
               autoFocus={true}
               value={email}
               onChange={handleChangeEmail}
             />
-            <label htmlFor="inputEmail">Email address</label>
+            <label htmlFor="inputEmail">Email</label>
           </div>
           <div className="form-label-group">
             <input
               type="password"
               className="form-control"
-              placeholder="Password"
+              placeholder="Contraseña"
               required={true}
               value={password}
               onChange={handleChangePassword}
             />
-            <label htmlFor="inputPassword">Password</label>
+            <label htmlFor="inputPassword">Contraseña</label>
           </div>
           <div className="checkbox mb-2">
             <label>
-              <input type="checkbox" value="remember-me" /> Remember me
+              <input type="checkbox" value="remember-me" /> Recordar
             </label>
           </div>
           <button

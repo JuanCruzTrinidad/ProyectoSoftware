@@ -46,7 +46,7 @@ export const RecoverPassword = () => {
               fontWeight: "bold",
             }}
           >
-            Recuperar contrasenia
+            Recuperar contraseña
           </button>
         </form>
       </div>

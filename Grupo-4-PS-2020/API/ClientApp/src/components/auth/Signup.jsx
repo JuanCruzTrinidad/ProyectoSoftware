@@ -42,7 +42,8 @@ export const Signup = () => {
             bcrypt.compare(pw, data[1]).then((res) => {
               if(res === true) {
                 localStorage.setItem("token", data[0]);
-                history.push("/Home");
+                history.replace("/Home");
+                window.location.reload();
               }
             });
           })
@@ -90,7 +91,7 @@ export const Signup = () => {
             <input
               type="text"
               className="form-control"
-              placeholder="Name"
+              placeholder="Nombre"
               required={true}
               autoFocus={true}
               value={name}
@@ -104,7 +105,7 @@ export const Signup = () => {
             <input
               type="text"
               className="form-control"
-              placeholder="Lastname"
+              placeholder="Apellido"
               required={true}
               autoFocus={true}
               value={lastname}
@@ -118,7 +119,7 @@ export const Signup = () => {
             <input
               type="date"
               className="form-control"
-              placeholder="Birthdate"
+              placeholder="Fecha de nacimiento"
               required={true}
               autoFocus={true}
               value={birthdate}
@@ -132,7 +133,7 @@ export const Signup = () => {
             <input
               type="email"
               className="form-control"
-              placeholder="Email address"
+              placeholder="Email"
               required={true}
               autoFocus={true}
               value={email}
@@ -144,7 +145,7 @@ export const Signup = () => {
             <input
               type="password"
               className="form-control"
-              placeholder="Password"
+              placeholder="Contraseña"
               required={true}
               value={passwordd}
               onChange={handleChangePassword}
@@ -175,7 +176,7 @@ export const Signup = () => {
                 history.push("/Login");
               }}
             >
-              Ya tienes cuenta? Entra!
+              Ya tenes cuenta? Entra!
             </a>
           </div>
         </form>

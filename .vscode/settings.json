@@ -1,6 +1,6 @@
 {
     "maven.view": "flat",
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "disabled",
     "files.exclude": {
         "**/.classNamepath": true,
         "**/.project": true,
