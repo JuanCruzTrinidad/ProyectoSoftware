@@ -15,6 +15,11 @@ export const Signup = () => {
   const [passwordd, setpasswordd] = useState("");
   const [hashpw, sethashpw] = useState("");
 
+  //Si el usuario esta logeado no debe poder entrar a esta pagina
+  if(localStorage.getItem("token") !== null) {
+    history.push("/Home");
+  }
+
   const handleSubmitForm = (e) => {
     e.preventDefault();
 
