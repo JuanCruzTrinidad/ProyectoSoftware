@@ -28,7 +28,7 @@ public class DeporteonlineApplication {
 			http.csrf().disable()
 				.addFilterAfter(new SecurityConfiguration(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/user/login","/user/newUser").permitAll()
+				.antMatchers(HttpMethod.POST, "/user/login","/user/newUser", "/user/recoverpw", "/user/resetpw").permitAll()
 				.anyRequest().authenticated();
 			http.cors();
 		}

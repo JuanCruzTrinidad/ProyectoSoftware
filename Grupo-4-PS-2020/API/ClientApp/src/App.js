@@ -35,7 +35,7 @@ function App() {
           <Route exact strict path="/recoverpw">
             <RecoverPassword />
           </Route>
-          <Route exact strict path="/resetpw/:id">
+          <Route exact strict path="/resetpw/:iduser">
             <ResetPassword />
           </Route>
         </Switch>

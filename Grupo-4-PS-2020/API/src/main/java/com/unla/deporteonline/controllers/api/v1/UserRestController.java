@@ -18,6 +18,7 @@ import com.unla.deporteonline.exception.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +37,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "*", methods= {RequestMethod.GET, RequestMethod.POST})
 public class UserRestController {
 
 	@Autowired
@@ -66,8 +69,8 @@ public class UserRestController {
 		return userService.saveUser(newUser);
 	}
 	
-	@PostMapping(value = "/recoverypw", consumes="application/json")
-	public ResponseEntity recoveryPassword(@RequestBody String email ) throws IOException {
+	@PostMapping(value = "/recoverpw", consumes="application/json")
+	public ResponseEntity<String> recoveryPassword(@RequestBody String email ) throws IOException {
 		
 		User user = userService.findByEmail(email);
 	    Email from = new Email("juancruztrinidad97@gmail.com");
@@ -93,11 +96,11 @@ public class UserRestController {
 	      throw ex;
 	    }
 	    
-		return  (ResponseEntity) ResponseEntity.ok();
+		return new ResponseEntity<String>(email, HttpStatus.OK);
 	}
 	
-	@PostMapping(value= "/resetpw")
-	public ResponseEntity resetPassword(@RequestParam("id") int id, @RequestParam("password") String password ) {
+	@PostMapping(value= "/resetpw", consumes="application/json")
+	public ResponseEntity<String> resetPassword(@RequestBody int id, @RequestBody String password ) {
 		User user = userService.findById(id);
 		
 		if(user == null) {
@@ -106,8 +109,7 @@ public class UserRestController {
 		user.setPassword(password);
 		userService.saveUser(user);
 		
-		return (ResponseEntity) ResponseEntity.ok();
-		
+		return new ResponseEntity<String>("hola", HttpStatus.OK);
 	}
 	
 

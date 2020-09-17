@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../config/axios";
 
 export const RecoverPassword = () => {
   const history = useHistory();
 
+  //State
+  const [email, setemail] = useState("");
+
   const handleSubmitForm = (e) => {
-	e.preventDefault();
-  }
+    e.preventDefault();
+
+    apiAxios
+    .post("/user/recoverpw", email, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+        "Access-Control-Allow-Headers":
+          "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => {
+      history.push("/");
+    })
+    .catch((error) => console.log(error));
+  };
 
   return (
     <>
@@ -35,10 +53,13 @@ export const RecoverPassword = () => {
               placeholder="Email"
               required={true}
               autoFocus={true}
+              onChange={(e) => setemail(e.target.value)}
+              value={email}
             />
             <label htmlFor="inputEmail">Email</label>
           </div>
           <button
+            type="submit"
             className="btn btn-lg btn-block boton"
             style={{
               "background-color": "#00A5CF",
