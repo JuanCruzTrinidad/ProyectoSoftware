@@ -41,26 +41,10 @@ public class UserRestController {
 	private IUserService userService;
 
 	//cambie esto a post, porque sin desde el js no podemos mandale parametros al backend.
-	// @PostMapping("/login")
-    // public String login(@RequestParam("email") String email, @RequestParam("password") String password) {
-	// 	List<String> lista = new ArrayList<String>();
-		
-	// 	User user = userService.findByEmailAndPassword(email, password);
-	// 	if(user == null) throw new ValidationException("Usuario no valido");
-
-	// 	//Pasar como parametro la pw y hacer la comparacion entre hashs en el front. Si da true que se haga el login, si no no.
-	// 	lista.add(getJWTToken(user.getEmail()));
-	// 	lista.add(user.getPassword());
-
-    //     return getJWTToken(user.getEmail());
-	// }
-
-	//cambie esto a post, porque sin desde el js no podemos mandale parametros al backend.
 	@PostMapping("/login")
 	public List<String> login(@RequestParam("email") String email) {
 		List<String> lista = new ArrayList<String>();
 		
-		//User user = userService.findByEmailAndPassword(email, password);
 		User user = userService.findByEmail(email);
 		if(user == null) throw new ValidationException("Usuario no valido");
 			
@@ -69,7 +53,6 @@ public class UserRestController {
 		lista.add(getJWTToken(user.getEmail()));
 		lista.add(user.getPassword());
 
-		//return getJWTToken(user.getEmail());
 		return lista;
 	}
 	
@@ -80,7 +63,11 @@ public class UserRestController {
 		newUser.setEnabled(true);
 		System.out.println("User: " + newUser.toString());
 		return userService.saveUser(newUser);
-    }
+	}
+	
+
+
+
 
     private String getJWTToken(String username) {
 		String secretKey = "mySecretKey";

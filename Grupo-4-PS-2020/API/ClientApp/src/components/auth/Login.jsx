@@ -5,10 +5,17 @@ import { useHistory } from "react-router";
 import bcrypt from "bcryptjs";
 
 export const Login = () => {
+
+  //States
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
 
   const history = useHistory();
+
+  //Si el usuario esta logeado no debe poder entrar a esta pagina
+  if(localStorage.getItem("token") !== null) {
+    history.push("/Home");
+  }
 
   const handleSubmitForm = (e) => {
     e.preventDefault();

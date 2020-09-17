@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../styles/floating-labels.css";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../config/axios";
 import bcrypt from "bcryptjs";
@@ -14,6 +15,11 @@ export const Signup = () => {
   const [email, setemail] = useState("");
   const [passwordd, setpasswordd] = useState("");
   const [hashpw, sethashpw] = useState("");
+
+  //Si el usuario esta logeado no debe poder entrar a esta pagina
+  if(localStorage.getItem("token") !== null) {
+    history.push("/Home");
+  }
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
@@ -95,6 +101,8 @@ export const Signup = () => {
               required={true}
               autoFocus={true}
               value={name}
+              minlength="3" 
+              maxlength="30"
               onChange={(e) => {
                 setname(e.target.value);
               }}
@@ -109,6 +117,8 @@ export const Signup = () => {
               required={true}
               autoFocus={true}
               value={lastname}
+              minlength="2" 
+              maxlength="25"
               onChange={(e) => {
                 setlastname(e.target.value);
               }}
@@ -148,6 +158,8 @@ export const Signup = () => {
               placeholder="Contraseña"
               required={true}
               value={passwordd}
+              minlength="6" 
+              maxlength="60"
               onChange={handleChangePassword}
             />
             <label htmlFor="inputPassword">Contraseña</label>

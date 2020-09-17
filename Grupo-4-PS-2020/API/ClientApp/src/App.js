@@ -4,14 +4,14 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Navbar } from './components/ui/Navbar';
 import { Auth } from './pages/Auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Home } from './pages/Home';
 import SignupPage from './pages/SignupPage';
 import { RecoverPassword } from './components/auth/RecoverPassword';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
-
-
 
   //consultarAPI();
   //un poco de react rout, basicamente es un pinche switch. Cada route es una ruta que se genera cuando se va a ese lugar
