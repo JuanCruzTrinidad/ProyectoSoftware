@@ -3,6 +3,7 @@ import { apiAxios } from '../config/axios';
 import Slider from '../components/ui/SliderHome';
 
 export const Home = ({tokenJWT}) => {
+
     // const falopa = () =>{
     //     console.log(tokenJWT)
     //     var token = localStorage.getItem("token");
@@ -16,10 +17,24 @@ export const Home = ({tokenJWT}) => {
     //     })
     //         .then(res => {
     //           console.log(res.data);
-    
     //         })
     //         .catch(res => console.log(res));
     // }
+
+  
+    //prueba mail
+    // var token = localStorage.getItem("token");
+    // apiAxios
+    // .get("/user/allusers", {
+    //   headers: {
+    //     'Authorization': token, 
+    //     "Access-Control-Allow-Origin": "*",
+    //     "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+    //     "Access-Control-Allow-Headers":
+    //       "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+    //   },
+    //   withCredentials: true
+    // })
 
     return (
         <div>
@@ -30,7 +45,6 @@ export const Home = ({tokenJWT}) => {
                     </div>
                 </div>
             </div>
-            
         </div>
     )
 }
