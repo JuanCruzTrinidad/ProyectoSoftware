@@ -11,6 +11,8 @@ import { RecoverPassword } from './components/auth/RecoverPassword';
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
 
+
+
   //consultarAPI();
   //un poco de react rout, basicamente es un pinche switch. Cada route es una ruta que se genera cuando se va a ese lugar
   //realmente las url no existen en react, por lo cual se evita el problema del 404. Si vos le erras, siempre te va a llegar al home.

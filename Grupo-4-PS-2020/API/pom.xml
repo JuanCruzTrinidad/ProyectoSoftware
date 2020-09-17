@@ -71,6 +71,13 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.6.0</version>
     	</dependency>
+    	<!-- https://mvnrepository.com/artifact/com.sendgrid/sendgrid-java -->
+		<dependency>
+		    <groupId>com.sendgrid</groupId>
+		    <artifactId>sendgrid-java</artifactId>
+		    <version>4.6.4</version>
+		</dependency>
+    	
 		
 	</dependencies>
 

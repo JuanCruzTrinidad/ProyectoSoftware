@@ -1,7 +1,5 @@
 package com.unla.deporteonline;
 
-import com.unla.deporteonline.configuration.SecurityConfiguration;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.unla.deporteonline.configuration.SecurityConfiguration;
 
 @SpringBootApplication
 public class DeporteonlineApplication {
@@ -28,7 +28,7 @@ public class DeporteonlineApplication {
 			http.csrf().disable()
 				.addFilterAfter(new SecurityConfiguration(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/user/login","/user/newUser" ).permitAll()
+				.antMatchers(HttpMethod.POST, "/user/login","/user/newUser").permitAll()
 				.anyRequest().authenticated();
 			http.cors();
 		}
