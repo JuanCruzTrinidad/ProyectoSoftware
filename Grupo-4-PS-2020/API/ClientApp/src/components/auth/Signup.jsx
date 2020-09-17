@@ -5,7 +5,6 @@ import { apiAxios } from "../../config/axios";
 import bcrypt from "bcryptjs";
 
 export const Signup = () => {
-
   const history = useHistory();
 
   // states
@@ -14,15 +13,24 @@ export const Signup = () => {
   const [birthdate, setbirthdate] = useState("");
   const [email, setemail] = useState("");
   const [passwordd, setpasswordd] = useState("");
+  const [passwordd2, setpasswordd2] = useState("");
   const [hashpw, sethashpw] = useState("");
+  const [error, seterror] = useState(false);
 
   //Si el usuario esta logeado no debe poder entrar a esta pagina
-  if(localStorage.getItem("token") !== null) {
+  if (localStorage.getItem("token") !== null) {
     history.push("/Home");
   }
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
+
+    //Comparo si las passwords coinciden
+    if (passwordd !== passwordd2) {
+      seterror(true);
+      return;
+    }
+    seterror(false);
 
     const password = hashpw;
     const data = { name, lastname, birthdate, email, password }; //Los datos que se guardan en la bd
@@ -46,7 +54,7 @@ export const Signup = () => {
             const pw = passwordd.slice(0, -1); //Hay un rico bug, le tenemos que sacar la ultima letra para que funcione el login
 
             bcrypt.compare(pw, data[1]).then((res) => {
-              if(res === true) {
+              if (res === true) {
                 localStorage.setItem("token", data[0]);
                 history.replace("/Home");
                 window.location.reload();
@@ -80,7 +88,7 @@ export const Signup = () => {
         <form className="form-signin" onSubmit={handleSubmitForm}>
           <div className="text-center mb-4">
             <img
-              className="mb-5"
+              className="mb-4"
               src="https://www.nicepng.com/png/full/338-3384104_logo-replikat-innovacion-imagen-negro-transparente-logos-con.png"
               alt=""
               width="72"
@@ -101,7 +109,7 @@ export const Signup = () => {
               required={true}
               autoFocus={true}
               value={name}
-              minlength="3" 
+              minlength="3"
               maxlength="30"
               onChange={(e) => {
                 setname(e.target.value);
@@ -117,7 +125,7 @@ export const Signup = () => {
               required={true}
               autoFocus={true}
               value={lastname}
-              minlength="2" 
+              minlength="2"
               maxlength="25"
               onChange={(e) => {
                 setlastname(e.target.value);
@@ -158,12 +166,30 @@ export const Signup = () => {
               placeholder="Contraseña"
               required={true}
               value={passwordd}
-              minlength="6" 
+              minlength="6"
               maxlength="60"
               onChange={handleChangePassword}
             />
             <label htmlFor="inputPassword">Contraseña</label>
           </div>
+          <div className="form-label-group">
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Contraseña"
+              required={true}
+              value={passwordd2}
+              minlength="6"
+              maxlength="60"
+              onChange={(e) => setpasswordd2(e.target.value)}
+            />
+            <label htmlFor="inputPassword">Repita la contraseña</label>
+          </div>
+          {error === true ? (
+            <div class="alert alert-danger" role="alert">
+              Las contraseñas deben coincidir
+            </div>
+          ) : null}
           <div className="checkbox mb-2">
             <label>
               <input type="checkbox" value="remember-me" /> Recuerdame
@@ -172,7 +198,7 @@ export const Signup = () => {
           <button
             className="btn btn-lg btn-block boton"
             style={{
-              "backgroundColor": "#00A5CF",
+              backgroundColor: "#00A5CF",
               color: "white",
               fontWeight: "bold",
             }}
@@ -182,7 +208,12 @@ export const Signup = () => {
           </button>
           <div className="mb-3">
             <a
-              style={{ float: "right", paddingTop: "4px", color: "#457B9D", cursor: "pointer" }}
+              style={{
+                float: "right",
+                paddingTop: "4px",
+                color: "#457B9D",
+                cursor: "pointer",
+              }}
               onClick={(e) => {
                 e.preventDefault();
                 history.push("/Login");

@@ -68,7 +68,7 @@ export const Login = () => {
               className="h3 mb-3 font-weight-normal"
               style={{ color: "#0E141B" }}
             >
-              Deportes Online
+              Ingresar
             </h1>
           </div>
           <div className="form-label-group">

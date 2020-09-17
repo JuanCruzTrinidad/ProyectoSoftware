@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Home } from './pages/Home';
 import SignupPage from './pages/SignupPage';
 import { RecoverPassword } from './components/auth/RecoverPassword';
+import Footer from './components/ui/Footer';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -34,6 +35,7 @@ function App() {
             <RecoverPassword />
           </Route>
         </Switch>
+        <Footer />
       </Router>
     </>
   );
