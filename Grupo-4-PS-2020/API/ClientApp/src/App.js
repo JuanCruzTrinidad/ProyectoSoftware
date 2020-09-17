@@ -10,6 +10,7 @@ import { Home } from './pages/Home';
 import SignupPage from './pages/SignupPage';
 import { RecoverPassword } from './components/auth/RecoverPassword';
 import Footer from './components/ui/Footer';
+import ResetPassword from './components/auth/ResetPassword';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -22,7 +23,7 @@ function App() {
     <Router>
         <Navbar/>
         <Switch>
-          <Route exact strict path="/Home">
+          <Route exact strict path="/">
             <Home tokenJWT={tokenJWT} />
           </Route>
           <Route exact strict path="/Login">
@@ -33,6 +34,9 @@ function App() {
           </Route>
           <Route exact strict path="/recoverpw">
             <RecoverPassword />
+          </Route>
+          <Route exact strict path="/resetpw/:id">
+            <ResetPassword />
           </Route>
         </Switch>
         <Footer />

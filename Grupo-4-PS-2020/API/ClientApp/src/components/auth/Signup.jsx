@@ -19,7 +19,7 @@ export const Signup = () => {
 
   //Si el usuario esta logeado no debe poder entrar a esta pagina
   if (localStorage.getItem("token") !== null) {
-    history.push("/Home");
+    history.push("/");
   }
 
   const handleSubmitForm = (e) => {
@@ -56,7 +56,7 @@ export const Signup = () => {
             bcrypt.compare(pw, data[1]).then((res) => {
               if (res === true) {
                 localStorage.setItem("token", data[0]);
-                history.replace("/Home");
+                history.replace("/");
                 window.location.reload();
               }
             });
