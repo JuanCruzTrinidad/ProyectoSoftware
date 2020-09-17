@@ -20,4 +20,6 @@ public interface IUserRepository extends JpaRepository<User, Serializable> {
 
 	@Query("SELECT u FROM User u WHERE u.email = :email and enabled = true")
 	public abstract User findByEmail(@Param("email") String email);
+	
+	public abstract User findById(@Param("id") int id);
 }

@@ -3,6 +3,7 @@ package com.unla.deporteonline.services.implementation;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,10 @@ public class UserService implements UserDetailsService, IUserService {
 
 	public List<com.unla.deporteonline.entities.User> findAll() {
 		return userRepository.findAll();
+	}
+	
+	public com.unla.deporteonline.entities.User findById(int id) {
+		return userRepository.findById(id);
 	}
 
 	public com.unla.deporteonline.entities.User findByEmailAndPassword(String email, String password) {

@@ -18,6 +18,7 @@ import com.unla.deporteonline.exception.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -65,30 +66,50 @@ public class UserRestController {
 		return userService.saveUser(newUser);
 	}
 	
-
-
-
-
-    private String getJWTToken(String username) {
-		String secretKey = "mySecretKey";
-		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-				.commaSeparatedStringToAuthorityList("ROLE_USER");
+	@PostMapping(value = "/recoverypw", consumes="application/json")
+	public ResponseEntity recoveryPassword(@RequestBody String email ) throws IOException {
 		
-		String token = Jwts
-				.builder()
-				.setId("softtekJWT")
-				.setSubject(username)
-				.claim("authorities",
-						grantedAuthorities.stream()
-								.map(GrantedAuthority::getAuthority)
-								.collect(Collectors.toList()))
-				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 600000))
-				.signWith(SignatureAlgorithm.HS512,
-						secretKey.getBytes()).compact();
+		User user = userService.findByEmail(email);
+	    Email from = new Email("juancruztrinidad97@gmail.com");
+	    String subject = "Resetea tu contraseña";
+	    Email to =  new Email(email);
+	    Content content = new Content("text/plain", "Por favor, ingresa a esta url para cambiar tu contraseña: http://localhost:3000/resetpw/:"+user.getId());
+	    Mail mail = new Mail(from, subject, to, content);
 
-		return "Bearer " + token;
+	    SendGrid sg = new SendGrid("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");
+	    Request request = new Request();
+	    
+	    try {
+	      request.setMethod(Method.POST);
+	      request.setEndpoint("mail/send");
+	      request.setBody(mail.build());
+	      Response response = sg.api(request);
+	      System.out.println(response.getStatusCode());
+	      System.out.println(response.getBody());
+	      System.out.println(response.getHeaders());
+	    } 
+	    catch (IOException ex) 
+	    {
+	      throw ex;
+	    }
+	    
+		return  (ResponseEntity) ResponseEntity.ok();
 	}
+	
+	@PostMapping(value= "/resetpw")
+	public ResponseEntity resetPassword(@RequestParam("id") int id, @RequestParam("password") String password ) {
+		User user = userService.findById(id);
+		
+		if(user == null) {
+			ResponseEntity.badRequest();
+		}
+		user.setPassword(password);
+		userService.saveUser(user);
+		
+		return (ResponseEntity) ResponseEntity.ok();
+		
+	}
+	
 
 	@GetMapping("/allusers")
 	public List<User> findAll() {//throws IOException {
@@ -113,5 +134,27 @@ public class UserRestController {
 //	    }
 		return userService.findAll();
 	}
+	
+    private String getJWTToken(String username) {
+		String secretKey = "mySecretKey";
+		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
+				.commaSeparatedStringToAuthorityList("ROLE_USER");
+		
+		String token = Jwts
+				.builder()
+				.setId("softtekJWT")
+				.setSubject(username)
+				.claim("authorities",
+						grantedAuthorities.stream()
+								.map(GrantedAuthority::getAuthority)
+								.collect(Collectors.toList()))
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + 600000))
+				.signWith(SignatureAlgorithm.HS512,
+						secretKey.getBytes()).compact();
+
+		return "Bearer " + token;
+	}
+
 
 }
