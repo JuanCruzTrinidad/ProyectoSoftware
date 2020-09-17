@@ -12,12 +12,17 @@ export const Navbar = () => {
           className="navbar navbar-expand-lg navbar-light"
           style={{ backgroundColor: "#25A18E" }}
         >
-          <a className="navbar-brand" style={{ color: "#0E141B", cursor: "pointer" }}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              history.push("/Home");
-                            }}>
-            Deportes Online
+          <a
+            className="navbar-brand"
+            style={{ color: "#0E141B", cursor: "pointer" }}
+            onClick={(e) => {
+              e.preventDefault();
+              history.push("/Home");
+            }}
+          >
+            <img 
+            src="https://www.nicepng.com/png/full/338-3384104_logo-replikat-innovacion-imagen-negro-transparente-logos-con.png" width="30" height="30" class="d-inline-block align-top mr-2" alt=""></img>
+            Deporte Online
           </a>
           <button
             className="navbar-toggler"
@@ -45,52 +50,52 @@ export const Navbar = () => {
                 </a>
               </li>
             </ul> */}
-            { token === null ?
-            <ul className="navbar-nav ml-auto">
-              <li style={{ float: "inline-end" }}>
-                <a
-                  className="nav-link"
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    history.push("/Login");
-                  }}
-                >
-                  Ingresar
-                </a>
-              </li>
-              <li style={{ float: "inline-end" }}>
-                <a
-                  className="nav-link"
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    history.push("/signup");
-                  }}
-                >
-                  Registrarse
-                </a>
-              </li>
-            </ul>
-            :
-            <ul className="navbar-nav ml-auto">
-              <li style={{ float: "inline-end" }}>
-                <a
-                  className="nav-link"
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    localStorage.removeItem("user");
-                    localStorage.removeItem("token");
-                    history.replace("/Home")
-                    window.location.reload();
-                  }}
-                >
-                  Desconectarse
-                </a>
-              </li>
-            </ul>
-            }
+            {token === null ? (
+              <ul className="navbar-nav ml-auto">
+                <li style={{ float: "inline-end" }}>
+                  <a
+                    className="nav-link"
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      history.push("/Login");
+                    }}
+                  >
+                    Ingresar
+                  </a>
+                </li>
+                <li style={{ float: "inline-end" }}>
+                  <a
+                    className="nav-link"
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      history.push("/signup");
+                    }}
+                  >
+                    Registrarse
+                  </a>
+                </li>
+              </ul>
+            ) : (
+              <ul className="navbar-nav ml-auto">
+                <li style={{ float: "inline-end" }}>
+                  <a
+                    className="nav-link"
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      localStorage.removeItem("user");
+                      localStorage.removeItem("token");
+                      history.replace("/Home");
+                      window.location.reload();
+                    }}
+                  >
+                    Desconectarse
+                  </a>
+                </li>
+              </ul>
+            )}
           </div>
         </nav>
       </div>
