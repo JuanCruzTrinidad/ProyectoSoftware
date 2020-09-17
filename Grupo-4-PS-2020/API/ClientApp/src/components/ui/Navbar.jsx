@@ -17,7 +17,7 @@ export const Navbar = () => {
             style={{ color: "#0E141B", cursor: "pointer" }}
             onClick={(e) => {
               e.preventDefault();
-              history.push("/Home");
+              history.push("/");
             }}
           >
             <img 
@@ -43,7 +43,7 @@ export const Navbar = () => {
                   style={{ cursor: "pointer" }}
                   onClick={(e) => {
                     e.preventDefault();
-                    history.push("/Home");
+                    history.push("/");
                   }}
                 >
                   Home{" "}
@@ -87,7 +87,7 @@ export const Navbar = () => {
                       e.preventDefault();
                       localStorage.removeItem("user");
                       localStorage.removeItem("token");
-                      history.replace("/Home");
+                      history.replace("/");
                       window.location.reload();
                     }}
                   >

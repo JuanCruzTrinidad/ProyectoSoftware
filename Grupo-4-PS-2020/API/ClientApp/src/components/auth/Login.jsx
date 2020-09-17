@@ -14,7 +14,7 @@ export const Login = () => {
 
   //Si el usuario esta logeado no debe poder entrar a esta pagina
   if(localStorage.getItem("token") !== null) {
-    history.push("/Home");
+    history.push("/");
   }
 
   const handleSubmitForm = (e) => {
@@ -32,7 +32,7 @@ export const Login = () => {
             console.log(data[0])
             localStorage.setItem("user", email);
             localStorage.setItem("token", data[0]);
-            history.replace("/Home");
+            history.replace("/");
             window.location.reload();
           }
         });
