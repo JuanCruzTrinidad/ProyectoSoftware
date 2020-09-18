@@ -1,4 +1,5 @@
 package com.unla.deporteonline.controllers.api.v1;
+
 import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
@@ -8,10 +9,14 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.unla.deporteonline.entities.Role;
 import com.unla.deporteonline.entities.User;
+import com.unla.deporteonline.services.IRoleService;
 import com.unla.deporteonline.services.IUserService;
 
 import com.unla.deporteonline.exception.ValidationException;
@@ -44,6 +49,12 @@ public class UserRestController {
 	@Qualifier("userService")
 	private IUserService userService;
 
+	@Autowired
+	@Qualifier("roleService")
+	private IRoleService roleService;
+
+
+
 	//cambie esto a post, porque sin desde el js no podemos mandale parametros al backend.
 	@PostMapping("/login")
 	public List<String> login(@RequestParam("email") String email) {
@@ -65,7 +76,12 @@ public class UserRestController {
     public Object newUser(@RequestBody User newUser) {
 
 		newUser.setEnabled(true);
-		System.out.println("User: " + newUser.toString());
+
+		Set<Role> roles = newUser.getRoles();
+		roles.add(roleService.findById(1));
+		newUser.setRoles(roles); //Le pongo el role de user por default
+
+		System.out.println(newUser.toString());
 		return userService.saveUser(newUser);
 	}
 	
@@ -110,7 +126,7 @@ public class UserRestController {
 		if(user == null) {
 			return new ResponseEntity<String>("bad", HttpStatus.BAD_REQUEST);
 		}
-		
+
 		user.setPassword(password);
 		userService.saveUser(user);
 		

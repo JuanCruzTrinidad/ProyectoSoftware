@@ -29,9 +29,6 @@ public class UserService implements UserDetailsService, IUserService {
 	@Qualifier("userRepository")
 	private IUserRepository userRepository;
 
-	// @Autowired
-	// private PasswordEncoder passwordEncoder;
-
 	public List<com.unla.deporteonline.entities.User> findAll() {
 		return userRepository.findAll();
 	}
@@ -51,11 +48,6 @@ public class UserService implements UserDetailsService, IUserService {
 	public Object saveUser(com.unla.deporteonline.entities.User user) {
 
 		//Falta excepcion email
-
-		// //Cambio la pw por una encriptacion
-		// String pwUser = user.getPassword();
-		// user.setPassword(passwordEncoder.encode(pwUser));
-
 		return userRepository.saveAndFlush(user);
 	}
 	
