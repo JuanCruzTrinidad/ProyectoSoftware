@@ -99,13 +99,18 @@ public class UserRestController {
 		return new ResponseEntity<String>(email, HttpStatus.OK);
 	}
 	
-	@PostMapping(value= "/resetpw", consumes="application/json")
-	public ResponseEntity<String> resetPassword(@RequestBody int id, @RequestBody String password ) {
+
+	@PostMapping(value= "/resetpw")
+	public ResponseEntity<String> resetPassword(@RequestBody User u) {
+		int id = u.getId();
+		String password = u.getPassword();
+		
 		User user = userService.findById(id);
 		
 		if(user == null) {
-			ResponseEntity.badRequest();
+			return new ResponseEntity<String>("bad", HttpStatus.BAD_REQUEST);
 		}
+		
 		user.setPassword(password);
 		userService.saveUser(user);
 		

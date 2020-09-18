@@ -6,37 +6,45 @@ import bcrypt from "bcryptjs";
 const ResetPassword = () => {
   const history = useHistory();
 
-  //Id del usuario
-  let { iduser } = useParams();
-
   //States
   const [passwordd, setpasswordd] = useState("");
   const [passwordd2, setpasswordd2] = useState("");
-  const [password, sethashpassword] = useState(''); //Password hasheada
+  const [password, sethashpassword] = useState(""); //Password hasheada
+
+  //Id del usuario
+  let { iduser } = useParams();
+  var idaux = iduser.substring(1); //Elimino ":"
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
 
-    const id = parseInt(iduser, 10);
-    const info = {id, password};
+    const id = parseInt(idaux, 10);
 
-    console.log(info);
+    const user = {
+      id: id,
+      name: "n",
+      lastname: "l",
+      birthday: "1111-11-1",
+      mail: "m",
+      password: password,
+      enabled: true,
+      islogged: true,
+    };
 
     apiAxios
-      .post("/user/resetpw", info, {
+      .post("/user/resetpw", user, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
           "Access-Control-Allow-Headers":
             "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-          "Content-Type": "application/json",
         },
       })
       .then((res) => {
         history.push("/");
       })
       .catch((error) => console.log(error));
-  }
+  };
 
   const handleChangePassword = ({ target }) => {
     setpasswordd(target.value);
