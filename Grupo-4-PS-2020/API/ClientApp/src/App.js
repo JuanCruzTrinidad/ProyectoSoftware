@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {apiAxios} from './config/axios';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Navbar } from './components/ui/Navbar';
+import { NavbarDU } from './components/ui/Navbar';
 import { Auth } from './pages/Auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "slick-carousel/slick/slick.css";
@@ -21,7 +21,7 @@ function App() {
   return (
     <>
     <Router>
-        <Navbar/>
+        <NavbarDU/>
         <Switch>
           <Route exact strict path="/">
             <Home tokenJWT={tokenJWT} />

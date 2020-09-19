@@ -1,6 +1,8 @@
 import React from 'react'
 import { apiAxios } from '../config/axios';
 import Slider from '../components/ui/SliderHome';
+import { Container, Row, Col } from 'react-bootstrap';
+import { FeaturedProducts } from '../components/ui/FeaturedProducts';
 
 export const Home = ({tokenJWT}) => {
 
@@ -37,14 +39,19 @@ export const Home = ({tokenJWT}) => {
     // })
 
     return (
-        <div>
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-12 pt-4">
-                        <Slider />
-                    </div>
-                </div>
-            </div>
-        </div>
+        <>
+        <Container>
+            <Row className={"mt-4"}>
+                <Col xs={12}> 
+                    <Slider />
+                </Col>
+            </Row>
+            <Row className={"mt-4"}>
+                <Col xs={{ span: 8, offset: 2 }}>
+                    <FeaturedProducts/>
+                </Col>
+            </Row>
+        </Container>
+        </>
     )
 }
