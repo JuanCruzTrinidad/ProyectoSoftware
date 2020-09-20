@@ -11,6 +11,8 @@ import SignupPage from './pages/SignupPage';
 import { RecoverPassword } from './components/auth/RecoverPassword';
 import Footer from './components/ui/Footer';
 import ResetPassword from './components/auth/ResetPassword';
+import InstitutionalInfo from './components/ui/menu/InstitutionalInfo';
+import ContactForm from './components/ui/menu/ContactForm';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -37,6 +39,12 @@ function App() {
           </Route>
           <Route exact strict path="/resetpw/:iduser">
             <ResetPassword />
+          </Route>
+          <Route exact strict path="/thisisus">
+            <InstitutionalInfo />
+          </Route>
+          <Route exact strict path="/contact">
+            <ContactForm />
           </Route>
         </Switch>
         <Footer />
