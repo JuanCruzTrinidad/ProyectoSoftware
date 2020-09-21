@@ -1,104 +1,102 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import Navbar from "react-bootstrap/Navbar";
+import { Nav, NavDropdown } from "react-bootstrap";
+import "../../index.css";
 
-export const Navbar = () => {
-  const history = useHistory();
-  const token = localStorage.getItem("token");
+export const NavbarDU = () => {
+	const history = useHistory();
+	const token = localStorage.getItem("token");
 
-  return (
-    <>
-      <div>
-        <nav
-          className="navbar navbar-expand-lg navbar-light"
-          style={{ backgroundColor: "#25A18E" }}
-        >
-          <a
-            className="navbar-brand"
-            style={{ color: "#0E141B", cursor: "pointer" }}
-            onClick={(e) => {
-              e.preventDefault();
-              history.push("/");
-            }}
-          >
-            <img 
-            src="https://www.nicepng.com/png/full/338-3384104_logo-replikat-innovacion-imagen-negro-transparente-logos-con.png" width="30" height="30" class="d-inline-block align-top mr-2" alt=""></img>
-            Deporte Online
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            {/* <ul className="navbar-nav">
-              <li className="nav-item active">
-                <a
-                  className="nav-link"
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    history.push("/");
-                  }}
-                >
-                  Home{" "}
-                </a>
-              </li>
-            </ul> */}
-            {token === null ? (
-              <ul className="navbar-nav ml-auto">
-                <li style={{ float: "inline-end" }}>
-                  <a
-                    className="nav-link"
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      history.push("/Login");
-                    }}
-                  >
-                    Ingresar
-                  </a>
-                </li>
-                <li style={{ float: "inline-end" }}>
-                  <a
-                    className="nav-link"
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      history.push("/signup");
-                    }}
-                  >
-                    Registrarse
-                  </a>
-                </li>
-              </ul>
-            ) : (
-              <ul className="navbar-nav ml-auto">
-                <li style={{ float: "inline-end" }}>
-                  <a
-                    className="nav-link"
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      localStorage.removeItem("user");
-                      localStorage.removeItem("token");
-                      history.replace("/");
-                      window.location.reload();
-                    }}
-                  >
-                    Desconectarse
-                  </a>
-                </li>
-              </ul>
-            )}
-          </div>
-        </nav>
-      </div>
-    </>
-  );
+	return (
+		<>
+			<Navbar style={{ backgroundColor: "#25A18E" }}>
+				<Navbar.Brand
+					onClick={(e) => {
+						e.preventDefault();
+						history.push("/");
+					}}
+				>
+					<img
+						src="https://www.nicepng.com/png/full/338-3384104_logo-replikat-innovacion-imagen-negro-transparente-logos-con.png"
+						width="30"
+						height="30"
+						className="d-inline-block align-top mr-2"
+						alt=""
+					></img>
+				</Navbar.Brand>
+				<Navbar.Toggle aria-controls="basic-navbar-nav" />
+				<Navbar.Collapse id="basic-navbar-nav">
+					<Nav className="mr-auto">
+						<Nav.Link
+							onClick={(e) => {
+								e.preventDefault();
+								history.push("/");
+							}}
+						>
+							Deportes Unla
+						</Nav.Link>
+						<NavDropdown title="Menú" id="basic-nav-dropdown">
+							<NavDropdown.Item href="#action/3.3">Catalogo</NavDropdown.Item>
+							<NavDropdown.Item
+								onClick={(e) => {
+									e.preventDefault();
+									history.push("/thisisus");
+								}}
+							>
+								Nosotros
+							</NavDropdown.Item>
+							<NavDropdown.Item
+								onClick={(e) => {
+									e.preventDefault();
+									history.push("/contact");
+								}}
+							>
+								Contacto
+							</NavDropdown.Item>
+						</NavDropdown>
+					</Nav>
+				</Navbar.Collapse>
+				<Navbar.Collapse className="justify-content-end">
+					{token === null ? (
+						<>
+							<Navbar.Brand
+								style={{ color: "#0E141B", cursor: "pointer" }}
+								onClick={(e) => {
+									e.preventDefault();
+									history.push("/Login");
+								}}
+							>
+								Ingresar
+							</Navbar.Brand>
+							<Navbar.Brand
+								style={{ color: "#0E141B", cursor: "pointer" }}
+								onClick={(e) => {
+									e.preventDefault();
+									history.push("/signup");
+								}}
+							>
+								Registrarse
+							</Navbar.Brand>
+						</>
+					) : (
+						<>
+							<Navbar.Brand
+								style={{ color: "#0E141B", cursor: "pointer" }}
+								onClick={(e) => {
+									e.preventDefault();
+									localStorage.removeItem("user");
+									localStorage.removeItem("token");
+									history.replace("/");
+									window.location.reload();
+								}}
+							>
+								Desconectarse
+							</Navbar.Brand>
+						</>
+					)}
+				</Navbar.Collapse>
+			</Navbar>
+		</>
+	);
 };

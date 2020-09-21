@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {apiAxios} from './config/axios';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Navbar } from './components/ui/Navbar';
+import { NavbarDU } from './components/ui/Navbar';
 import { Auth } from './pages/Auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "slick-carousel/slick/slick.css";
@@ -11,6 +11,8 @@ import SignupPage from './pages/SignupPage';
 import { RecoverPassword } from './components/auth/RecoverPassword';
 import Footer from './components/ui/Footer';
 import ResetPassword from './components/auth/ResetPassword';
+import InstitutionalInfo from './components/ui/menu/InstitutionalInfo';
+import ContactForm from './components/ui/menu/ContactForm';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -21,7 +23,7 @@ function App() {
   return (
     <>
     <Router>
-        <Navbar/>
+        <NavbarDU/>
         <Switch>
           <Route exact strict path="/">
             <Home tokenJWT={tokenJWT} />
@@ -37,6 +39,12 @@ function App() {
           </Route>
           <Route exact strict path="/resetpw/:iduser">
             <ResetPassword />
+          </Route>
+          <Route exact strict path="/thisisus">
+            <InstitutionalInfo />
+          </Route>
+          <Route exact strict path="/contact">
+            <ContactForm />
           </Route>
         </Switch>
         <Footer />

@@ -54,7 +54,6 @@ public class UserRestController {
 	private IRoleService roleService;
 
 
-
 	//cambie esto a post, porque sin desde el js no podemos mandale parametros al backend.
 	@PostMapping("/login")
 	public List<String> login(@RequestParam("email") String email) {
@@ -62,8 +61,7 @@ public class UserRestController {
 		
 		User user = userService.findByEmail(email);
 		if(user == null) throw new ValidationException("Usuario no valido");
-			
-
+		
 		//Pasar como parametro la pw y hacer la comparacion entre hashs en el front. Si da true que se haga el login, si no no.
 		lista.add(getJWTToken(user.getEmail()));
 		lista.add(user.getPassword());
@@ -106,13 +104,38 @@ public class UserRestController {
 	      System.out.println(response.getStatusCode());
 	      System.out.println(response.getBody());
 	      System.out.println(response.getHeaders());
-	    } 
-	    catch (IOException ex) 
+	    } catch (IOException ex) 
 	    {
 	      throw ex;
 	    }
-	    
 		return new ResponseEntity<String>(email, HttpStatus.OK);
+	}
+
+
+	@PostMapping(value = "/contactform")
+	public ResponseEntity<String> contactForm(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("subject") String subject, @RequestParam("message") String message) throws IOException {
+		
+	    Email from = new Email(email);
+	    Email to = new Email("juancruztrinidad97@gmail.com");
+	    Content content = new Content("text/plain", message);
+	    Mail mail = new Mail(from, subject, to, content);
+
+	    SendGrid sg = new SendGrid("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");
+	    Request request = new Request();
+	    
+	    try {
+	      request.setMethod(Method.POST);
+	      request.setEndpoint("mail/send");
+	      request.setBody(mail.build());
+	      Response response = sg.api(request);
+	      System.out.println(response.getStatusCode());
+	      System.out.println(response.getBody());
+	      System.out.println(response.getHeaders());
+	    } catch (IOException ex) 
+	    {
+	      throw ex;
+	    }
+		return new ResponseEntity<String>("puto", HttpStatus.OK);
 	}
 	
 
