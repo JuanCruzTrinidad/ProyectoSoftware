@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { apiAxios } from "../../../config/axios";
 
 const ContactForm = () => {
 	const history = useHistory();
@@ -12,6 +13,27 @@ const ContactForm = () => {
 
 	const handleSubmitForm = (e) => {
 		e.preventDefault();
+
+	    const formData = new FormData();
+		formData.append("name", name);
+		formData.append("email", email);
+		formData.append("subject", subject);
+		formData.append("message", message);
+
+		apiAxios
+			.post("/user/contactform", formData, {
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+					"Access-Control-Allow-Headers":
+						"append,delete,entries,foreach,get,has,keys,set,values",
+					"Content-Type": "application/json",
+				},
+			})
+			.then((res) => {
+				history.push("/");
+			})
+			.catch((error) => console.log(error));
 	};
 
 	return (
@@ -41,7 +63,7 @@ const ContactForm = () => {
 						<div className="col">
 							<div className="form-label-group">
 								<input
-									type="text"
+									type="email"
 									className="form-control"
 									placeholder="Email"
 									required={true}
