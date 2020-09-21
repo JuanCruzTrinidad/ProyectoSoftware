@@ -1,11 +1,12 @@
 {
     "maven.view": "flat",
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "disabled",
     "files.exclude": {
         "**/.classNamepath": true,
         "**/.project": true,
         "**/.settings": true,
-        "**/.factorypath": true
+        "**/.factorypath": true,
+        "**/.classpath": true
     },
     "git.ignoreLimitWarning": true
 }
