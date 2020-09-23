@@ -10,6 +10,12 @@ public interface IUserService {
 
     public Object saveUser(User user);
 
+    //public User findById(long id);
+
+    public void deleteUser(User user);
+
     public User findByEmailAndPassword(String email, String password);
+
+	
 
 }

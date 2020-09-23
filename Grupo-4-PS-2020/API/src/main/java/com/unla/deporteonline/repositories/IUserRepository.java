@@ -15,4 +15,7 @@ public interface IUserRepository extends JpaRepository<User, Serializable> {
 
 	@Query("SELECT u FROM User u WHERE u.email = :email and u.password = :password and enabled = true")
 	public abstract User findByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+
+	//@Query("SELECT u FROM User WHERE u.id = (:id)")
+	//public abstract User findById(@Param("id") long id);
 }

@@ -37,6 +37,14 @@ public class UserService implements UserDetailsService, IUserService {
 	public Object saveUser(com.unla.deporteonline.entities.User user) {
 		return userRepository.saveAndFlush(user);
 	}
+
+	public void deleteUser(com.unla.deporteonline.entities.User user) {
+		userRepository.delete(user);
+	}
+
+	//public com.unla.deporteonline.entities.User findById(long id){
+	//	return userRepository.findById(id);
+	//}
 	
 	@Override
 	//Toma el email

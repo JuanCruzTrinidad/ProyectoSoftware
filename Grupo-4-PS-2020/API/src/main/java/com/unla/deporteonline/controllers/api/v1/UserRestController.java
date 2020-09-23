@@ -15,10 +15,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,12 +43,37 @@ public class UserRestController {
     public String login(@RequestParam("email") String email, @RequestParam("password") String password) {
 		User user = userService.findByEmailAndPassword(email, password);
 			if(user == null) throw new ValidationException("Usuario no valido");
+		user.setIslogged(true);
+		userService.saveUser(user);
         return getJWTToken(user.getEmail());
     }
-
+	//modificar usuario
+	@PostMapping(value ="/updateUser", consumes="application/json")
+    public Object updateUser(@RequestBody User updateUser) {
+		System.out.println("User: " + updateUser.toString());
+		return userService.saveUser(updateUser);
+	}
+	//eliminar usuario logicamente
+	@PostMapping(value ="/deleteUser")
+	public String deleteUser(@RequestParam("email") String email, @RequestParam("password") String password) {
+		User user = userService.findByEmailAndPassword(email, password);
+			if(user == null) throw new ValidationException("Usuario no valido");
+		user.setIslogged(false);
+		user.setEnabled(false);
+		userService.saveUser(user);
+		return ("usuario eliminado");
+	}
+	//eliminar usuario fisico
+	@DeleteMapping(value="/deleteUserfisico")
+	public String deleteUserfisico(@RequestParam("email") String email, @RequestParam("password") String password){
+		User user = userService.findByEmailAndPassword(email, password);
+			if(user == null) throw new ValidationException("Usuario no valido");
+		userService.deleteUser(user);
+		return ("usuario eliminado");
+	}
+	//agregar usuario
 	@PostMapping(value ="/newUser", consumes="application/json")
     public Object newUser(@RequestBody User newUser) {
-
 		newUser.setEnabled(true);
 		System.out.println("User: " + newUser.toString());
 		return userService.saveUser(newUser);
