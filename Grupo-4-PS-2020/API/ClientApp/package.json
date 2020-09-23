@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "-": "0.0.1",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -11,6 +13,7 @@
     "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.5.2",
+    "material-table": "^1.69.0",
     "react": "^16.13.1",
     "react-bootstrap-validation": "^0.1.11",
     "react-dom": "^16.13.1",
