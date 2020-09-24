@@ -28,6 +28,7 @@ public class DeporteonlineApplication {
 				.addFilterAfter(new SecurityConfiguration(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/user/login").permitAll()
+				.antMatchers(HttpMethod.POST, "/user/UserNew").permitAll() // Usuario nuevo sin token.
 				.anyRequest().authenticated();
 		}
 	}
