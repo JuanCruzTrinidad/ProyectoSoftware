@@ -13,7 +13,7 @@ const Categories = () => {
 	const [data, setData] = useState(list);
 
 	const [columns, setColumns] = useState([
-		{ title: "ID", field: "id", type: "numeric", align: "left"},
+		{ title: "ID", field: "id", type: "numeric", align: "left", hidden: true},
 		{
 			title: "Nombre",
 			field: "name",
@@ -28,7 +28,8 @@ const Categories = () => {
 					title="Categorias"
 					columns={columns}
 					data={data}
-					options={{
+					options={
+						{
 						rowStyle: {
 							backgroundColor: "#E0F6EF",
 						},
@@ -36,6 +37,7 @@ const Categories = () => {
 							backgroundColor: "#C8EFE3",
 							color: "#001014",
 						},
+						actionsColumnIndex: 2
 					}}
 					editable={{
 						onRowAdd: (newData) =>

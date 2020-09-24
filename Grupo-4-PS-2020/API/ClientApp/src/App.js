@@ -15,6 +15,7 @@ import InstitutionalInfo from './components/ui/menu/InstitutionalInfo';
 import ContactForm from './components/ui/menu/ContactForm';
 import Categories from './components/crud/categories/Categories';
 import SubCategories from './components/crud/categories/SubCategories';
+import { ProductsForm } from './components/crud/products/productsForm';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -53,6 +54,9 @@ function App() {
           </Route>
           <Route exact strict path="/admin/subcategories">
             <SubCategories />
+          </Route>
+          <Route exact strict path="/admin/products">
+            <ProductsForm/>
           </Route>
         </Switch>
         <Footer />
