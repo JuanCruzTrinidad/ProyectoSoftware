@@ -42,10 +42,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<Role>();
 
-
-    @ManyToMany(mappedBy = "users")
-    private Set<Producto> productos = new HashSet<Producto>();
-
+    //valoracion
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "user")
+    private Set<Valoracion> valoraciones= new HashSet<Valoracion>();
     
     public User() {}
 
@@ -133,15 +132,6 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
-    public Set<Producto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(Set<Producto> productos) {
-        this.productos = productos;
-    }
-
 
 
 }

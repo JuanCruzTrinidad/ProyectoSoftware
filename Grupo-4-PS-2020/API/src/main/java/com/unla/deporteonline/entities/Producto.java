@@ -29,13 +29,9 @@ public class Producto {
     @JoinColumn(name = "idprecio", nullable = false)
     private Precio precio;
 
-    @JoinTable(
-        name = "comentario",
-        joinColumns = @JoinColumn(name = "fk_producto", nullable = false),
-        inverseJoinColumns = @JoinColumn(name ="fk_user", nullable = false)
-    )
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<User> users = new HashSet<User>();
+    //valoracion
+    @OneToMany(mappedBy = "producto")
+    private Set<Valoracion> valoraciones = new HashSet<Valoracion>();
 
     public Producto(){}
 
@@ -49,16 +45,6 @@ public class Producto {
         this.precio = precio;
     }
 
-    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
-            Precio precio, Set<User> users) {
-        this.idProducto = idProducto;
-        this.nombre = nombre;
-        this.descripcionCorta = descripcionCorta;
-        this.descripcionLarga = descripcionLarga;
-        this.visible = visible;
-        this.precio = precio;
-        this.users = users;
-    }
 
     public int getIdProducto() {
         return idProducto;
@@ -106,14 +92,6 @@ public class Producto {
 
     public void setPrecio(Precio precio) {
         this.precio = precio;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 
 
