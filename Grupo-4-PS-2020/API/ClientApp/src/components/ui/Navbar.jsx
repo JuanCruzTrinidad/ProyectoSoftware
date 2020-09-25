@@ -37,11 +37,18 @@ export const NavbarDU = () => {
 							Deportes Unla
 						</Nav.Link>
 						<NavDropdown title="Menú" id="basic-nav-dropdown">
-							<NavDropdown.Item href="#action/3.3">Catalogo</NavDropdown.Item>
 							<NavDropdown.Item
 								onClick={(e) => {
 									e.preventDefault();
-									history.push("/thisisus");
+									history.push("/catalogue");
+								}}
+							>
+								Catalogo
+							</NavDropdown.Item>
+							<NavDropdown.Item
+								onClick={(e) => {
+									e.preventDefault();
+									history.push("/us");
 								}}
 							>
 								Nosotros

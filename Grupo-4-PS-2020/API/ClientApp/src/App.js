@@ -16,6 +16,7 @@ import ContactForm from './components/ui/menu/ContactForm';
 import Categories from './components/crud/categories/Categories';
 import SubCategories from './components/crud/categories/SubCategories';
 import { ProductsForm } from './components/crud/products/productsForm';
+import Catalogue from './components/ui/catalogue/Catalogue';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -43,7 +44,7 @@ function App() {
           <Route exact strict path="/resetpw/:iduser">
             <ResetPassword />
           </Route>
-          <Route exact strict path="/thisisus">
+          <Route exact strict path="/us">
             <InstitutionalInfo />
           </Route>
           <Route exact strict path="/contact">
@@ -57,6 +58,9 @@ function App() {
           </Route>
           <Route exact strict path="/admin/products">
             <ProductsForm/>
+          </Route>
+          <Route exact strict path="/catalogue">
+            <Catalogue />
           </Route>
         </Switch>
         <Footer />
