@@ -1,4 +1,8 @@
 package com.unla.deporteonline.entities;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
@@ -25,6 +29,14 @@ public class Producto {
     @JoinColumn(name = "idprecio", nullable = false)
     private Precio precio;
 
+    @JoinTable(
+        name = "comentario",
+        joinColumns = @JoinColumn(name = "fk_producto", nullable = false),
+        inverseJoinColumns = @JoinColumn(name ="fk_user", nullable = false)
+    )
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<User> users = new HashSet<User>();
+
     public Producto(){}
 
     public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
@@ -35,6 +47,17 @@ public class Producto {
         this.descripcionLarga = descripcionLarga;
         this.visible = visible;
         this.precio = precio;
+    }
+
+    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
+            Precio precio, Set<User> users) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.descripcionCorta = descripcionCorta;
+        this.descripcionLarga = descripcionLarga;
+        this.visible = visible;
+        this.precio = precio;
+        this.users = users;
     }
 
     public int getIdProducto() {
@@ -85,6 +108,13 @@ public class Producto {
         this.precio = precio;
     }
 
-    
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
 
 }

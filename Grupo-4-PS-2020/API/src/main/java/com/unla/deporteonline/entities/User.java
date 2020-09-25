@@ -43,6 +43,10 @@ public class User {
 	private Set<Role> roles = new HashSet<Role>();
 
 
+    @ManyToMany(mappedBy = "users")
+    private Set<Producto> productos = new HashSet<Producto>();
+
+    
     public User() {}
 
     public User(int id, String name, String lastname, LocalDate birthdate, String email, String password, boolean enabled,
@@ -129,5 +133,15 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public Set<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(Set<Producto> productos) {
+        this.productos = productos;
+    }
+
+
 
 }
