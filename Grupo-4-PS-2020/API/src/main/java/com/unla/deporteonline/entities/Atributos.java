@@ -1,8 +1,6 @@
 package com.unla.deporteonline.entities;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name="atributos")
@@ -18,28 +16,29 @@ public class Atributos {
     @Column (name = "color", nullable = false)
     private String color;
 
+    @Column(name = "peso", nullable = false)
+    private float peso;
+
+    @Column(name ="ancho", nullable = false)
+    private float ancho;
+
+    @Column(name ="alto", nullable = false)
+    private float alto;
+
+    @Column(name ="profundidad", nullable = false)
+    private float profundidad;
 
 
-    // @OneToMany(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "idMedidaEmbalaje") //si lo saco genera una intermedia
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "atributos")
-    private Set<MedidaEmbalaje> medidasEmbalaje= new HashSet<MedidaEmbalaje>();
-    
-//@JoinTable(name = "medidaEmbalaje") @JoinColumn(name = "idAtributos")
     public Atributos(){}
 
-    public Atributos(int sku, float talle, String color, Set<MedidaEmbalaje> medidasEmbalaje) {
+    public Atributos(int sku, float talle, String color, float peso, float ancho, float alto, float profundidad) {
         this.sku = sku;
         this.talle = talle;
         this.color = color;
-        this.medidasEmbalaje = medidasEmbalaje;
-    }
-
-    public Atributos(int sku, float talle, String color) {
-        this.sku = sku;
-        this.talle = talle;
-        this.color = color;
+        this.peso = peso;
+        this.ancho = ancho;
+        this.alto = alto;
+        this.profundidad = profundidad;
     }
 
 
@@ -67,13 +66,39 @@ public class Atributos {
         this.color = color;
     }
 
-    public Set<MedidaEmbalaje> getMedidasEmbalaje() {
-        return medidasEmbalaje;
+    public float getPeso() {
+        return peso;
     }
 
-    public void setMedidasEmbalaje(Set<MedidaEmbalaje> medidasEmbalaje) {
-        this.medidasEmbalaje = medidasEmbalaje;
+    public void setPeso(float peso) {
+        this.peso = peso;
     }
+
+    public float getAncho() {
+        return ancho;
+    }
+
+    public void setAncho(float ancho) {
+        this.ancho = ancho;
+    }
+
+    public float getAlto() {
+        return alto;
+    }
+
+    public void setAlto(float alto) {
+        this.alto = alto;
+    }
+
+    public float getProfundidad() {
+        return profundidad;
+    }
+
+    public void setProfundidad(float profundidad) {
+        this.profundidad = profundidad;
+    }
+
+    
 
     
 }

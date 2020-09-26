@@ -25,9 +25,11 @@ public class Producto {
     @Column(name = "visible",nullable = false)
     private boolean visible;
 
-    @OneToOne
-    @JoinColumn(name = "idprecio", nullable = false)
-    private Precio precio;
+    @Column(name = "precio",nullable = false)
+    private float precio;
+
+    @Column(name="precio_oferta")
+    private float precioOferta;
 
     //valoracion
     @OneToMany(mappedBy = "producto")
@@ -36,13 +38,26 @@ public class Producto {
     public Producto(){}
 
     public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
-            Precio precio) {
+    float precio, float precioOferta, Set<Valoracion> valoraciones) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcionCorta = descripcionCorta;
         this.descripcionLarga = descripcionLarga;
         this.visible = visible;
         this.precio = precio;
+        this.precioOferta = precioOferta;
+        this.valoraciones = valoraciones;
+    }
+
+    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
+        float precio, float precioOferta) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.descripcionCorta = descripcionCorta;
+        this.descripcionLarga = descripcionLarga;
+        this.visible = visible;
+        this.precio = precio;
+        this.precioOferta = precioOferta;
     }
 
 
@@ -86,13 +101,34 @@ public class Producto {
         this.visible = visible;
     }
 
-    public Precio getPrecio() {
+    public float getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Precio precio) {
+    public void setPrecio(float precio) {
         this.precio = precio;
     }
+
+    public float getPrecioOferta() {
+        return precioOferta;
+    }
+
+    public void setPrecioOferta(float precioOferta) {
+        this.precioOferta = precioOferta;
+    }
+
+    public Set<Valoracion> getValoraciones() {
+        return valoraciones;
+    }
+
+    public void setValoraciones(Set<Valoracion> valoraciones) {
+        this.valoraciones = valoraciones;
+    }
+
+    
+
+
+    
 
 
 }
