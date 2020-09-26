@@ -42,8 +42,7 @@ export default function ClippedDrawer() {
   return (
 		<div className="container">
     <div className={classes.root}>
-			<div className="p-5">
-      <Drawer
+      {/* <Drawer
         className={classes.drawer}
         variant="permanent"
         classes={{
@@ -60,16 +59,16 @@ export default function ClippedDrawer() {
               </ListItem>
             ))}
           </List>
-        </div>
-      </Drawer>
+      </Drawer> */}
 			</div>
       <main className={classes.content}>
-        <Toolbar />
-				<Tile />
-
+        <div className="row">
+          <div className="col-md-8">
+          <Tile />
+          </div>
+        </div>
       </main>
     </div>
-		</div>
   );
 }
 
