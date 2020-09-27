@@ -1,4 +1,11 @@
 .sidecat {
     height: 1000px;
-    margin-top: 100px;
+}
+
+.tilescolumn {
+    padding-top: 95px;
+}
+
+.contenedor {
+    background-color: #F5F5F5;
 }
