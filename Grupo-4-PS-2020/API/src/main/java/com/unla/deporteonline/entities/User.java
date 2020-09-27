@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
 @Table(name="user")
 public class User {
