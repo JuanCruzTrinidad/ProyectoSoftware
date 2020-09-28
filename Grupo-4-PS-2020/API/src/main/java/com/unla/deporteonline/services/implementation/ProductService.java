@@ -1,0 +1,32 @@
+package com.unla.deporteonline.services.implementation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import com.unla.deporteonline.entities.Producto;
+import com.unla.deporteonline.services.IProductService;
+import com.unla.deporteonline.repositories.IProductRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service("productService")
+public class ProductService implements IProductService {
+
+	@Autowired
+	@Qualifier("ProductRepository")
+	private IProductRepository iproductRepository;
+
+	public Object saveProduct(final Producto producto) {
+		return iproductRepository.saveAndFlush(producto);
+	}
+
+	public List<Producto> findAll() {
+		return iproductRepository.findAll();
+	}
+
+	public Producto findProductById(final int id) {
+		return iproductRepository.findById(id).get();
+	}
+
+
+}
