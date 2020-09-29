@@ -20,13 +20,16 @@ public class ProductService implements IProductService {
 		return iproductRepository.saveAndFlush(producto);
 	}
 
-	public List<Producto> findAll() {
-		return iproductRepository.findAll();
+	public List<Producto> findAllProduct() {
+		return iproductRepository.findAllProduct();
 	}
 
 	public Producto findProductById(final int id) {
 		return iproductRepository.findById(id).get();
 	}
 
+	public List<Producto> findPromotion(){
+		return iproductRepository.findPromotion();
+	}
 
 }

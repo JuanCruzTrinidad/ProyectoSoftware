@@ -17,6 +17,6 @@ public class ValueService implements IValueService {
 	private IValueRepository ivalueRepository;
 
 	public Object saveValue(final Valoracion value) {
-		return ivalueRepository.saveAndFlush(value);
+		return ivalueRepository.save(value);
 	}
 }

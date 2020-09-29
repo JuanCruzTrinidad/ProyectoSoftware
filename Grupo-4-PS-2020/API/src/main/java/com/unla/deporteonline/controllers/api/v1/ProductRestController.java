@@ -50,11 +50,21 @@ public Object updateProduct(@RequestBody Producto createProduct) {
         productService.saveProduct(product);
 		return ("usuario eliminado");
 	}
+//traer producto por id
+@GetMapping("/ProductId") //Traes todos los atrbiutos
+	public Producto findProductById(@RequestParam("idProducto") int id) {
+		return productService.findProductById(id);
+	}
 
-
-@GetMapping("/allproduct") //Traes todos los atrbiutos
-	public List<Producto> findAll() {
-		return productService.findAll();
-    }
+//traer todos los productors
+@GetMapping("/allproduct")
+	public List<Producto> findAllProduct() {
+		return productService.findAllProduct();
+	}
+//traer todas las promociones
+@GetMapping("/allPromotion") 
+	public List<Producto> findPromotion() {
+		return productService.findPromotion();
+	}
 
 }
