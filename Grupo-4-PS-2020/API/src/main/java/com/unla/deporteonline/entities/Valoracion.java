@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 @Entity
 @Table(name = "valoracion")
+@IdClass(ValoracionId.class)
 public class Valoracion implements Serializable{
     private static final long serialVersionUID = 1L;
 
@@ -22,12 +23,12 @@ public class Valoracion implements Serializable{
 
     //user
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_user", referencedColumnName = "id")
+    @JoinColumn(name = "fk_user", referencedColumnName = "id", insertable = false, updatable = false )
     private User user;
 
     //producto
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_producto", referencedColumnName = "idProducto")
+    @JoinColumn(name = "fk_producto", referencedColumnName = "idProducto", insertable = false, updatable = false)
     private Producto producto;
 
     public Valoracion(){}

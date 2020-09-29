@@ -102,8 +102,8 @@ public class UserRestController {
 	}
 
 	@GetMapping("/allusers")
-	public List<User> findAll() {
-		return userService.findAll();
+	public List<User> findByIsEnabled() {
+		return userService.findByIsEnabled();
 	}
 
 }

@@ -26,10 +26,18 @@ public class ValueRestController {
 	@Qualifier("valueService")
 	private IValueService valueService;
 
-    //create Value
+    /*create Value
     @PostMapping(value ="/createValue", consumes="application/json")
+    public Object createValue(@RequestParam("fk_user") int fk_user, @RequestParam("fk_producto") int fk_producto, @RequestParam("valoracion") int valoracion, @RequestParam("comentario") String comentario) {
+	    Valoracion val = new Valoracion(fk_user, fk_producto, valoracion, comentario);
+	    return valueService.saveValue(val);
+	}
+	*/
+
+	@PostMapping(value ="/createValue", consumes="application/json")
     public Object createValue(@RequestBody Valoracion createValue) {
 	    System.out.println("Value: " + createValue.toString());
 	    return valueService.saveValue(createValue);
     }
+
 }
