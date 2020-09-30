@@ -5,9 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table (name="category")
-public class Category {
+public class Category  {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -20,6 +22,7 @@ public class Category {
     private String nameGoogle;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "category")
+    @JsonManagedReference
     private Set<Subcategory> subcategorys = new HashSet<Subcategory>();
 
     public Category() {}

@@ -32,7 +32,7 @@ public class Atributos {
 
     @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idProducto")
-    //@JsonBackReference
+    @JsonBackReference
     private Producto producto;
 
 

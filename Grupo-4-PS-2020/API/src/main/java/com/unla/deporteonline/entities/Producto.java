@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -30,7 +31,7 @@ public class Producto {
     @Column(name = "precio",nullable = false)
     private float precio;
 
-    @Column(name="precio_oferta",nullable = true)
+    @Column(name="precio_oferta")
     private float precioOferta;
 
     //valoracion
@@ -38,11 +39,12 @@ public class Producto {
     private Set<Valoracion> valoraciones = new HashSet<Valoracion>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "producto")
-    //@JsonManagedReference
+    @JsonManagedReference
     private Set<Atributos> atributos= new HashSet<Atributos>();
 
     @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idSubcategory")
+    @JsonBackReference
     private Subcategory subcategory;
 
 

@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table (name="subcategory")
 public class Subcategory {
@@ -21,9 +24,11 @@ public class Subcategory {
 
     @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idCategory")
+    @JsonBackReference
     private Category category;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "subcategory")
+    @JsonManagedReference
     private Set<Producto> productos = new HashSet<Producto>();
 
     public Subcategory() {
