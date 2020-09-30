@@ -1,13 +1,16 @@
 package com.unla.deporteonline.services.implementation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import com.unla.deporteonline.entities.Atributos;
 import com.unla.deporteonline.entities.Producto;
 import com.unla.deporteonline.services.IProductService;
 import com.unla.deporteonline.repositories.IProductRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service("productService")
 public class ProductService implements IProductService {
@@ -30,6 +33,12 @@ public class ProductService implements IProductService {
 
 	public List<Producto> findPromotion(){
 		return iproductRepository.findPromotion();
+	}
+
+	public Object agregarAtributo(int idProducto, final Atributos atributos){
+		Producto producto = iproductRepository.findById(idProducto).get();
+		producto.getAtributos().add(atributos);
+		return iproductRepository.saveAndFlush(producto);
 	}
 
 }

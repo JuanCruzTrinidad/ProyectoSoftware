@@ -2,6 +2,7 @@ package com.unla.deporteonline.controllers.api.v1;
 
 import java.util.List;
 
+import com.unla.deporteonline.entities.Atributos;
 import com.unla.deporteonline.entities.Producto;
 import com.unla.deporteonline.services.IProductService;
 import com.unla.deporteonline.repositories.IProductRepository;
@@ -55,6 +56,12 @@ public Object updateProduct(@RequestBody Producto createProduct) {
 	public Producto findProductById(@RequestParam("idProducto") int id) {
 		return productService.findProductById(id);
 	}
+
+@PostMapping(value= "/agregarAtributo", consumes="application/json")
+	public Object agregarAtributo(@RequestParam("idProducto") int id, @RequestBody Atributos atributos){
+		return productService.agregarAtributo(id, atributos);
+	}
+
 
 //traer todos los productors
 @GetMapping("/allproduct")
