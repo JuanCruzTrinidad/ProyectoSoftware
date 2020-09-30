@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name= "producto")
 public class Producto {
@@ -28,7 +30,7 @@ public class Producto {
     @Column(name = "precio",nullable = false)
     private float precio;
 
-    @Column(name="precio_oferta")
+    @Column(name="precio_oferta",nullable = true)
     private float precioOferta;
 
     //valoracion
@@ -36,6 +38,7 @@ public class Producto {
     private Set<Valoracion> valoraciones = new HashSet<Valoracion>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "producto")
+    //@JsonManagedReference
     private Set<Atributos> atributos= new HashSet<Atributos>();
 
     @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

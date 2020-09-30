@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,11 +58,12 @@ public Object updateProduct(@RequestBody Producto createProduct) {
 		return productService.findProductById(id);
 	}
 
-@PostMapping(value= "/agregarAtributo", consumes="application/json")
-	public Object agregarAtributo(@RequestParam("idProducto") int id, @RequestBody Atributos atributos){
+/*
+@PostMapping(value= "/agregarAtributo/{idProducto}", consumes="application/json")
+	public Object agregarAtributo(@PathVariable int id, @RequestBody Atributos atributos){
 		return productService.agregarAtributo(id, atributos);
 	}
-
+*/
 
 //traer todos los productors
 @GetMapping("/allproduct")

@@ -15,6 +15,6 @@ public interface IProductService {
 
     public List<Producto> findPromotion();
 
-    public Object agregarAtributo(int idProducto, final Atributos atributos);
+    //public Object agregarAtributo(int idProducto, final Atributos atributos);
    
 }

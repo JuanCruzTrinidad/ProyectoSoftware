@@ -2,6 +2,8 @@ package com.unla.deporteonline.entities;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="atributos")
 public class Atributos {
@@ -30,6 +32,7 @@ public class Atributos {
 
     @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idProducto")
+    //@JsonBackReference
     private Producto producto;
 
 

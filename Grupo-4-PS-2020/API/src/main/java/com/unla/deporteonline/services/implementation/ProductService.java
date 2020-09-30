@@ -35,10 +35,15 @@ public class ProductService implements IProductService {
 		return iproductRepository.findPromotion();
 	}
 
+	/*
 	public Object agregarAtributo(int idProducto, final Atributos atributos){
+		Producto aux=null;
 		Producto producto = iproductRepository.findById(idProducto).get();
-		producto.getAtributos().add(atributos);
-		return iproductRepository.saveAndFlush(producto);
+		if(producto!=null){
+			producto.getAtributos().add(atributos);
+			aux=iproductRepository.saveAndFlush(producto);
+		}
+		return aux;
 	}
-
+	*/
 }
