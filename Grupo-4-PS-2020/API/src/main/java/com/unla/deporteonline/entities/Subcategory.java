@@ -19,6 +19,10 @@ public class Subcategory {
     @Column (name= "nameGoogle")
     private String nameGoogle;
 
+    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn (name= "idCategory")
+    private Category category;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "subcategory")
     private Set<Producto> productos = new HashSet<Producto>();
 
@@ -31,10 +35,11 @@ public class Subcategory {
         this.nameGoogle = nameGoogle;
     }
 
-    public Subcategory(int idSubcategory, String name, String nameGoogle, Set<Producto> productos) {
+    public Subcategory(int idSubcategory, String name, String nameGoogle, Category category, Set<Producto> productos) {
         this.idSubcategory = idSubcategory;
         this.name = name;
         this.nameGoogle = nameGoogle;
+        this.category = category;
         this.productos = productos;
     }
 
@@ -62,6 +67,13 @@ public class Subcategory {
         this.nameGoogle = nameGoogle;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public Set<Producto> getProductos() {
         return productos;
@@ -73,11 +85,9 @@ public class Subcategory {
 
 	@Override
 	public String toString() {
-		return "Subcategory [idSubcategory=" + idSubcategory + ", name=" + name + ", nameGoogle=" + nameGoogle
-				+ ", productos=" + productos + "]";
+		return "Subcategory [category=" + category + ", idSubcategory=" + idSubcategory + ", name=" + name
+				+ ", nameGoogle=" + nameGoogle + ", productos=" + productos + "]";
 	}
-
-	
 
     
     

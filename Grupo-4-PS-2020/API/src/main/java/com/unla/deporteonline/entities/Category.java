@@ -19,8 +19,7 @@ public class Category {
     @Column (name= "nameGoogle")
     private String nameGoogle;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "idSubcategory")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "category")
     private Set<Subcategory> subcategorys = new HashSet<Subcategory>();
 
     public Category() {}
@@ -70,10 +69,11 @@ public class Category {
         this.subcategorys = subcategorys;
     }
 
-	@Override
-	public String toString() {
-		return "Category [idCategory=" + idCategory + ", name=" + name + ", nameGoogle=" + nameGoogle + "]";
-	}
+    @Override
+    public String toString() {
+        return "Category [idCategory=" + idCategory + ", name=" + name + ", nameGoogle=" + nameGoogle
+                + ", subcategorys=" + subcategorys + "]";
+    }
 
     
 }
