@@ -28,6 +28,10 @@ public class Atributos {
     @Column(name ="profundidad", nullable = false)
     private float profundidad;
 
+    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn (name= "idProducto")
+    private Producto producto;
+
 
     public Atributos(){}
 
@@ -41,6 +45,17 @@ public class Atributos {
         this.profundidad = profundidad;
     }
 
+    public Atributos(int sku, float talle, String color, float peso, float ancho, float alto, float profundidad,
+            Producto producto) {
+        this.sku = sku;
+        this.talle = talle;
+        this.color = color;
+        this.peso = peso;
+        this.ancho = ancho;
+        this.alto = alto;
+        this.profundidad = profundidad;
+        this.producto = producto;
+    }
 
     public int getSku() {
         return sku;
@@ -98,6 +113,21 @@ public class Atributos {
         this.profundidad = profundidad;
     }
 
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    @Override
+    public String toString() {
+        return "Atributos [alto=" + alto + ", ancho=" + ancho + ", color=" + color + ", peso=" + peso + ", producto="
+                + producto + ", profundidad=" + profundidad + ", sku=" + sku + ", talle=" + talle + "]";
+    }
+
+    
     
 
     

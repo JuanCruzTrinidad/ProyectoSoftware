@@ -35,10 +35,31 @@ public class Producto {
     @OneToMany(mappedBy = "producto")
     private Set<Valoracion> valoraciones = new HashSet<Valoracion>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "producto")
+    private Set<Atributos> atributos= new HashSet<Atributos>();
+
+    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn (name= "idSubcategory")
+    private Subcategory subcategory;
+
+
     public Producto(){}
 
+    
+
     public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
-    float precio, float precioOferta, Set<Valoracion> valoraciones) {
+            float precio, float precioOferta) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.descripcionCorta = descripcionCorta;
+        this.descripcionLarga = descripcionLarga;
+        this.visible = visible;
+        this.precio = precio;
+        this.precioOferta = precioOferta;
+    }
+
+    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
+            float precio, float precioOferta, Set<Valoracion> valoraciones, Set<Atributos> atributos) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcionCorta = descripcionCorta;
@@ -47,19 +68,8 @@ public class Producto {
         this.precio = precio;
         this.precioOferta = precioOferta;
         this.valoraciones = valoraciones;
+        this.atributos = atributos;
     }
-
-    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
-        float precio, float precioOferta) {
-        this.idProducto = idProducto;
-        this.nombre = nombre;
-        this.descripcionCorta = descripcionCorta;
-        this.descripcionLarga = descripcionLarga;
-        this.visible = visible;
-        this.precio = precio;
-        this.precioOferta = precioOferta;
-    }
-
 
     public int getIdProducto() {
         return idProducto;
@@ -125,10 +135,48 @@ public class Producto {
         this.valoraciones = valoraciones;
     }
 
+    public Set<Atributos> getAtributos() {
+        return atributos;
+    }
+
+    public void setAtributos(Set<Atributos> atributos) {
+        this.atributos = atributos;
+    }
+
+   
+
+    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
+            float precio, float precioOferta, Set<Valoracion> valoraciones, Set<Atributos> atributos,
+            Subcategory subcategory) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.descripcionCorta = descripcionCorta;
+        this.descripcionLarga = descripcionLarga;
+        this.visible = visible;
+        this.precio = precio;
+        this.precioOferta = precioOferta;
+        this.valoraciones = valoraciones;
+        this.atributos = atributos;
+        this.subcategory = subcategory;
+    }
+
+    public Subcategory getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(Subcategory subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto [atributos=" + atributos + ", descripcionCorta=" + descripcionCorta + ", descripcionLarga="
+                + descripcionLarga + ", idProducto=" + idProducto + ", nombre=" + nombre + ", precio=" + precio
+                + ", precioOferta=" + precioOferta + ", subcategory=" + subcategory + ", valoraciones=" + valoraciones
+                + ", visible=" + visible + "]";
+    }
     
 
-
     
-
-
+    
 }
