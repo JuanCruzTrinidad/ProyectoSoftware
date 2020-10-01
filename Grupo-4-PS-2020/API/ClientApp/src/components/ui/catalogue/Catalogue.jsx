@@ -6,24 +6,49 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import React from "react";
+import React, {Fragment, useState} from "react";
 import Tile from "./Tile";
 import "./catalogue.css";
 import Sidebar from "./Sidebar";
+import MediaCard from "./Card";
+import Search from "./Search";
 
 const Catalogue = () => {
+
+  const [visual, setvisual] = useState('cards');
+
   return (
     <div className="contenedor">
-      <Container maxWidth={"md"} className="tilescolumn">
-        <Grid container spacing={2}>
+      <Container maxWidth={"lg"} className="tilescolumn">
+        <Grid container spacing={1}>
           <Grid item xs={3}>
-            <Sidebar />
+            <Search />
+            <Sidebar
+              visual={visual}
+              setvisual={setvisual}
+            />
           </Grid>
-          <Grid item xs={9}>
-            <Tile />
-            <Tile />
-            <Tile />
-          </Grid>
+          {visual === "tiles" ?
+            <Grid item xs={9}>
+              <Tile />
+              <Tile />
+              <Tile />
+            </Grid> 
+          :
+            <Fragment >
+              <Grid item xs={9}>
+            <div class="card-group">
+              <MediaCard />
+              <MediaCard />
+              <MediaCard />
+              <MediaCard />
+              <MediaCard />
+              <MediaCard />
+              <MediaCard />
+            </div>
+            </Grid>
+            </Fragment>
+          }
         </Grid>
       </Container>
     </div>
