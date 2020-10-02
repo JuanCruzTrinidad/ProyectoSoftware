@@ -1,92 +1,76 @@
-import React from "react";
+import {
+  ButtonBase,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+} from "@material-ui/core";
+
+import React, {Fragment, useState} from "react";
 import Tile from "./Tile";
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import "./catalogue.css";
+import Sidebar from "./Sidebar";
+import MediaCard from "./Card";
+import Search from "./Search";
 
-const drawerWidth = 240;
+const Catalogue = () => {
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerContainer: {
-    overflow: 'auto',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-}));
-
-export default function ClippedDrawer() {
-  const classes = useStyles();
+  const [visual, setvisual] = useState('cards');
 
   return (
-		<div className="container">
-    <div className={classes.root}>
-      {/* <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <Toolbar />
-        <div className={classes.drawerContainer}>
-          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-      </Drawer> */}
-			</div>
-      <main className={classes.content}>
-        <div className="row">
-          <div className="col-md-8">
-          <Tile />
-          </div>
-        </div>
-      </main>
+    <div className="contenedor">
+      <Container maxWidth={"lg"} className="tilescolumn">
+        <Grid container spacing={1}>
+          <Grid item xs={3}>
+            <Search />
+            <Sidebar
+              visual={visual}
+              setvisual={setvisual}
+            />
+          </Grid>
+          {visual === "tiles" ?
+            <Grid item xs={9}>
+              <Tile />
+              <Tile />
+              <Tile />
+            </Grid> 
+          :
+            <Fragment >
+              <Grid item xs={9}>
+            <div class="card-group">
+              <MediaCard />
+              <MediaCard />
+              <MediaCard />
+              <MediaCard />
+              <MediaCard />
+              <MediaCard />
+              <MediaCard />
+            </div>
+            </Grid>
+            </Fragment>
+          }
+        </Grid>
+      </Container>
     </div>
   );
+};
+
+{
+  /* <div className="container">
+<div className="row">
+  <Container maxwidht="md">
+    <Grid container xs={"md"}>
+      <Grid item xs={2}>
+        <Card />
+        <CardContent />
+      </Grid>
+    </Grid>
+  </Container>
+  <div className="col-md-8">
+    <Tile />
+  </div>
+</div>
+</div> */
 }
 
-
-// const Catalogue = () => {
-// 	return (
-// 		<div className="container">
-// 			<div className="navbar float-left h-100 bg-dark">
-// 				navvar
-// 			</div>
-// 			<div className="col-md-6 mt-4">
-// 				<Tile />
-// 				<Tile />
-// 				<Tile />
-// 				<Tile />
-// 			</div>
-// 		</div>
-// 	);
-// };
-
-// export default Catalogue;
+export default Catalogue;
