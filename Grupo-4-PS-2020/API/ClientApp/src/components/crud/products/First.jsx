@@ -2,7 +2,7 @@ import { Breadcrumbs, Button, Card, CardActions, CardContent, Container, Grid, m
 import { Autorenew, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 
-export const First = ({ props, product, setProduct }) => {
+export const First = ( { nextStep, product, setProduct }) => {
 
     const images = [
         {
@@ -14,7 +14,6 @@ export const First = ({ props, product, setProduct }) => {
             imgPath: product.urlVideo
         }
     ];
-
     const currencies = [
         {
             value: 1,
@@ -80,8 +79,7 @@ export const First = ({ props, product, setProduct }) => {
             maxHeight: 250,
             maxWidth: 400,
             overflow: 'hidden',
-            display: 'block',
-            width: '100%',
+            display: 'block'
         },
     });
 
@@ -244,7 +242,7 @@ export const First = ({ props, product, setProduct }) => {
                                     </Button>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <Button variant="outlined" color="primary">
+                                        <Button variant="outlined" color="primary" onClick={e => nextStep()}>
                                             Continuar
                                     </Button>
                                     </Grid>
@@ -271,21 +269,25 @@ export const First = ({ props, product, setProduct }) => {
                                     <Typography color="textPrimary">{product.name}</Typography>
                                 </Breadcrumbs>
                             </Grid>
-                            <Grid container spacing={3} style={{marginTop: 20}}>
+                            <Grid container spacing={3} style={{marginTop: 20}} justify="center">
                                 {
                                     activeStep === 0 ? 
                                         ( <img
                                             className={classes.img}
                                             src={images[0].imgPath}
                                             alt={images[0].label}
-                                        />)
+                                        />
+                                        )
                                         :
                                         (
-                                            <iframe width="400" height="250" marginTop="20" src={images[1].imgPath} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                            <iframe width="400" height="250" marginTop="20" 
+                                            src={images[1].imgPath} 
+                                            frameborder="0" 
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                         )
                                 }
-                               
-                                <MobileStepper
+                                { product.urlImage !== '' ? (
+                                    <MobileStepper
                                     steps={maxSteps}
                                     position="static"
                                     variant="text"
@@ -300,9 +302,10 @@ export const First = ({ props, product, setProduct }) => {
                                         <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
                                             {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
                                     Anterior
-                                </Button>
-                                    }
-                                />
+                                    </Button>
+                                    }/>
+                                ): (<></>)
+                                } 
                             </Grid>
                             <Grid container spacing={3}>
                                 <Typography variant="body2" gutterBottom>
@@ -310,9 +313,13 @@ export const First = ({ props, product, setProduct }) => {
                                 </Typography>
                             </Grid>
                             <Grid container spacing={3} justify="flex-end">
-                                <Typography variant="h4" gutterBottom>
-                                    ${product.price}
-                                </Typography>
+                                    {
+                                        product.price !== 0 &&(
+                                            <Typography variant="h4" gutterBottom>
+                                            ${product.price}
+                                            </Typography>
+                                        )
+                                    }
                             </Grid>
                         </CardContent>
                     </Card>

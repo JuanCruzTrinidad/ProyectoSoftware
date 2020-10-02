@@ -4,14 +4,19 @@ import StepWizard from 'react-step-wizard';
 import { First } from './First';
 import NavWizard from './NavWizard';
 import { Second } from './Second';
+import { Third } from './Third';
 import styles from './wizard.less';
 
 export const ProductsForm = () => {
 
-    const onChangeStep = (e) =>{console.log(e)};
+    const onChangeStep = (e) =>{
+        console.log(e)
+        updateState({...state, currentStep: e.currentStep})
+    };
 
     const [state, updateState] = useState({
         form: {},
+        currentStep: 0
     });
     const setInstance = SW => updateState({
         ...state,
@@ -19,6 +24,7 @@ export const ProductsForm = () => {
     });
 
     const [product, setProduct] = useState({
+        id: 0,
         name: '',
         largeDescription:'',
         shortDescription:'',
@@ -30,8 +36,9 @@ export const ProductsForm = () => {
         price: 0
     })
 
+    const [atributes, setatributes] = useState([])
+
     useEffect(() => {
-        console.log(product);
     }, [product])
 
     const { SW, demo } = state;
@@ -45,9 +52,8 @@ export const ProductsForm = () => {
                     instance={setInstance}>
 
                     <First product={product} setProduct={setProduct}/>
-
-                    <Second />
-
+                    <Second atributes={atributes} setatributes={setatributes} />
+                    <Third atributes={atributes}  product={product} currentStep={state.currentStep}/>                
                 </StepWizard>
             </Grid>
         </Container>
