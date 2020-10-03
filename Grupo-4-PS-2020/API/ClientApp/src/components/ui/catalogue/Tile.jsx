@@ -30,8 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Tile = () => {
+const Tile = ({prod}) => {
   const classes = useStyles();
+
+  const {id, name} = prod;
 
   return (
     <Paper className={classes.paper}>
@@ -40,7 +42,7 @@ const Tile = () => {
           <ButtonBase className={classes.image}>
             <img
               className={classes.img}
-              alt="Imagen producto"
+              alt={name}
               src="https://material-ui.com/static/images/grid/complex.jpg"
             />
           </ButtonBase>
@@ -49,7 +51,7 @@ const Tile = () => {
           <Grid item xs container direction="column" spacing={2}>
             <Grid item xs>
               <Typography gutterBottom variant="h6">
-                Nombre producto
+                {name}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary">
                 <del>$21.50</del>
@@ -60,24 +62,6 @@ const Tile = () => {
         </Grid>
       </Grid>
     </Paper>
-
-    // <div className="card mb-1">
-    // 	<div className="row">
-    // 		<div className="col-md-3 ml-3">
-    // 			<img
-    // 				src="https://dexter.vteximg.com.br/arquivos/ids/485866-1000-1000/ADF34384_1.jpg?v=637018356491800000"
-    // 				className="img-fluid align-content-center"
-    // 			/>
-    // 		</div>
-    // 		<div className="col-md-8 p-4">
-    // 			<h4 className="card-title">Titulardo super ultra super titulardo</h4>
-    // 			<p className="card-text">
-    // 				<del>Precio oferta</del>
-    // 			</p>
-    // 			<p className="card-text">Precio</p>
-    // 		</div>
-    // 	</div>
-    // </div>
   );
 };
 
