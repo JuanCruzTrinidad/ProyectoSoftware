@@ -26,6 +26,11 @@ public class CategoryRestController {
 	@Qualifier("categoryService")
 	private ICategoryService categoryService;
 
+	@GetMapping("/allcategories")
+	public List<Category> findAll(){
+		return categoryService.findAll();
+	}
+
 /*
     //create product
 @PostMapping(value ="/createProduct", consumes="application/json")

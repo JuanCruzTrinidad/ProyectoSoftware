@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -34,26 +35,31 @@ public class Producto {
     @Column(name="precio_oferta")
     private float precioOferta;
 
+    @Column(name = "imagen")
+    private String imagen;
+
+    @Column(name = "video")
+    private String video;
+
     //valoracion
     @OneToMany(mappedBy = "producto")
     private Set<Valoracion> valoraciones = new HashSet<Valoracion>();
 
+    //atributos
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "producto")
-    @JsonManagedReference
     private Set<Atributos> atributos= new HashSet<Atributos>();
 
-    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //subcategoria
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idSubcategory")
-    @JsonBackReference
     private Subcategory subcategory;
 
 
     public Producto(){}
 
-    
-
     public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
-            float precio, float precioOferta) {
+        float precio, float precioOferta, String imagen, String video, Set<Valoracion> valoraciones,
+        Set<Atributos> atributos, Subcategory subcategory) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcionCorta = descripcionCorta;
@@ -61,20 +67,26 @@ public class Producto {
         this.visible = visible;
         this.precio = precio;
         this.precioOferta = precioOferta;
-    }
-
-    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
-            float precio, float precioOferta, Set<Valoracion> valoraciones, Set<Atributos> atributos) {
-        this.idProducto = idProducto;
-        this.nombre = nombre;
-        this.descripcionCorta = descripcionCorta;
-        this.descripcionLarga = descripcionLarga;
-        this.visible = visible;
-        this.precio = precio;
-        this.precioOferta = precioOferta;
+        this.imagen = imagen;
+        this.video = video;
         this.valoraciones = valoraciones;
         this.atributos = atributos;
+        this.subcategory = subcategory;
     }
+
+    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
+        float precio, float precioOferta, String imagen, String video) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.descripcionCorta = descripcionCorta;
+        this.descripcionLarga = descripcionLarga;
+        this.visible = visible;
+        this.precio = precio;
+        this.precioOferta = precioOferta;
+        this.imagen = imagen;
+        this.video = video;
+    }
+
 
     public int getIdProducto() {
         return idProducto;
@@ -132,6 +144,7 @@ public class Producto {
         this.precioOferta = precioOferta;
     }
 
+    @JsonManagedReference
     public Set<Valoracion> getValoraciones() {
         return valoraciones;
     }
@@ -140,6 +153,7 @@ public class Producto {
         this.valoraciones = valoraciones;
     }
 
+    @JsonManagedReference
     public Set<Atributos> getAtributos() {
         return atributos;
     }
@@ -148,23 +162,7 @@ public class Producto {
         this.atributos = atributos;
     }
 
-   
-
-    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
-            float precio, float precioOferta, Set<Valoracion> valoraciones, Set<Atributos> atributos,
-            Subcategory subcategory) {
-        this.idProducto = idProducto;
-        this.nombre = nombre;
-        this.descripcionCorta = descripcionCorta;
-        this.descripcionLarga = descripcionLarga;
-        this.visible = visible;
-        this.precio = precio;
-        this.precioOferta = precioOferta;
-        this.valoraciones = valoraciones;
-        this.atributos = atributos;
-        this.subcategory = subcategory;
-    }
-
+    @JsonBackReference
     public Subcategory getSubcategory() {
         return subcategory;
     }
@@ -180,6 +178,24 @@ public class Producto {
                 + ", precioOferta=" + precioOferta + ", subcategory=" + subcategory + ", valoraciones=" + valoraciones
                 + ", visible=" + visible + "]";
     }
+
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+    
     
 
     

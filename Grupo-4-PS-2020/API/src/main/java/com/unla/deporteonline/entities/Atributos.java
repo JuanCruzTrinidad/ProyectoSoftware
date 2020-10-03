@@ -3,6 +3,7 @@ package com.unla.deporteonline.entities;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="atributos")
@@ -30,9 +31,10 @@ public class Atributos {
     @Column(name ="profundidad", nullable = false)
     private float profundidad;
 
-    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    //producto
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idProducto")
-    @JsonBackReference
     private Producto producto;
 
 
@@ -116,6 +118,7 @@ public class Atributos {
         this.profundidad = profundidad;
     }
 
+    @JsonBackReference
     public Producto getProducto() {
         return producto;
     }

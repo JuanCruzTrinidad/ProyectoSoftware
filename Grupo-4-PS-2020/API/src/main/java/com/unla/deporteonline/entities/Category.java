@@ -22,7 +22,6 @@ public class Category  {
     private String nameGoogle;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "category")
-    @JsonManagedReference
     private Set<Subcategory> subcategorys = new HashSet<Subcategory>();
 
     public Category() {}
@@ -64,6 +63,7 @@ public class Category  {
         this.nameGoogle = nameGoogle;
     }
 
+    @JsonManagedReference
     public Set<Subcategory> getSubcategorys() {
         return subcategorys;
     }

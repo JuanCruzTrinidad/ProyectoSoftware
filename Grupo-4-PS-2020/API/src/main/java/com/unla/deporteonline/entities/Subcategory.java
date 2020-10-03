@@ -24,11 +24,9 @@ public class Subcategory {
 
     @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idCategory")
-    @JsonBackReference
     private Category category;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "subcategory")
-    @JsonManagedReference
     private Set<Producto> productos = new HashSet<Producto>();
 
     public Subcategory() {
@@ -72,6 +70,7 @@ public class Subcategory {
         this.nameGoogle = nameGoogle;
     }
 
+    @JsonBackReference
     public Category getCategory() {
         return category;
     }
@@ -80,6 +79,7 @@ public class Subcategory {
         this.category = category;
     }
 
+    @JsonManagedReference
     public Set<Producto> getProductos() {
         return productos;
     }

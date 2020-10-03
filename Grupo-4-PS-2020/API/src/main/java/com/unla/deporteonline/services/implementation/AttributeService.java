@@ -7,7 +7,6 @@ import com.unla.deporteonline.services.IAttributeService;
 import com.unla.deporteonline.repositories.IAttributeRepository;
 
 import java.util.List;
-
 @Service("attributeService")
 public class AttributeService implements IAttributeService {
     
@@ -28,3 +27,5 @@ public class AttributeService implements IAttributeService {
 	}
 
 }
+
+

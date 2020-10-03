@@ -12,8 +12,12 @@ import java.util.List;
 public class CategoryService implements ICategoryService {
     
     @Autowired
-	@Qualifier("CategoryService")
-	private ICategoryRepository iCategoryRepository;
+	@Qualifier("CategoryRepository")
+	private ICategoryRepository categoryRepository;
+
+	public List<Category> findAll(){
+		return categoryRepository.findAll();
+	}
 
 	/*public Object saveAttribute(Atributos atributos) {
 		return iattributeRepository.saveAndFlush(atributos);

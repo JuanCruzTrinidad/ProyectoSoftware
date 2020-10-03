@@ -3,6 +3,8 @@ package com.unla.deporteonline.entities;
 import java.io.Serializable;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "valoracion")
 @IdClass(ValoracionId.class)
@@ -81,6 +83,7 @@ public class Valoracion implements Serializable{
         this.comentario = comentario;
     }
 
+    @JsonBackReference
     public User getUser() {
         return user;
     }
@@ -89,6 +92,7 @@ public class Valoracion implements Serializable{
         this.user = user;
     }
 
+    @JsonBackReference
     public Producto getProducto() {
         return producto;
     }
@@ -98,7 +102,6 @@ public class Valoracion implements Serializable{
     }
 
 
-
-    
+   
 
 }

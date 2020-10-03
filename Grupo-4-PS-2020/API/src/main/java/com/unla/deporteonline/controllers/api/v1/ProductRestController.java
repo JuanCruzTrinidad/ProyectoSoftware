@@ -73,7 +73,13 @@ public Object updateProduct(@RequestBody Producto createProduct) {
 //traer todas las promociones
 @GetMapping("/allPromotion") 
 	public List<Producto> findPromotion() {
-		return productService.findPromotion();
+		List<Producto> prod = null;
+		try{
+			prod=  productService.findPromotion();
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+		return prod;
 	}
 
 }
