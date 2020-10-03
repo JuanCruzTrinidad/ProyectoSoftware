@@ -21,7 +21,7 @@ export const NavbarDU = () => {
 						src="https://www.nicepng.com/png/full/338-3384104_logo-replikat-innovacion-imagen-negro-transparente-logos-con.png"
 						width="30"
 						height="30"
-						className="d-inline-block align-top mr-2"
+						className="d-inline-block align-top"
 						alt=""
 					></img>
 				</Navbar.Brand>
@@ -34,7 +34,7 @@ export const NavbarDU = () => {
 								history.push("/");
 							}}
 						>
-							Deportes Unla
+							Deporte Online
 						</Nav.Link>
 						<NavDropdown title="Menú" id="basic-nav-dropdown">
 							<NavDropdown.Item
@@ -43,7 +43,7 @@ export const NavbarDU = () => {
 									history.push("/catalogue");
 								}}
 							>
-								Catalogo
+								Catálogo
 							</NavDropdown.Item>
 							<NavDropdown.Item
 								onClick={(e) => {
