@@ -15,14 +15,15 @@ const useStyles = makeStyles({
     marginLeft: 15,
   },
   media: {
-    height: 130,
+    maxWidth: 290,
+    height: 150,
   },
 });
 
 export default function MediaCard({prod}) {
   const classes = useStyles();
 
-  const {id, name} = prod;
+  const {id, name, price} = prod;
 
   return (
     <Card className={classes.root}>
@@ -34,12 +35,12 @@ export default function MediaCard({prod}) {
         />
         <CardContent>
           <Typography color="textSecondary">
-            <del>$21.50</del>
+            <del>$ 21.50</del>
           </Typography>
           <Typography gutterBottom variant="h5" component="h2">
-            $20.00
+            $ {price}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography variant="body1" color="textSecondary">
             {name}
           </Typography>
         </CardContent>
