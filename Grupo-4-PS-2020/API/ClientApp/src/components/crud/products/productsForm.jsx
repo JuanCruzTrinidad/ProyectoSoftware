@@ -1,50 +1,61 @@
-import React, { useState } from 'react'
+import { Container, Grid } from '@material-ui/core';
+import React, { useEffect, useState } from 'react'
 import StepWizard from 'react-step-wizard';
 import { First } from './First';
 import NavWizard from './NavWizard';
 import { Second } from './Second';
+import { Third } from './Third';
 import styles from './wizard.less';
 
 export const ProductsForm = () => {
-    const onChangeStep = (e) =>{console.log(e)};
+
+    const onChangeStep = (e) =>{
+        console.log(e)
+        updateState({...state, currentStep: e.currentStep})
+    };
 
     const [state, updateState] = useState({
         form: {},
-        transitions: {
-            // enterRight: `${transitions.animated} ${transitions.enterRight}`,
-            // enterLeft: `${transitions.animated} ${transitions.enterLeft}`,
-            // exitRight: `${transitions.animated} ${transitions.exitRight}`,
-            // exitLeft: `${transitions.animated} ${transitions.exitLeft}`,
-            // intro: `${transitions.animated} ${transitions.intro}`,
-        },
-        // demo: true, // uncomment to see more
+        currentStep: 0
     });
-
-
-
     const setInstance = SW => updateState({
         ...state,
         SW,
     });
 
+    const [product, setProduct] = useState({
+        id: 0,
+        name: '',
+        largeDescription:'',
+        shortDescription:'',
+        category: 0,
+        subcategory: 0,
+        urlImage: '',
+        urlVideo: '',
+        money: '',
+        price: 0
+    })
+
+    const [atributes, setatributes] = useState([])
+
+    useEffect(() => {
+    }, [product])
+
     const { SW, demo } = state;
 
     return (
-        <div className={'jumbotron'}>
-            <div className='row'>
-                <div className={`col-12 col-sm-6 offset-sm-3 ${styles['rsw-wrapper']}`}>
-                    <StepWizard
+        <Container maxWidth="md" fixed>
+            <Grid container>
+                <StepWizard
                     onStepChange={onChangeStep}
-                    nav={<NavWizard/>}
+                    nav={<NavWizard />}
                     instance={setInstance}>
 
-                        <First/>
-
-                        <Second/>
-
-                    </StepWizard>
-                </div>
-            </div>
-        </div>
+                    <First product={product} setProduct={setProduct}/>
+                    <Second atributes={atributes} setatributes={setatributes} />
+                    <Third atributes={atributes}  product={product} currentStep={state.currentStep}/>                
+                </StepWizard>
+            </Grid>
+        </Container>
     )
 }

@@ -12,7 +12,6 @@ const NavWizard = (props) => {
             <span
                 key={`step-${i}`}
                 className={`dot ${isActive ? 'active' : ''}`}
-                onClick={() => props.goToStep(i)}
         >&bull;</span>
         ));
     }
