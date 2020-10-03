@@ -1,5 +1,5 @@
-import { Container, Divider, Grid } from '@material-ui/core'
-import React from 'react'
+import { Breadcrumbs, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Select, TextField, Tooltip } from '@material-ui/core'
+import React, { useState } from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Paper from '@material-ui/core/Paper';
@@ -9,35 +9,20 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
+import AddCommentIcon from '@material-ui/icons/AddComment';
 
 
-
-const tutorialSteps = [
+const imagesCard = [
     {
-        label: 'San Francisco – Oakland Bay Bridge, United States',
+        label: 'Remera',
         imgPath:
-            'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
+            'https://http2.mlstatic.com/D_NQ_NP_835776-MLA43129713174_082020-O.webp',
     },
     {
-        label: 'Bird',
+        label: 'Remera boquita',
         imgPath:
-            'https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60',
-    },
-    {
-        label: 'Bali, Indonesia',
-        imgPath:
-            'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80',
-    },
-    {
-        label: 'NeONBRAND Digital Marketing, Las Vegas, United States',
-        imgPath:
-            'https://images.unsplash.com/photo-1518732714860-b62714ce0c59?auto=format&fit=crop&w=400&h=250&q=60',
-    },
-    {
-        label: 'Goč, Serbia',
-        imgPath:
-            'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-    },
+            'https://http2.mlstatic.com/D_NQ_NP_835776-MLA43129713174_082020-O.webp',
+    }
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'block',
         maxWidth: 600,
         overflow: 'hidden',
-        width: '100%',
+        width: 'auto',
+        margin:'auto'
     },
 }));
 
@@ -66,7 +52,7 @@ export const OneProduct = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
-    const maxSteps = tutorialSteps.length;
+    const maxSteps = imagesCard.length;
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -80,24 +66,32 @@ export const OneProduct = () => {
         setActiveStep(step);
     };
 
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     const [value, setValue] = React.useState(2);
 
-
+    const [color, setColor] = useState('')
+    const [size, setSize] = useState('')
 
     return (
         <>
-            <Paper elevation={3} style={{ margin: 30, width: '60%', marginLeft: 200 }}>
-                Categoría\Subcategoría
-             </Paper>
-            <Container maxWidth="md">
-                <Grid container justify="center" spacing={8}>
+            <Container maxWidth="md" spacing={4} style={{ marginTop: '2%' }}>
+                <Grid container justify="center" spacing={6}>
                     <Grid item xs={6}>
                         <Paper elevantion={3} style={{ padding: 20, height: 500 }}>
                             <div className={classes.root}>
                                 <img
                                     className={classes.img}
-                                    src={tutorialSteps[activeStep].imgPath}
-                                    alt={tutorialSteps[activeStep].label}
+                                    src={imagesCard[activeStep].imgPath}
+                                    alt={imagesCard[activeStep].label}
                                 />
                                 <MobileStepper
                                     steps={maxSteps}
@@ -118,42 +112,146 @@ export const OneProduct = () => {
                                     }
                                 />
                             </div>
+                            <Typography variant="body2" style={{ marginTop: '5%' }}>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse magnam, ipsa molestias laborum sint sed consectetur? Optio eum laudantium iusto illo placeat, nisi vero modi, libero nesciunt porro nostrum consequatur.
+                            </Typography>
                         </Paper>
-
                     </Grid>
-                    <Grid item xs={6}>
-                        <Paper elevantion={3} style={{ height: 500, width: 400 }}>
+                    <Grid item xs={4}>
+                        <Paper elevantion={3} style={{ height: 500 }} >
                             <Grid container justify="center">
-                                <Typography variant="h4" align="center" style={{padding: 30}}>Producto </Typography>
+                                <Typography variant="h4" align="center" style={{ padding: 20 }}>Producto </Typography>
                             </Grid>
                             <Grid container>
-                                <Box component="fieldset" mb={3} borderColor="transparent">
+                                <Box component="fieldset" borderColor="transparent">
                                     <Rating
                                         name="simple-controlled"
                                         value={value}
-                                        onChange={(event, newValue) => {
-                                            setValue(newValue);
-                                        }}
+                                        readOnly
                                         style={{ marginLeft: 30 }}
                                     />
                                 </Box>
-                                <Typography variant="h3" style={{padding: 30}}>$4500</Typography>
-                                
+                            </Grid>
+                            <Grid container direction="row"
+                                justify="flex-start"
+                                alignItems="flex-start"
+                                style={{ marginLeft: '6%' }}
+                            >
+                                <Typography variant="h5" style={{ color: "gray", fontStyle: 'italic' }} ><del>$5000</del></Typography>
+                            </Grid>
+                            <Grid container direction="row"
+                                justify="flex-start"
+                                alignItems="flex-start"
+                                style={{ marginLeft: '4%' }}>
+                                <Typography variant="h4" style={{ marginBottom: 20, fontStyle: 'italic' }}>$4500</Typography>
+                            </Grid>
+                            <Grid container style={{ marginBottom: '8%' }} spacing={4} justify="center">
+                                <Grid item xs={5}>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={color}
+                                        onChange={e => setColor(e.target.value)}
+                                        fullWidth
+                                    >
+                                        <MenuItem value={10}>Azul</MenuItem>
+                                        <MenuItem value={20}>Rojo</MenuItem>
+                                        <MenuItem value={30}>Verde</MenuItem>
+                                    </Select>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={size}
+                                        onChange={e => setSize(e.target.value)}
+                                        fullWidth
+                                    >
+                                        <MenuItem value={10}>S</MenuItem>
+                                        <MenuItem value={20}>M</MenuItem>
+                                        <MenuItem value={30}>L</MenuItem>
+                                    </Select>
+                                </Grid>
                             </Grid>
                             <Grid container justify="center" spacing={4}>
-                            <Button color="primary" variant="contained"  style={{padding: 10, width:'80%', marginBottom:10}}>
+                                <Button color="primary" variant="contained" style={{ padding: 10, width: '80%', marginBottom: 10 }}>
                                     Comprar
                                 </Button>
-                                <Button color="primary" variant="contained" fullWidth style={{padding: 10, width:'80%'}}>
+                                <Button color="primary" variant="contained" fullWidth style={{ padding: 10, width: '80%' }}>
                                     Agregar al carrito
                                 </Button>
                             </Grid>
-
-
-
                         </Paper>
                     </Grid>
+                </Grid>
+                <Grid container spacing={5} justify="center">
+                    <Paper elevation={3} style={{ height: 150, width: '78%', marginTop: '2%' }}>
+                        <Grid item xs={4}>
 
+                        </Grid>
+                    </Paper>
+                </Grid>
+                <Grid container spacing={5} justify="center">
+                    <Paper elevation={3} style={{ height: 150, width: '78%', marginTop: '4%', padding: '2%' }}>
+                        <Grid container justify="flex-start">
+                            <Box component="fieldset" borderColor="transparent">
+                                <Rating
+                                    name="simple-controlled"
+                                    value={value}
+                                    readOnly
+                                    size="small"
+                                />
+                            </Box>
+                            <Tooltip title={"Añadir comentario"}>
+                                <AddCommentIcon style={{ cursor: 'pointer', marginLeft: '82%' }} onClick={handleClickOpen} />
+                            </Tooltip>
+                            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                                <DialogTitle id="form-dialog-title">Valoración</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText>
+                                        Si gusta pueda añadir una valoración sobre este producto.
+                                    </DialogContentText>
+                                    <Grid container justify="center">
+                                        <Box component="fieldset" borderColor="transparent">
+                                            <Rating
+                                                name="simple-controlled"
+                                                value={value}
+                                                onChange={(event, newValue) => {
+                                                    setValue(newValue);
+                                                }}
+
+                                            />
+                                        </Box>
+                                    </Grid>
+                                    <TextField
+                                        autoFocus
+                                        margin="dense"
+                                        id="name"
+                                        label="Título del comentario"
+                                        fullWidth
+                                    />
+                                    <TextField
+                                        autoFocus
+                                        margin="dense"
+                                        id="name"
+                                        label="Comentario"
+                                        fullWidth
+                                    />
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleClose} color="primary">
+                                        Cancel
+                                    </Button>
+                                    <Button onClick={handleClose} color="primary">
+                                        Valorar
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+
+                        </Grid>
+                        <Typography variant="h5" style={{ fontStyle: 'oblique' }}>Titulo del comentario</Typography>
+                        <Typography variant="body2" >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto, obcaecati praesentium labore perspiciatis atque voluptates enim amet, dolores possimus doloribus accusantium culpa quae modi dolore temporibus ad commodi quo. Quaerat.</Typography>
+                    </Paper>
                 </Grid>
             </Container>
 
