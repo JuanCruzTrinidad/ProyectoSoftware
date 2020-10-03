@@ -10,6 +10,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 import AddCommentIcon from '@material-ui/icons/AddComment';
+import MediaCard from '../catalogue/Card';
 
 
 const imagesCard = [
@@ -23,6 +24,12 @@ const imagesCard = [
         imgPath:
             'https://http2.mlstatic.com/D_NQ_NP_835776-MLA43129713174_082020-O.webp',
     }
+];
+
+const listaproductos = [
+    { id: 1, name: "Botines1" },
+    { id: 2, name: "Botines2" },
+    { id: 3, name: "Botines3" }
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 600,
         overflow: 'hidden',
         width: 'auto',
-        margin:'auto'
+        margin: 'auto'
     },
 }));
 
@@ -76,10 +83,25 @@ export const OneProduct = () => {
         setOpen(false);
     };
 
+    const handleSubmit = () =>{
+        let variable = [];
+        variable = listComments;
+        variable.push(comment);
+        setListComments(variable);
+        handleClose();
+        setComment({});
+    }
+
     const [value, setValue] = React.useState(2);
 
     const [color, setColor] = useState('')
     const [size, setSize] = useState('')
+    const [comment, setComment] = useState({
+        title: '',
+        comment: '',
+        rating: 0
+    })
+    const [listComments, setListComments] = useState([])
 
     return (
         <>
@@ -131,6 +153,9 @@ export const OneProduct = () => {
                                         style={{ marginLeft: 30 }}
                                     />
                                 </Box>
+                                <Tooltip title={"Añadir comentario"}>
+                                    <AddCommentIcon style={{ cursor: 'pointer', marginLeft: '82%' }} onClick={handleClickOpen} />
+                                </Tooltip>
                             </Grid>
                             <Grid container direction="row"
                                 justify="flex-start"
@@ -184,74 +209,88 @@ export const OneProduct = () => {
                         </Paper>
                     </Grid>
                 </Grid>
-                <Grid container spacing={5} justify="center">
-                    <Paper elevation={3} style={{ height: 150, width: '78%', marginTop: '2%' }}>
-                        <Grid item xs={4}>
-
-                        </Grid>
-                    </Paper>
+                <Grid container spacing={5} justify="center" style={{ marginTop: '2%' }}>
+                    <div class="card-group">
+                        {listaproductos.map((prod, index) => (
+                            <Grid item xs={4}>
+                                <MediaCard key={prod.id} prod={prod} style={{ margin: '2%' }} />
+                            </Grid>
+                        ))}
+                    </div>
                 </Grid>
                 <Grid container spacing={5} justify="center">
-                    <Paper elevation={3} style={{ height: 150, width: '78%', marginTop: '4%', padding: '2%' }}>
-                        <Grid container justify="flex-start">
-                            <Box component="fieldset" borderColor="transparent">
-                                <Rating
-                                    name="simple-controlled"
-                                    value={value}
-                                    readOnly
-                                    size="small"
-                                />
-                            </Box>
-                            <Tooltip title={"Añadir comentario"}>
-                                <AddCommentIcon style={{ cursor: 'pointer', marginLeft: '82%' }} onClick={handleClickOpen} />
-                            </Tooltip>
-                            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                                <DialogTitle id="form-dialog-title">Valoración</DialogTitle>
-                                <DialogContent>
-                                    <DialogContentText>
-                                        Si gusta pueda añadir una valoración sobre este producto.
-                                    </DialogContentText>
-                                    <Grid container justify="center">
+                    {
+                        listComments.map(c => {
+                            return (
+                                <Paper elevation={3} style={{ height: 150, width: '78%', marginTop: '4%', padding: '2%' }}>
+                                    <Grid container justify="flex-start">
                                         <Box component="fieldset" borderColor="transparent">
                                             <Rating
                                                 name="simple-controlled"
-                                                value={value}
-                                                onChange={(event, newValue) => {
-                                                    setValue(newValue);
-                                                }}
-
+                                                value={c.rating}
+                                                readOnly
+                                                size="small"
                                             />
                                         </Box>
+                                        <Tooltip title={"Añadir comentario"}>
+                                            <AddCommentIcon style={{ cursor: 'pointer', marginLeft: '82%' }} onClick={handleClickOpen} />
+                                        </Tooltip>
                                     </Grid>
-                                    <TextField
-                                        autoFocus
-                                        margin="dense"
-                                        id="name"
-                                        label="Título del comentario"
-                                        fullWidth
-                                    />
-                                    <TextField
-                                        autoFocus
-                                        margin="dense"
-                                        id="name"
-                                        label="Comentario"
-                                        fullWidth
-                                    />
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button onClick={handleClose} color="primary">
-                                        Cancel
-                                    </Button>
-                                    <Button onClick={handleClose} color="primary">
-                                        Valorar
-                                    </Button>
-                                </DialogActions>
-                            </Dialog>
+                            <Typography variant="h5" style={{ fontStyle: 'oblique' }}>{c.title}</Typography>
+                            <Typography variant="body2" >{c.comment}</Typography>
+                                </Paper>
+                            )
+                        })
+                    }
+                    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Valoración</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Si gusta pueda añadir una valoración sobre este producto.
+                                    </DialogContentText>
+                            <Grid container justify="center">
+                                <Box component="fieldset" borderColor="transparent">
+                                    <Rating
+                                        name="simple-controlled"
+                                        value={comment.rating}
+                                        onChange={(event, newValue) => {
+                                            console.log(newValue, event)
+                                            setComment({...comment, rating: newValue});
+                                        }}
 
-                        </Grid>
-                        <Typography variant="h5" style={{ fontStyle: 'oblique' }}>Titulo del comentario</Typography>
-                        <Typography variant="body2" >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto, obcaecati praesentium labore perspiciatis atque voluptates enim amet, dolores possimus doloribus accusantium culpa quae modi dolore temporibus ad commodi quo. Quaerat.</Typography>
-                    </Paper>
+                                    />
+                                </Box>
+                            </Grid>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Título del comentario"
+                                value={comment.title}
+                                onChange={e => setComment({...comment, title: e.target.value})}
+                                fullWidth
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Comentario"
+                                value={comment.comment}
+                                onChange={e => setComment({...comment, comment: e.target.value})}
+                                multiline
+                                rows={2}
+                                fullWidth
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose} color="primary">
+                                Cancel
+                                    </Button>
+                            <Button onClick={event => handleSubmit} color="primary">
+                                Valorar
+                                    </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Grid>
             </Container>
 
