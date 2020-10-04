@@ -14,4 +14,6 @@ public interface IUserService {
 
     public List<User> findByIsEnabled();
 
+    public User findUserById(final int id);
+
 }

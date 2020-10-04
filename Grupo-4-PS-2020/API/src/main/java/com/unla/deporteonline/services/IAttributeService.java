@@ -9,6 +9,8 @@ public interface IAttributeService {
     public Object saveAttribute(Atributos attribute);
    
     public void deleteAttribute(Integer attributeId);
+
+    public Atributos findAttributeById(final int id);
 }
 
 

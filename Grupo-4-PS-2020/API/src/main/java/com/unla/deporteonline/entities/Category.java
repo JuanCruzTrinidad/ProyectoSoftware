@@ -63,7 +63,7 @@ public class Category  {
         this.nameGoogle = nameGoogle;
     }
 
-    @JsonManagedReference
+    @JsonManagedReference (value = "subcat")
     public Set<Subcategory> getSubcategorys() {
         return subcategorys;
     }

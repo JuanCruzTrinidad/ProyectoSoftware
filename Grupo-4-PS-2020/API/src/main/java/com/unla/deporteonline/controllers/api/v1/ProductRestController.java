@@ -2,7 +2,6 @@ package com.unla.deporteonline.controllers.api.v1;
 
 import java.util.List;
 
-import com.unla.deporteonline.entities.Atributos;
 import com.unla.deporteonline.entities.Producto;
 import com.unla.deporteonline.services.IProductService;
 import com.unla.deporteonline.repositories.IProductRepository;
@@ -39,6 +38,7 @@ public Object createProduct(@RequestBody Producto createProduct) {
 //update product
 @PostMapping(value ="/updateProduct", consumes="application/json")
 public Object updateProduct(@RequestBody Producto createProduct) {
+	createProduct.setVisible(true);
     System.out.println("update product: " + createProduct.toString());
     return productService.saveProduct(createProduct);
 }
@@ -53,17 +53,11 @@ public Object updateProduct(@RequestBody Producto createProduct) {
 		return ("usuario eliminado");
 	}
 //traer producto por id
-@GetMapping("/ProductId") //Traes todos los atrbiutos
+@GetMapping("/ProductId") 
 	public Producto findProductById(@RequestParam("idProducto") int id) {
 		return productService.findProductById(id);
 	}
 
-/*
-@PostMapping(value= "/agregarAtributo/{idProducto}", consumes="application/json")
-	public Object agregarAtributo(@PathVariable int id, @RequestBody Atributos atributos){
-		return productService.agregarAtributo(id, atributos);
-	}
-*/
 
 //traer todos los productors
 @GetMapping("/allproduct")
@@ -73,13 +67,7 @@ public Object updateProduct(@RequestBody Producto createProduct) {
 //traer todas las promociones
 @GetMapping("/allPromotion") 
 	public List<Producto> findPromotion() {
-		List<Producto> prod = null;
-		try{
-			prod=  productService.findPromotion();
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
-		return prod;
+		return productService.findPromotion();
 	}
 
 }

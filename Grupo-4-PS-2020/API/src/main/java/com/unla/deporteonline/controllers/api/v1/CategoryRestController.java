@@ -26,52 +26,39 @@ public class CategoryRestController {
 	@Qualifier("categoryService")
 	private ICategoryService categoryService;
 
+	//add category
+	@PostMapping(value ="/createCategory", consumes="application/json")
+	public Object createCategory(@RequestBody Category createCategory) {
+		System.out.println("Category: " + createCategory.toString());
+		return categoryService.saveCategory(createCategory);
+	}
+
+	//update Category
+	@PostMapping(value ="/updateCategory", consumes="application/json")
+	public Object updateCategory(@RequestBody Category updateCategory) {
+		System.out.println("update category: " + updateCategory.toString());
+		return categoryService.saveCategory(updateCategory);
+	}
+
+
+	//Delete Category
+	@DeleteMapping(value ="/deleteCategory")
+	public String deleteCategoryPhysical(@RequestParam("idCategory") Integer idCategory){
+		categoryService.deleteCategory(idCategory);
+		return ("Categoria eliminado");
+	}
+
+	//traer categoria por id
+	@GetMapping("/categoryId") 
+		public Category findCategoryById(@RequestParam("idCategory") int id) {
+			return categoryService.findCategoryById(id);
+		}
+
+	//Traes todas las categorias
 	@GetMapping("/allcategories")
 	public List<Category> findAll(){
 		return categoryService.findAll();
 	}
 
-/*
-    //create product
-@PostMapping(value ="/createProduct", consumes="application/json")
-public Object createProduct(@RequestBody Producto createProduct) {
-    createProduct.setVisible(true);
-	System.out.println("Product: " + createProduct.toString());
-	return productService.saveProduct(createProduct);
-}
 
-//update product
-@PostMapping(value ="/updateProduct", consumes="application/json")
-public Object updateProduct(@RequestBody Producto createProduct) {
-    System.out.println("update product: " + createProduct.toString());
-    return productService.saveProduct(createProduct);
-}
-
-
-//Delete Product
-@PostMapping(value ="/deleteProduct")
-	public String deleteProduct(@RequestParam("idProducto") int id) {
-        Producto product = productService.findProductById(id);
-        product.setVisible(false);
-        productService.saveProduct(product);
-		return ("usuario eliminado");
-	}
-//traer producto por id
-@GetMapping("/ProductId") //Traes todos los atrbiutos
-	public Producto findProductById(@RequestParam("idProducto") int id) {
-		return productService.findProductById(id);
-	}
-
-//traer todos los productors
-@GetMapping("/allproduct")
-	public List<Producto> findAllProduct() {
-		return productService.findAllProduct();
-	}
-//traer todas las promociones
-@GetMapping("/allPromotion") 
-	public List<Producto> findPromotion() {
-		return productService.findPromotion();
-	}
-
-    */
 }

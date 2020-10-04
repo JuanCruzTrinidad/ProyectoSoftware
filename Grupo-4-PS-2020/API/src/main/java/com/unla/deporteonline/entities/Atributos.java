@@ -118,7 +118,7 @@ public class Atributos {
         this.profundidad = profundidad;
     }
 
-    @JsonBackReference
+    @JsonBackReference (value = "prodAtributo")
     public Producto getProducto() {
         return producto;
     }

@@ -70,7 +70,7 @@ public class Subcategory {
         this.nameGoogle = nameGoogle;
     }
 
-    @JsonBackReference
+    @JsonBackReference (value = "subcat")
     public Category getCategory() {
         return category;
     }
@@ -79,7 +79,7 @@ public class Subcategory {
         this.category = category;
     }
 
-    @JsonManagedReference
+    @JsonManagedReference (value = "prodsub")
     public Set<Producto> getProductos() {
         return productos;
     }

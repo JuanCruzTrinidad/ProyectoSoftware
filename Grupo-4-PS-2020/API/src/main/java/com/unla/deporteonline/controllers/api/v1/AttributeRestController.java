@@ -25,11 +25,18 @@ public class AttributeRestController {
 	@Qualifier("attributeService")
 	private IAttributeService attributeService;
 
-//Modificar Atributo
+//Agregar Atributo
 @PostMapping(value ="/createAttribute", consumes="application/json")
 public Object createAttribute(@RequestBody Atributos createAttribute) {
 	System.out.println("Attribute: " + createAttribute.toString());
 	return attributeService.saveAttribute(createAttribute);
+}
+
+//update Atributo
+@PostMapping(value ="/updateAttribute", consumes="application/json")
+public Object updateAttribute(@RequestBody Atributos updateAttribute) {
+    System.out.println("update product: " + updateAttribute.toString());
+    return attributeService.saveAttribute(updateAttribute);
 }
 
 
@@ -40,9 +47,14 @@ public String deleteAttributePhysical(@RequestParam("attributeId") Integer attri
 	return ("Atributo eliminado");
 }
 
+//traer atributo por id
+@GetMapping("/AttributeId") //Traes todos los atrbiutos
+	public Atributos findAttributeById(@RequestParam("idProducto") int id) {
+		return attributeService.findAttributeById(id);
+	}
 
-
-@GetMapping("/allattribute") //Traes todos los atrbiutos
+//Traes todos los atrbiutos
+@GetMapping("/allattribute") 
 	public List<Atributos> findAll() {
 		return attributeService.findAll();
 	}

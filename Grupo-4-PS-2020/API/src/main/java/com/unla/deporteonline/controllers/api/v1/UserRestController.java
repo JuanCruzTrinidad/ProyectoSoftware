@@ -48,6 +48,7 @@ public class UserRestController {
 	//modificar usuario
 	@PostMapping(value ="/updateUser", consumes="application/json")
     public Object updateUser(@RequestBody User updateUser) {
+		updateUser.setEnabled(true);
 		System.out.println("User: " + updateUser.toString());
 		return userService.saveUser(updateUser);
 	}
@@ -63,7 +64,7 @@ public class UserRestController {
 	}
 
 	//eliminar usuario fisico
-	@DeleteMapping(value="/deleteUser")
+	@DeleteMapping(value="/deleteUserPhysical")
 	public String deleteUserPhysical(@RequestParam("email") String email, @RequestParam("password") String password){
 		User user = userService.findByEmailAndPassword(email, password);
 			if(user == null) throw new ValidationException("Usuario no valido");
@@ -75,9 +76,22 @@ public class UserRestController {
 	@PostMapping(value ="/newUser", consumes="application/json")
     public Object newUser(@RequestBody User newUser) {
 		newUser.setEnabled(true);
+		newUser.setIslogged(false);
 		System.out.println("User: " + newUser.toString());
 		return userService.saveUser(newUser);
+	}
 
+	//traer usuario por id
+	@GetMapping("/userId") 
+		public User findUserById(@RequestParam("id") int id) {
+			return userService.findUserById(id);
+		}
+
+
+	//traer todos los usuarios
+	@GetMapping("/allusers")
+	public List<User> findByIsEnabled() {
+		return userService.findByIsEnabled();
 	}
 
     private String getJWTToken(String username) {
@@ -101,9 +115,6 @@ public class UserRestController {
 		return "Bearer " + token;
 	}
 
-	@GetMapping("/allusers")
-	public List<User> findByIsEnabled() {
-		return userService.findByIsEnabled();
-	}
+	
 
 }
