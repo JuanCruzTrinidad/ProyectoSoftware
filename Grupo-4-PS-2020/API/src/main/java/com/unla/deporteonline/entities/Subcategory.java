@@ -22,11 +22,11 @@ public class Subcategory {
     @Column (name= "nameGoogle")
     private String nameGoogle;
 
-    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne //(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idCategory")
     private Category category;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "subcategory")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "subcategory")
     private Set<Producto> productos = new HashSet<Producto>();
 
     public Subcategory() {

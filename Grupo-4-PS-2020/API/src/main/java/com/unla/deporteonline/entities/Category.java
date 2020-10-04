@@ -21,7 +21,7 @@ public class Category  {
     @Column (name= "nameGoogle")
     private String nameGoogle;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "category")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "category")
     private Set<Subcategory> subcategorys = new HashSet<Subcategory>();
 
     public Category() {}

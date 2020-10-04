@@ -33,7 +33,7 @@ public class Atributos {
 
 
     //producto
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne //(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idProducto")
     private Producto producto;
 
