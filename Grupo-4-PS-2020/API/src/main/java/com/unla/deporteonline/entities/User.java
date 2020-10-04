@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="user")
@@ -41,7 +41,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<Role>();
 
-
+    //valoracion
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "user")
+    private Set<Valoracion> valoraciones= new HashSet<Valoracion>();
+    
     public User() {}
 
     public User(int id, String name, String lastname, LocalDate birthdate, String email, String password, boolean enabled,
@@ -129,12 +132,19 @@ public class User {
         this.roles = roles;
     }
 
+    @JsonManagedReference
+    public Set<Valoracion> getValoraciones() {
+        return valoraciones;
+    }
+
+    public void setValoraciones(Set<Valoracion> valoraciones) {
+        this.valoraciones = valoraciones;
+    }
+
+
     @Override
     public String toString() {
         return "User [birthdate=" + birthdate + ", email=" + email + ", enabled=" + enabled + ", id=" + id
                 + ", lastname=" + lastname + ", name=" + name + ", password=" + password + ", roles=" + roles + "]";
     }
-
-    
-
 }

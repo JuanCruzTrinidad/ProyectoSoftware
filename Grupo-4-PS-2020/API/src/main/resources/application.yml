@@ -3,6 +3,9 @@ spring:
     url: jdbc:mysql://trinidadmysql.mysql.database.azure.com:3306/deporteonline?serverTimezone=UTC&useSSL=true&requireSSL=false
     username: juantrinidad@trinidadmysql
     password: unla.1234
+    # url: jdbc:mysql://localhost:3306/deporteonline?serverTimezone=UTC
+    # username: root
+    # password: root
   jpa:
     show-sql: true
     hibernate:

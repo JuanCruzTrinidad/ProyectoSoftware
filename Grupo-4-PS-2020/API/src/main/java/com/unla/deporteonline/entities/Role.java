@@ -1,10 +1,9 @@
 package com.unla.deporteonline.entities;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name="role")
-public class Role {
+public class Role  {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

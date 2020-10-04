@@ -50,6 +50,17 @@ public class UserService implements UserDetailsService, IUserService {
 		//Falta excepcion email
 		return userRepository.saveAndFlush(user);
 	}
+
+	public void deleteUser(com.unla.deporteonline.entities.User user) {
+		userRepository.delete(user);
+	}
+
+	public List<com.unla.deporteonline.entities.User> findByIsEnabled() {
+		return userRepository.findByIsEnabled();
+	}
+	//public com.unla.deporteonline.entities.User findById(long id){
+	//	return userRepository.findById(id);
+	//}
 	
 	@Override
 	//Toma el email
