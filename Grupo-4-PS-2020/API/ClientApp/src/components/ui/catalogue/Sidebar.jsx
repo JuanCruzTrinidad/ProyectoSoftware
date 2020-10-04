@@ -13,7 +13,7 @@ const Sidebar = (props) => {
   return (
     <Card className="sidecat">
       <CardContent>
-        <div className="pb-2">
+        <div className="pb-2 text-center">
           <Button onClick={(e) => setvisual("tiles")}>
             <ViewHeadlineIcon />
           </Button>
@@ -22,54 +22,52 @@ const Sidebar = (props) => {
           </Button>
         </div>
 
-        <h4 className="pb-2">Ordenar productos</h4>
+        <h4 className="pb-2 text-center">Ordenar productos</h4>
         <div style={{ textAlign: "center" }}>
           <Dropdown>
-            <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+            <Dropdown.Toggle
+              id="dropdown-basic"
+              style={{
+                color: "black",
+                backgroundColor: "#C8EFE3",
+                border: "none",
+              }}
+            >
               {order}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item
-                onClick={(e) => setorder("Nombre ascendente")}
-              >
+              <Dropdown.Item onClick={(e) => setorder("Nombre ascendente")}>
                 Nombre ascendente
               </Dropdown.Item>
-              <Dropdown.Item
-                onClick={(e) => setorder("Nombre descendente")}
-              >
+              <Dropdown.Item onClick={(e) => setorder("Nombre descendente")}>
                 Nombre descendente
               </Dropdown.Item>
-              <Dropdown.Item
-                onClick={(e) => setorder("Mayor precio")}
-              >
+              <Dropdown.Item onClick={(e) => setorder("Mayor precio")}>
                 Mayor precio
               </Dropdown.Item>
-              <Dropdown.Item
-                onClick={(e) => setorder("Menor precio")}
-              >
+              <Dropdown.Item onClick={(e) => setorder("Menor precio")}>
                 Menor precio
               </Dropdown.Item>
-              <Dropdown.Item
-                onClick={(e) => setorder("Default")}
-              >
+              <Dropdown.Item onClick={(e) => setorder("Default")}>
                 Default
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
 
-        <h4 className="pt-4 pb-2">Categorias</h4>
+        <h4 className="pt-4 pb-2 text-center">Categorias</h4>
 
         {listacategorias.map((cat) => (
           <Fragment key={cat.id}>
             <Grid container>
               <SplitButton
-                variant="secondary"
+                bsPrefix="btn btn-light btn-block"
                 title={cat.name}
                 style={{
                   padding: "3px",
-                  paddingLeft: "20px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
                 }}
               >
                 <Dropdown.Item eventKey="1">Action</Dropdown.Item>
