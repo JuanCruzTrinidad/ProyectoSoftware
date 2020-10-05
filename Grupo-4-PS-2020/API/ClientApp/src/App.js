@@ -13,6 +13,11 @@ import Footer from './components/ui/Footer';
 import ResetPassword from './components/auth/ResetPassword';
 import InstitutionalInfo from './components/ui/menu/InstitutionalInfo';
 import ContactForm from './components/ui/menu/ContactForm';
+import Categories from './components/crud/categories/Categories';
+import SubCategories from './components/crud/categories/SubCategories';
+import { ProductsForm } from './components/crud/products/productsForm';
+import Catalogue from './components/ui/catalogue/Catalogue';
+import { OneProduct } from './components/ui/products/OneProduct';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -40,11 +45,26 @@ function App() {
           <Route exact strict path="/resetpw/:iduser">
             <ResetPassword />
           </Route>
-          <Route exact strict path="/thisisus">
+          <Route exact strict path="/us">
             <InstitutionalInfo />
           </Route>
           <Route exact strict path="/contact">
             <ContactForm />
+          </Route>
+          <Route exact strict path="/admin/categories">
+            <Categories />
+          </Route>
+          <Route exact strict path="/admin/subcategories">
+            <SubCategories />
+          </Route>
+          <Route exact strict path="/admin/products">
+            <ProductsForm/>
+          </Route>
+          <Route exact strict path="/catalogue">
+            <Catalogue />
+          </Route>
+          <Route exact stric path="/Product">
+            <OneProduct/>
           </Route>
         </Switch>
         <Footer />
