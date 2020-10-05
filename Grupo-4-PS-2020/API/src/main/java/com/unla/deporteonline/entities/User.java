@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -143,4 +142,9 @@ public class User {
     }
 
 
+    @Override
+    public String toString() {
+        return "User [birthdate=" + birthdate + ", email=" + email + ", enabled=" + enabled + ", id=" + id
+                + ", lastname=" + lastname + ", name=" + name + ", password=" + password + ", roles=" + roles + "]";
+    }
 }

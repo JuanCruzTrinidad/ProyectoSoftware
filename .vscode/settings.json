@@ -1,5 +1,6 @@
 {
     "maven.view": "flat",
+    // "java.configuration.updateBuildConfiguration": "disabled",
     "java.configuration.updateBuildConfiguration": "automatic",
     "files.exclude": {
         "**/.classNamepath": true,

@@ -3,16 +3,19 @@ package com.unla.deporteonline.services.implementation;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.unla.deporteonline.entities.Role;
@@ -29,12 +32,22 @@ public class UserService implements UserDetailsService, IUserService {
 	public List<com.unla.deporteonline.entities.User> findAll() {
 		return userRepository.findAll();
 	}
+	
+	public com.unla.deporteonline.entities.User findById(int id) {
+		return userRepository.findById(id);
+	}
 
 	public com.unla.deporteonline.entities.User findByEmailAndPassword(String email, String password) {
 		return userRepository.findByEmailAndPassword(email, password);
 	}
 
+	public com.unla.deporteonline.entities.User findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
+
 	public Object saveUser(com.unla.deporteonline.entities.User user) {
+
+		//Falta excepcion email
 		return userRepository.saveAndFlush(user);
 	}
 

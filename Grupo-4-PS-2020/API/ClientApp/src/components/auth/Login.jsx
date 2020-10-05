@@ -1,13 +1,47 @@
 import React, { useState } from "react";
 import "../../styles/floating-labels.css";
+import { apiAxios } from "../../config/axios";
+import { useHistory } from "react-router";
+import bcrypt from "bcryptjs";
 
 export const Login = () => {
+
+  //States
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
 
-  const handleSubmitForm = () => {
-    const data = { email, password };
-    console.log(data);
+  const history = useHistory();
+
+  //Si el usuario esta logeado no debe poder entrar a esta pagina
+  if(localStorage.getItem("token") !== null) {
+    history.push("/");
+  }
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("email", email);
+    
+    apiAxios
+      .post("/user/login", formData)
+      .then(({ data }) => {
+        const pw = password.slice(0, -1); //Hay un rico bug, le tenemos que sacar la ultima letra para que funcione el login
+        bcrypt.compare(pw, data[1]).then((res) => {
+          if (res === true) {
+            console.log(data[0])
+            localStorage.setItem("user", email);
+            localStorage.setItem("token", data[0]);
+            history.replace("/");
+            window.location.reload();
+          }
+        });
+      })
+      .catch(() => (
+        <div class="alert alert-danger" role="alert">
+        Usuario no valido.
+      </div>)
+      );
   };
 
   const handleChangeEmail = ({ target }) => {
@@ -34,46 +68,64 @@ export const Login = () => {
               className="h3 mb-3 font-weight-normal"
               style={{ color: "#0E141B" }}
             >
-              Deportes Online
+              Ingresar
             </h1>
           </div>
           <div className="form-label-group">
             <input
               type="email"
               className="form-control"
-              placeholder="Email address"
+              placeholder="Email"
               required={true}
               autoFocus={true}
               value={email}
               onChange={handleChangeEmail}
             />
-            <label htmlFor="inputEmail">Email address</label>
+            <label htmlFor="inputEmail">Email</label>
           </div>
           <div className="form-label-group">
             <input
               type="password"
               className="form-control"
-              placeholder="Password"
+              placeholder="Contraseña"
               required={true}
               value={password}
               onChange={handleChangePassword}
             />
-            <label htmlFor="inputPassword">Password</label>
+            <label htmlFor="inputPassword">Contraseña</label>
           </div>
-          <div className="checkbox mb-3">
+          <div className="checkbox mb-2">
             <label>
-              <input type="checkbox" value="remember-me" /> Remember me
+              <input type="checkbox" value="remember-me" /> Recordar
             </label>
           </div>
           <button
             className="btn btn-lg btn-block boton"
-            style={{ "background-color": "#00A5CF", color: "white", fontWeight: 'bold'}}
-            type="submit"
+            style={{
+              "background-color": "#00A5CF",
+              color: "white",
+              fontWeight: "bold",
+            }}
           >
-            Sign in
+            Ingresar
           </button>
           <div className="mb-3">
-            <a style={{ float: "right", paddingTop: "4px", color: '#457B9D' }} href="http://">
+            <a
+              style={{ float: "right", paddingTop: "4px", color: "#457B9D", cursor: "pointer" }}
+              onClick={(e) => {
+                e.preventDefault();
+                history.push("/signup");
+              }}
+            >
+              ¿No tenes cuenta? Registrate!
+            </a>
+            <a
+              style={{ float: "left", paddingTop: "4px", color: "#457B9D", cursor: "pointer" }}
+              onClick={(e) => {
+                e.preventDefault();
+                history.push("/recoverpw");
+              }}
+            >
               Recuperar contraseña
             </a>
           </div>

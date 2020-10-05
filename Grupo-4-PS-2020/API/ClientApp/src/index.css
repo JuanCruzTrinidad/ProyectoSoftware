@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.footer{
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #F5F5F5;
+  width: 100%;
+}
+
+.color-navbar{
+  background-Color: "#25A18E" 
+}
