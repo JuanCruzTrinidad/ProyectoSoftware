@@ -56,15 +56,16 @@ public class UserService implements UserDetailsService, IUserService {
 	}
 
 	public com.unla.deporteonline.entities.User findUserById(final int id) {
-		return userRepository.findById(id).get();
+		return userRepository.findById(id);//.get();
 	}
 
 	public List<com.unla.deporteonline.entities.User> findByIsEnabled() {
 		return userRepository.findByIsEnabled();
 	}
-	//public com.unla.deporteonline.entities.User findById(long id){
-	//	return userRepository.findById(id);
-	//}
+
+	public Optional<com.unla.deporteonline.entities.User> findById(long id) {
+		return userRepository.findById(id);
+	}
 	
 	@Override
 	//Toma el email
