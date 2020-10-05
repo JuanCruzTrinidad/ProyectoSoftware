@@ -132,7 +132,7 @@ public class User {
         this.roles = roles;
     }
 
-    @JsonManagedReference
+    @JsonManagedReference (value = "anyName")
     public Set<Valoracion> getValoraciones() {
         return valoraciones;
     }

@@ -33,7 +33,7 @@ public class Atributos {
 
 
     //producto
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne //(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idProducto")
     private Producto producto;
 
@@ -118,7 +118,7 @@ public class Atributos {
         this.profundidad = profundidad;
     }
 
-    @JsonBackReference
+    @JsonBackReference (value = "prodAtributo")
     public Producto getProducto() {
         return producto;
     }

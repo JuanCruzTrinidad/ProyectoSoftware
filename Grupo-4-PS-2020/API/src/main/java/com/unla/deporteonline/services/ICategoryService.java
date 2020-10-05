@@ -5,10 +5,12 @@ import java.util.List;
 
 public interface ICategoryService {
 
-    public List<Category> findAll();
-    /*public List<Atributos> findAll();
+    public Object saveCategory(Category category);
+
+	public Category findCategoryById(final int id);
+
+	public void deleteCategory(Integer categoryId);
+	
+	public List<Category> findAll();
     
-    public Object saveAttribute(Atributos attribute);
-   
-    public void deleteAttribute(Integer attributeId);*/
 }

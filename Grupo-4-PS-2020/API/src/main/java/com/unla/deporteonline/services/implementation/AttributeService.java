@@ -16,7 +16,11 @@ public class AttributeService implements IAttributeService {
 
 	public Object saveAttribute(Atributos atributos) {
 		return iattributeRepository.saveAndFlush(atributos);
-    }
+	}
+	
+	public Atributos findAttributeById(final int id) {
+		return iattributeRepository.findById(id).get();
+	}
     
 	public List<Atributos> findAll() {
 		return iattributeRepository.findAll();

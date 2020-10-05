@@ -14,8 +14,9 @@ public interface IUserService {
 
     public List<User> findByIsEnabled();
 
-	public User findByEmail(String email);
+    public User findUserById(final int id);
+	  
+    public User findByEmail(String email);
 
-	public User findById(int id);
-
+    public User findById(int id);
 }

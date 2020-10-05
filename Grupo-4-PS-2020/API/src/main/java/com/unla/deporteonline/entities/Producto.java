@@ -3,6 +3,8 @@ package com.unla.deporteonline.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -46,11 +48,11 @@ public class Producto {
     private Set<Valoracion> valoraciones = new HashSet<Valoracion>();
 
     //atributos
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "producto")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "producto")
     private Set<Atributos> atributos= new HashSet<Atributos>();
 
     //subcategoria
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne //(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn (name= "idSubcategory")
     private Subcategory subcategory;
 
@@ -144,7 +146,7 @@ public class Producto {
         this.precioOferta = precioOferta;
     }
 
-    @JsonManagedReference
+    @JsonManagedReference (value = "prodValue")
     public Set<Valoracion> getValoraciones() {
         return valoraciones;
     }
@@ -153,7 +155,7 @@ public class Producto {
         this.valoraciones = valoraciones;
     }
 
-    @JsonManagedReference
+    @JsonManagedReference (value = "prodAtributo")
     public Set<Atributos> getAtributos() {
         return atributos;
     }
@@ -162,7 +164,7 @@ public class Producto {
         this.atributos = atributos;
     }
 
-    @JsonBackReference
+    @JsonBackReference (value = "prodsub")
     public Subcategory getSubcategory() {
         return subcategory;
     }

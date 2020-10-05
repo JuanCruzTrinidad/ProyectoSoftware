@@ -61,6 +61,8 @@ public class UserRestController {
 		
 		User user = userService.findByEmail(email);
 		if(user == null) throw new ValidationException("Usuario no valido");
+    
+    user.setIslogged(true);
 		
 		//Pasar como parametro la pw y hacer la comparacion entre hashs en el front. Si da true que se haga el login, si no no.
 		lista.add(getJWTToken(user.getEmail()));
@@ -87,6 +89,7 @@ public class UserRestController {
 	//modificar usuario
 	@PostMapping(value ="/updateUser", consumes="application/json")
     public Object updateUser(@RequestBody User updateUser) {
+		updateUser.setEnabled(true);
 		System.out.println("User: " + updateUser.toString());
 		return userService.saveUser(updateUser);
 	}
@@ -103,7 +106,7 @@ public class UserRestController {
 	}
 
 	//eliminar usuario fisico
-	@DeleteMapping(value="/deleteUser")
+	@DeleteMapping(value="/deleteUserPhysical")
 	public String deleteUserPhysical(@RequestParam("email") String email, @RequestParam("password") String password){
 		User user = userService.findByEmailAndPassword(email, password);
 			if(user == null) throw new ValidationException("Usuario no valido");
@@ -115,15 +118,29 @@ public class UserRestController {
 	//agregar usuario
 	@PostMapping(value ="/newUser", consumes="application/json")
     public Object newUser(@RequestBody User newUser) {
-		newUser.setEnabled(true);
-
-		Set<Role> roles = newUser.getRoles();
+		newUser.setEnabled(true); 
+    newUser.setIslogged(false);
+    Set<Role> roles = newUser.getRoles();
 		roles.add(roleService.findById(1));
 		newUser.setRoles(roles); //Le pongo el role de user por default
 
 		System.out.println(newUser.toString());
 		return userService.saveUser(newUser);
 	}
+	}
+
+	//traer usuario por id
+	@GetMapping("/userId") 
+		public User findUserById(@RequestParam("id") int id) {
+			return userService.findUserById(id);
+		}
+
+
+	//traer todos los usuarios
+	@GetMapping("/allusers")
+	public List<User> findByIsEnabled() {
+		return userService.findByIsEnabled();
+
 	
 	@PostMapping(value = "/recoverpw", consumes="application/json")
 	public ResponseEntity<String> recoveryPassword(@RequestBody String email ) throws IOException {

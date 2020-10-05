@@ -22,11 +22,11 @@ public class Subcategory {
     @Column (name= "nameGoogle")
     private String nameGoogle;
 
-    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne //(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idCategory")
     private Category category;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "subcategory")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "subcategory")
     private Set<Producto> productos = new HashSet<Producto>();
 
     public Subcategory() {
@@ -70,7 +70,7 @@ public class Subcategory {
         this.nameGoogle = nameGoogle;
     }
 
-    @JsonBackReference
+    @JsonBackReference (value = "subcat")
     public Category getCategory() {
         return category;
     }
@@ -79,7 +79,7 @@ public class Subcategory {
         this.category = category;
     }
 
-    @JsonManagedReference
+    @JsonManagedReference (value = "prodsub")
     public Set<Producto> getProductos() {
         return productos;
     }

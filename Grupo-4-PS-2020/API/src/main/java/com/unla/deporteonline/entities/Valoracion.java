@@ -83,7 +83,7 @@ public class Valoracion implements Serializable{
         this.comentario = comentario;
     }
 
-    @JsonBackReference
+    @JsonBackReference (value = "anyName")
     public User getUser() {
         return user;
     }
@@ -92,7 +92,7 @@ public class Valoracion implements Serializable{
         this.user = user;
     }
 
-    @JsonBackReference
+    @JsonBackReference (value = "prodValue")
     public Producto getProducto() {
         return producto;
     }

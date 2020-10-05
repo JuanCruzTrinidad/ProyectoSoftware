@@ -13,22 +13,22 @@ public class CategoryService implements ICategoryService {
     
     @Autowired
 	@Qualifier("CategoryRepository")
-	private ICategoryRepository categoryRepository;
+	private ICategoryRepository icategoryRepository;
 
+	public Object saveCategory(Category category) {
+		return icategoryRepository.saveAndFlush(category);
+	}
+	
+	public Category findCategoryById(final int id) {
+		return icategoryRepository.findById(id).get();
+	}
+
+	public void deleteCategory(Integer categoryId) {
+		icategoryRepository.delete(icategoryRepository.findById(categoryId).get());
+	}
+	
 	public List<Category> findAll(){
-		return categoryRepository.findAll();
+		return icategoryRepository.findAll();
 	}
 
-	/*public Object saveAttribute(Atributos atributos) {
-		return iattributeRepository.saveAndFlush(atributos);
-    }
-    
-	public List<Atributos> findAll() {
-		return iattributeRepository.findAll();
-	}
-
-	public void deleteAttribute(Integer attributeId) {
-		iattributeRepository.delete(iattributeRepository.findById(attributeId).get());
-	}
-    */
 }

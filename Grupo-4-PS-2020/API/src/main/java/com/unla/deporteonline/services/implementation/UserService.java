@@ -55,6 +55,10 @@ public class UserService implements UserDetailsService, IUserService {
 		userRepository.delete(user);
 	}
 
+	public com.unla.deporteonline.entities.User findUserById(final int id) {
+		return userRepository.findById(id).get();
+	}
+
 	public List<com.unla.deporteonline.entities.User> findByIsEnabled() {
 		return userRepository.findByIsEnabled();
 	}
