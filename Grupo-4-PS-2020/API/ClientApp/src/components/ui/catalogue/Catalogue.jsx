@@ -5,27 +5,31 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import Tile from "./Tile";
 import "./catalogue.css";
 import Sidebar from "./Sidebar";
 import MediaCard from "./Card";
 import Search from "./Search";
 import PaginationOutlined from "./PaginationOutlined";
+import { apiAxios } from "../../../config/axios";
 
 const Catalogue = () => {
   //States
-  const [visual, setvisual] = useState("cards");
+  const [visual, setvisual] = useState("card");
   const [search, setsearch] = useState("");
   const [order, setorder] = useState("Default");
+  const [productlist, setproductlist] = useState([]);
 
-  const listaproductos = [
-    { id: 1, name: "Botinesa1", price: 10.5 },
-    { id: 2, name: "Botinesb2", price: 20.5 },
-    { id: 3, name: "Botinesc3", price: 5.5 },
-    { id: 4, name: "Botinesd4", price: 10 },
-    { id: 5, name: "Botinese5", price: 30 },
-  ];
+  useEffect(() => {
+    apiAxios
+      .get("/product/allproduct")
+      .then(({ data }) => {
+        setproductlist(data);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const listacategorias = [
     { id: 1, name: "Categoria1" },
@@ -36,13 +40,13 @@ const Catalogue = () => {
 
   //Ordenar productos
   if (order === "Menor precio") {
-    listaproductos.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    productlist.sort((a, b) => parseFloat(a.precio) - parseFloat(b.precio));
   } else if (order === "Mayor precio") {
-    listaproductos.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+    productlist.sort((a, b) => parseFloat(b.precio) - parseFloat(a.precio));
   } else if (order === "Nombre ascendente") {
-    listaproductos.sort((a, b) => a.name.localeCompare(b.name));
+    productlist.sort((a, b) => a.nombre.localeCompare(b.nombre));
   } else if (order === "Nombre descendente") {
-    listaproductos.sort((a, b) => b.name.localeCompare(a.name));
+    productlist.sort((a, b) => b.nombre.localeCompare(a.nombre));
   }
 
   return (
@@ -59,20 +63,22 @@ const Catalogue = () => {
               setorder={setorder}
             />
           </Grid>
-          {listaproductos.length === 0 ? (
-            <p>No hay productos que coincidan con su busqueda, intente otra vez.</p>
+          {productlist.length === 0 ? (
+            <p>
+              No hay productos que coincidan con su busqueda, intente otra vez.
+            </p>
           ) : visual === "tiles" ? (
             <Grid item xs={9}>
-              {listaproductos.map((prod) => (
-                <Tile key={prod.id} prod={prod} />
+              {productlist.map((prod) => (
+                <Tile key={prod.idProducto} prod={prod} />
               ))}
             </Grid>
           ) : (
             <Fragment>
               <Grid item xs={9}>
-                <div class="card-group">
-                  {listaproductos.map((prod) => (
-                    <MediaCard key={prod.id} prod={prod} />
+                <div className="card-group">
+                  {productlist.map((prod) => (
+                    <MediaCard key={prod.idProducto} prod={prod} />
                   ))}
                 </div>
               </Grid>
