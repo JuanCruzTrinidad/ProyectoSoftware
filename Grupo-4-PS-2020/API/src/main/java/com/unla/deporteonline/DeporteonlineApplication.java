@@ -28,8 +28,8 @@ public class DeporteonlineApplication {
 			http.csrf().disable()
 				.addFilterAfter(new SecurityConfiguration(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/user/login", "/user/newUser", "/user/recoverpw", "/user/resetpw", "/user/contactform", "/category/createCategory").permitAll()
-				.antMatchers(HttpMethod.GET, "/user/login", "/product/allproduct", "/category/allcategories").permitAll()
+				.antMatchers(HttpMethod.POST, "/user/login", "/user/newUser", "/user/recoverpw", "/user/resetpw", "/user/contactform").permitAll()
+				.antMatchers(HttpMethod.GET, "/user/login", "/product/allproduct").permitAll()
 				.anyRequest().authenticated();
 			http.cors();
 		}

@@ -11,19 +11,29 @@ const Categories = () => {
   const history = useHistory();
 
   //Si no esta logeado no debe poder entrar a esta pagina
-  if (localStorage.getItem("token") === null) {
+  const token = localStorage.getItem("token");
+  if (token === null) {
     history.push("/");
   }
 
-  useEffect(() => {
-    apiAxios
-      .get("/category/allcategories")
-      .then(({ data }) => {
-        setlista(data);
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+const getCategoriesAPI = () => {
+  apiAxios
+  .get("/category/allcategories", {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+      "Access-Control-Allow-Headers":
+        "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+      "Content-Type": "application/json",
+      "Authorization": `${token}`
+    },
+  })
+  .then(({ data }) => {
+    setlista(data);
+    console.log(data);
+  })
+  .catch((error) => console.log(error));
+}
 
   const createCategoryAPI = (newcat) => {
     apiAxios
@@ -34,10 +44,50 @@ const Categories = () => {
           "Access-Control-Allow-Headers":
             "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
           "Content-Type": "application/json",
+          "Authorization": `${token}`
         },
       })
       .then(({ data }) => {
-        setlista(data);
+        getCategoriesAPI();
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const updateCategoryAPI = (cat) => {
+
+    console.log(cat);
+    apiAxios
+      .post("/category/updateCategory", cat, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          "Authorization": `${token}`
+        },
+      })
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const deleteCategoryAPI = (catid) => {
+    apiAxios
+      .delete("category/deleteCategory", {
+        params: { idCategory: catid },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          "Authorization": `${token}`
+        },
+      })
+      .then(({ data }) => {
         console.log(data);
       })
       .catch((error) => console.log(error));
@@ -62,9 +112,15 @@ const Categories = () => {
     {
       title: "Nombre",
       field: "name",
+      type: "string",
     },
-    { title: "Taxonomia Google", field: "nameGoogle", type: "text" },
+    { title: "Taxonomia Google", field: "nameGoogle", type: "string" },
   ]);
+
+
+  useEffect(() => {
+    getCategoriesAPI();
+  }, []);
 
   return (
     <div className="container-fluid contenedor">
@@ -88,7 +144,7 @@ const Categories = () => {
               new Promise((resolve, reject) => {
                 setTimeout(() => {
                   createCategoryAPI(newData);
-                  setlista([...lista, newData]);
+                  // setlista([...lista, newData]);
                   resolve();
                 }, 1000);
               }),
@@ -97,8 +153,10 @@ const Categories = () => {
                 setTimeout(() => {
                   const dataUpdate = [...lista];
                   const index = oldData.tableData.id;
+                  newData.idCategory = oldData.idCategory;
                   dataUpdate[index] = newData;
                   setlista([...dataUpdate]);
+                  updateCategoryAPI(newData);
                   resolve();
                 }, 1000);
               }),
@@ -109,6 +167,7 @@ const Categories = () => {
                   const index = oldData.tableData.id;
                   dataDelete.splice(index, 1);
                   setlista([...dataDelete]);
+                  deleteCategoryAPI(oldData.idCategory);
                   resolve();
                 }, 1000);
               }),
