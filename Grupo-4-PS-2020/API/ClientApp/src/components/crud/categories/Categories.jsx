@@ -3,10 +3,12 @@ import MaterialTable from "material-table";
 import "./Categories.css";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
+import Spinner from "../../ui/Spinner";
 
 const Categories = () => {
   //States
-  const [lista, setlista] = useState([]);
+  const [catlist, setcatlist] = useState([]);
+  const [showtable, setshowtable] = useState(false);
 
   const history = useHistory();
 
@@ -16,24 +18,26 @@ const Categories = () => {
     history.push("/");
   }
 
-const getCategoriesAPI = () => {
-  apiAxios
-  .get("/category/allcategories", {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-      "Access-Control-Allow-Headers":
-        "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-      "Content-Type": "application/json",
-      "Authorization": `${token}`
-    },
-  })
-  .then(({ data }) => {
-    setlista(data);
-    console.log(data);
-  })
-  .catch((error) => console.log(error));
-}
+  //Conexion a API
+  const getCategoriesAPI = () => {
+    apiAxios
+      .get("/category/allcategories", {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        setcatlist(data);
+        console.log(data);
+        setshowtable(true);
+      })
+      .catch((error) => console.log(error));
+  };
 
   const createCategoryAPI = (newcat) => {
     apiAxios
@@ -44,7 +48,7 @@ const getCategoriesAPI = () => {
           "Access-Control-Allow-Headers":
             "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
           "Content-Type": "application/json",
-          "Authorization": `${token}`
+          Authorization: `${token}`,
         },
       })
       .then(({ data }) => {
@@ -55,8 +59,6 @@ const getCategoriesAPI = () => {
   };
 
   const updateCategoryAPI = (cat) => {
-
-    console.log(cat);
     apiAxios
       .post("/category/updateCategory", cat, {
         headers: {
@@ -65,7 +67,7 @@ const getCategoriesAPI = () => {
           "Access-Control-Allow-Headers":
             "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
           "Content-Type": "application/json",
-          "Authorization": `${token}`
+          Authorization: `${token}`,
         },
       })
       .then(({ data }) => {
@@ -84,7 +86,7 @@ const getCategoriesAPI = () => {
           "Access-Control-Allow-Headers":
             "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
           "Content-Type": "application/json",
-          "Authorization": `${token}`
+          Authorization: `${token}`,
         },
       })
       .then(({ data }) => {
@@ -92,14 +94,6 @@ const getCategoriesAPI = () => {
       })
       .catch((error) => console.log(error));
   };
-
-  // const list = [
-  //   { id: 1, name: "Zapatillas", nameGoogle: "Zapatos" },
-  //   { id: 2, name: "Botines", nameGoogle: "Botas" },
-  //   { id: 3, name: "Camisetas", nameGoogle: "Camisas" },
-  // ];
-
-  // const [data, setData] = useState(list);
 
   const [columns, setColumns] = useState([
     {
@@ -117,18 +111,18 @@ const getCategoriesAPI = () => {
     { title: "Taxonomia Google", field: "nameGoogle", type: "string" },
   ]);
 
-
   useEffect(() => {
     getCategoriesAPI();
   }, []);
 
-  return (
+  //Se muestra la tabla cuando en la primer carga de la pag se cargue la tabla.
+  return showtable ? (
     <div className="container-fluid contenedor">
       <div className="p-5">
         <MaterialTable
           title="Categorias"
           columns={columns}
-          data={lista}
+          data={catlist}
           options={{
             rowStyle: {
               backgroundColor: "#E0F6EF",
@@ -138,42 +132,47 @@ const getCategoriesAPI = () => {
               color: "#001014",
             },
             actionsColumnIndex: 2,
+            pageSize: 10
           }}
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
+                createCategoryAPI(newData);
                 setTimeout(() => {
-                  createCategoryAPI(newData);
-                  // setlista([...lista, newData]);
+                  // setcatlist([...catlist, newData]);
                   resolve();
-                }, 1000);
+                }, 6500);
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
+                const dataUpdate = [...catlist];
+                const index = oldData.tableData.id;
+                newData.idCategory = oldData.idCategory;
+                dataUpdate[index] = newData;
+                setcatlist([...dataUpdate]);
+                updateCategoryAPI(newData);
                 setTimeout(() => {
-                  const dataUpdate = [...lista];
-                  const index = oldData.tableData.id;
-                  newData.idCategory = oldData.idCategory;
-                  dataUpdate[index] = newData;
-                  setlista([...dataUpdate]);
-                  updateCategoryAPI(newData);
                   resolve();
-                }, 1000);
+                }, 1500);
               }),
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
+                const dataDelete = [...catlist];
+                const index = oldData.tableData.id;
+                dataDelete.splice(index, 1);
+                setcatlist([...dataDelete]);
+                deleteCategoryAPI(oldData.idCategory);
                 setTimeout(() => {
-                  const dataDelete = [...lista];
-                  const index = oldData.tableData.id;
-                  dataDelete.splice(index, 1);
-                  setlista([...dataDelete]);
-                  deleteCategoryAPI(oldData.idCategory);
                   resolve();
-                }, 1000);
+                }, 1500);
               }),
           }}
         />
       </div>
+    </div>
+  ) : (
+    <div style={{ padding: "200px" }}>
+      <Spinner />
     </div>
   );
 };
