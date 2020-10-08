@@ -7,6 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles({
   root: {
@@ -22,12 +23,13 @@ const useStyles = makeStyles({
 
 export default function MediaCard({ prod }) {
   const classes = useStyles();
+  const history = useHistory();
 
   const { idProducto, nombre, precio, precioOferta, imagen } = prod;
 
   return (
     <Card className={classes.root}>
-      <CardActionArea>
+      <CardActionArea onClick={(e) => history.push("/product")}>
         <CardMedia className={classes.media} image={imagen} title={nombre} />
         <CardContent>
           {precioOferta === 0 ? (

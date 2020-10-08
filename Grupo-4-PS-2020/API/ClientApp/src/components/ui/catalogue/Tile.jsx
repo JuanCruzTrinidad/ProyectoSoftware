@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ButtonBase, Grid, Paper, Typography } from "@material-ui/core";
 import "./catalogue.css";
 import CardActionArea from "@material-ui/core/CardActionArea";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,14 +27,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Tile = ({ prod }) => {
+  const history = useHistory();
   const classes = useStyles();
 
   const { idProducto, nombre, precio, precioOferta, imagen } = prod;
 
   return (
     <Paper className={classes.paper}>
-      <CardActionArea>
-        <Grid container spacing={5}>
+      <CardActionArea
+        onClick = {(e) => history.push('/product')}
+      >
+        <Grid container>
           <Grid item>
             <ButtonBase className={classes.image}>
               <img
@@ -44,7 +48,7 @@ const Tile = ({ prod }) => {
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
+            <Grid item xs container direction="column">
               <Grid item xs>
                 <Typography
                   gutterBottom

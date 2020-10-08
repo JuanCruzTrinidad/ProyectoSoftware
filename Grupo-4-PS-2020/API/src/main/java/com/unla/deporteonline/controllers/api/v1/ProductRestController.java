@@ -69,11 +69,13 @@ public class ProductRestController {
 	public List<Producto> findPromotion() {
 		return productService.findPromotion();
 	}
+
 	//traer productos por Subcategoria
 	@GetMapping("/productBySubcategory") 
 	public List<Producto> findProductBySubcategory(@RequestParam("idSubcategory") int idSubcategory) {
 		return productService.findProductBySubcategory(idSubcategory);
 	}
+	
 	//traer productos por Categoria
 	@GetMapping("/productByCategory") 
 	public List<Producto> findProductBycategory(@RequestParam("idCategory") int idCategory) {
