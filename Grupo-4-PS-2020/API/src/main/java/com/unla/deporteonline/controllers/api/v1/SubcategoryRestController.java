@@ -58,5 +58,10 @@ public class SubcategoryRestController {
 	public List<Subcategory> findAll(){
 		return subcategoryService.findAll();
 	}
+	//traer subcategorias por categoria
+	@GetMapping("/subcategoryByCategory") 
+		public List<Subcategory> findSubcategoryByCategory(@RequestParam("idCategory") int idCategory) {
+			return subcategoryService.findSubcategoryByCategory(idCategory);
+		}
 
 }

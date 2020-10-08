@@ -12,5 +12,7 @@ public interface ISubcategoryService {
 	public void deleteSubcategory(Integer subcategoryId);
 	
 	public List<Subcategory> findAll();
+
+	public List<Subcategory> findSubcategoryByCategory(final int idCategory);
     
 }

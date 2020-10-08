@@ -13,4 +13,9 @@ import com.unla.deporteonline.entities.*;
 @Repository("ValueRepository") 
 public interface IValueRepository extends JpaRepository<Valoracion, Serializable> {
 
+
+    @Query("SELECT u FROM Valoracion u WHERE u.fk_producto = :fk_producto")
+	public abstract List<Valoracion> findByProduct(@Param("fk_producto") int fk_producto);
+    
+
 }

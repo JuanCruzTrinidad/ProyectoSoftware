@@ -39,5 +39,9 @@ public class ValueRestController {
 	    System.out.println("Value: " + createValue.toString());
 	    return valueService.saveValue(createValue);
     }
-
+	//traer valoracion por id producto
+	@GetMapping("/ValueProduct") 
+	public List<Valoracion> findProductById(@RequestParam("fk_producto") int fk_producto) {
+		return valueService.findByProduct(fk_producto);
+	}
 }
