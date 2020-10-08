@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -20,28 +20,35 @@ const useStyles = makeStyles({
   },
 });
 
-export default function MediaCard({prod}) {
+export default function MediaCard({ prod }) {
   const classes = useStyles();
 
-  const {id, name, price} = prod;
+  const { idProducto, nombre, precio, precioOferta, imagen } = prod;
 
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image="https://http2.mlstatic.com/D_NQ_NP_2X_873920-MLA41133435494_032020-F.webp"
-          title={name}
-        />
+        <CardMedia className={classes.media} image={imagen} title={nombre} />
         <CardContent>
-          <Typography color="textSecondary">
-            <del>$ 21.50</del>
-          </Typography>
-          <Typography gutterBottom variant="h5" component="h2">
-            $ {price}
-          </Typography>
+          {precioOferta === 0 ? (
+            <Fragment>
+              <div className="mb-4"></div>
+              <Typography gutterBottom variant="h5" component="h2">
+                ${precio}
+              </Typography>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <Typography color="textSecondary">
+                <del>${precioOferta}</del>
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
+                ${precio}
+              </Typography>
+            </Fragment>
+          )}
           <Typography variant="body1" color="textSecondary">
-            {name}
+            {nombre}
           </Typography>
         </CardContent>
       </CardActionArea>

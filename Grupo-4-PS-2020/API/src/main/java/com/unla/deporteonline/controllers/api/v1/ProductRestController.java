@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/product")
 public class ProductRestController {
 
@@ -27,45 +27,45 @@ public class ProductRestController {
 	@Qualifier("productService")
 	private IProductService productService;
 
-//create product
-@PostMapping(value ="/createProduct", consumes="application/json")
-public Object createProduct(@RequestBody Producto createProduct) {
-    createProduct.setVisible(true);
-	System.out.println("Product: " + createProduct.toString());
-	return productService.saveProduct(createProduct);
-}
+	// create product
+	@PostMapping(value = "/createProduct", consumes = "application/json")
+	public Object createProduct(@RequestBody Producto createProduct) {
+		createProduct.setVisible(true);
+		System.out.println("Product: " + createProduct.toString());
+		return productService.saveProduct(createProduct);
+	}
 
-//update product
-@PostMapping(value ="/updateProduct", consumes="application/json")
-public Object updateProduct(@RequestBody Producto createProduct) {
-	createProduct.setVisible(true);
-    System.out.println("update product: " + createProduct.toString());
-    return productService.saveProduct(createProduct);
-}
+	// update product
+	@PostMapping(value = "/updateProduct", consumes = "application/json")
+	public Object updateProduct(@RequestBody Producto createProduct) {
+		createProduct.setVisible(true);
+		System.out.println("update product: " + createProduct.toString());
+		return productService.saveProduct(createProduct);
+	}
 
-
-//Delete Product
-@PostMapping(value ="/deleteProduct")
+	// Delete Product
+	@PostMapping(value = "/deleteProduct")
 	public String deleteProduct(@RequestParam("idProducto") int id) {
-        Producto product = productService.findProductById(id);
-        product.setVisible(false);
-        productService.saveProduct(product);
+		Producto product = productService.findProductById(id);
+		product.setVisible(false);
+		productService.saveProduct(product);
 		return ("usuario eliminado");
 	}
-//traer producto por id
-@GetMapping("/ProductId") 
+
+	// traer producto por id
+	@GetMapping("/ProductId")
 	public Producto findProductById(@RequestParam("idProducto") int id) {
 		return productService.findProductById(id);
 	}
 
-
-//traer todos los productors
-@GetMapping("/allproduct")
+	// traer todos los productors
+	@GetMapping("/allproduct")
 	public List<Producto> findAllProduct() {
 		return productService.findAllProduct();
 	}
-//traer todas las promociones
-@GetMapping("/allPromotion") 
+
+	// traer todas las promociones
+	@GetMapping("/allPromotion")
 	public List<Producto> findPromotion() {
 		return productService.findPromotion();
 	}

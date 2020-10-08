@@ -81,6 +81,14 @@ export const NavbarDU = () => {
                 >
                   Subcategoria
                 </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.push("/admin/products");
+                  }}
+                >
+                  Producto
+                </NavDropdown.Item>
               </NavDropdown>
             ) : null}
           </Nav>

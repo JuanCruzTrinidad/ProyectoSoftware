@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/subcategory")
 public class SubcategoryRestController {
 
@@ -40,12 +40,11 @@ public class SubcategoryRestController {
 		return subcategoryService.saveSubcategory(updateSubcategory);
 	}
 
-
 	//Delete Subcategory
 	@DeleteMapping(value ="/deleteSubcategory")
-	public String deleteSubcategoryPhysical(@RequestParam("idSubCategory") Integer idSubcategory){
+	public String deleteSubcategoryPhysical(@RequestParam("idSubcategory") Integer idSubcategory){
 		subcategoryService.deleteSubcategory(idSubcategory);
-		return ("Subcategoria eliminado");
+		return ("Subcategoria eliminada");
 	}
 
 	//traer subcategoria por id
@@ -64,6 +63,5 @@ public class SubcategoryRestController {
 		public List<Subcategory> findSubcategoryByCategory(@RequestParam("idCategory") int idCategory) {
 			return subcategoryService.findSubcategoryByCategory(idCategory);
 		}
-
 
 }

@@ -63,7 +63,7 @@ function App() {
           <Route exact strict path="/catalogue">
             <Catalogue />
           </Route>
-          <Route exact stric path="/Product">
+          <Route exact stric path="/product">
             <OneProduct/>
           </Route>
         </Switch>

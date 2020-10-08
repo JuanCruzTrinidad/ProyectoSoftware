@@ -49,9 +49,6 @@ const Sidebar = (props) => {
               <Dropdown.Item onClick={(e) => setorder("Menor precio")}>
                 Menor precio
               </Dropdown.Item>
-              <Dropdown.Item onClick={(e) => setorder("Default")}>
-                Default
-              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
