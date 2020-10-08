@@ -113,6 +113,7 @@ const Categories = () => {
 
   useEffect(() => {
     getCategoriesAPI();
+    // eslint-disable-next-line
   }, []);
 
   //Se muestra la tabla cuando en la primer carga de la pag se cargue la tabla.

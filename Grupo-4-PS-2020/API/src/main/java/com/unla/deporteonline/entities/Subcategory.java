@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -24,6 +25,7 @@ public class Subcategory {
 
     @ManyToOne //(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idCategory")
+    @JsonIgnoreProperties ("subcategorys")
     private Category category;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "subcategory")
@@ -70,7 +72,7 @@ public class Subcategory {
         this.nameGoogle = nameGoogle;
     }
 
-    @JsonBackReference (value = "subcat")
+    //@JsonBackReference (value = "subcat")
     public Category getCategory() {
         return category;
     }

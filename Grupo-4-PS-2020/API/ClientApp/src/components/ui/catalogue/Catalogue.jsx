@@ -13,6 +13,7 @@ import MediaCard from "./Card";
 import Search from "./Search";
 import PaginationOutlined from "./PaginationOutlined";
 import { apiAxios } from "../../../config/axios";
+import Spinner from "../../ui/Spinner";
 
 const Catalogue = () => {
   //States
@@ -20,8 +21,10 @@ const Catalogue = () => {
   const [search, setsearch] = useState("");
   const [order, setorder] = useState("Default");
   const [productlist, setproductlist] = useState([]);
+  const [categorieslist, setcategorieslist] = useState([]);
+  const [show, setshow] = useState(false);
 
-  useEffect(() => {
+  const getProductsAPI = () => {
     apiAxios
       .get("/product/allproduct")
       .then(({ data }) => {
@@ -29,7 +32,26 @@ const Catalogue = () => {
         console.log(data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  };
+
+  const getCategoriesAPI = () => {
+    apiAxios
+      .get("/category/allcategories", {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+        },
+      })
+      .then(({ data }) => {
+        setcategorieslist(data);
+        console.log(data);
+        setshow(true);
+      })
+      .catch((error) => console.log(error));
+  };
 
   const listacategorias = [
     { id: 1, name: "Categoria1" },
@@ -49,7 +71,12 @@ const Catalogue = () => {
     productlist.sort((a, b) => b.nombre.localeCompare(a.nombre));
   }
 
-  return (
+  useEffect(() => {
+    getProductsAPI();
+    getCategoriesAPI();
+  }, [])
+
+  return show ? (
     <div className="contenedor">
       <Container maxWidth={"lg"} className="tilescolumn">
         <Grid container spacing={1}>
@@ -58,7 +85,7 @@ const Catalogue = () => {
             <Sidebar
               visual={visual}
               setvisual={setvisual}
-              listacategorias={listacategorias}
+              categorieslist={categorieslist}
               order={order}
               setorder={setorder}
             />
@@ -89,6 +116,10 @@ const Catalogue = () => {
           <PaginationOutlined />
         </Grid>
       </Container>
+    </div>
+  ) : (
+    <div style={{ padding: "200px" }}>
+      <Spinner />
     </div>
   );
 };
