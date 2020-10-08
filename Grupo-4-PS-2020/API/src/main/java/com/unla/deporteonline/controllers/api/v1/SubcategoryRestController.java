@@ -45,7 +45,7 @@ public class SubcategoryRestController {
 	@DeleteMapping(value ="/deleteSubcategory")
 	public String deleteSubcategoryPhysical(@RequestParam("idSubCategory") Integer idSubcategory){
 		subcategoryService.deleteSubcategory(idSubcategory);
-		return ("Categoria eliminado");
+		return ("Subcategoria eliminado");
 	}
 
 	//traer subcategoria por id
@@ -59,6 +59,11 @@ public class SubcategoryRestController {
 	public List<Subcategory> findAll(){
 		return subcategoryService.findAll();
 	}
+	//traer subcategorias por categoria
+	@GetMapping("/subcategoryByCategory") 
+		public List<Subcategory> findSubcategoryByCategory(@RequestParam("idCategory") int idCategory) {
+			return subcategoryService.findSubcategoryByCategory(idCategory);
+		}
 
 
 }

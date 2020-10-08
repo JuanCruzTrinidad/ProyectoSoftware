@@ -19,4 +19,8 @@ public class ValueService implements IValueService {
 	public Object saveValue(final Valoracion value) {
 		return ivalueRepository.save(value);
 	}
+
+	public List<Valoracion> findByProduct(final int fk_producto) {
+		return ivalueRepository.findByProduct(fk_producto);
+	}
 }

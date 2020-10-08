@@ -31,4 +31,8 @@ public class SubcategoryService implements ISubcategoryService {
 		return isubcategoryRepository.findAll();
 	}
 
+	public List<Subcategory> findSubcategoryByCategory(final int idCategory){
+		return isubcategoryRepository.findSubcategoryByCategory(idCategory);
+	}
+
 }
