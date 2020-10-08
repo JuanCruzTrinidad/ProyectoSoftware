@@ -25,7 +25,7 @@ public class Subcategory {
 
     @ManyToOne //(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idCategory")
-    @JsonIgnoreProperties ( "subcategorys" )
+    @JsonIgnoreProperties ("subcategorys")
     private Category category;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "subcategory")
