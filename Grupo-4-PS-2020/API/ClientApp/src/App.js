@@ -18,6 +18,7 @@ import SubCategories from './components/crud/categories/SubCategories';
 import { ProductsForm } from './components/crud/products/productsForm';
 import Catalogue from './components/ui/catalogue/Catalogue';
 import { OneProduct } from './components/ui/products/OneProduct';
+import Cart from './components/ui/cart/Cart';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -65,6 +66,9 @@ function App() {
           </Route>
           <Route exact stric path="/product">
             <OneProduct/>
+          </Route>
+          <Route exact stric path="/cart">
+            <Cart />
           </Route>
         </Switch>
         <Footer />
