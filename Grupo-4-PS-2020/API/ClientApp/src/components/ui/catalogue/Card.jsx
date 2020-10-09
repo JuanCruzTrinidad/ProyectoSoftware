@@ -29,7 +29,7 @@ export default function MediaCard({ prod }) {
 
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={(e) => history.push("/product")}>
+      <CardActionArea onClick={(e) => history.push(`/product/${idProducto}`)}>
         <CardMedia className={classes.media} image={imagen} title={nombre} />
         <CardContent>
           {precioOferta === 0 ? (

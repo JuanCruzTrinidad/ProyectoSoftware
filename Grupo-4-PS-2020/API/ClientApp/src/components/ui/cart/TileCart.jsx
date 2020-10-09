@@ -3,7 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ButtonBase, Grid, Paper, Typography } from "@material-ui/core";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { useHistory } from "react-router";
-import Quantity from './Quantity';
+import Quantity from "./Quantity";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,16 +27,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TileCart = ({ prod }) => {
+const TileCart = (props) => {
   const history = useHistory();
   const classes = useStyles();
 
-  //const { idProducto, nombre, precio, precioOferta, imagen } = prod;
-  const idProducto = 1;
-  const nombre = "manolo";
-  const precio = 2;
-  const precioOferta = 3;
-  const imagen = "hola";
+  const { idProducto, nombre, precio, precioOferta, imagen } = props;
+
+  const handleClickDelete = () => {
+    let cartlocalstorage = localStorage.getItem("cart");
+    cartlocalstorage = JSON.parse(cartlocalstorage);
+
+    cartlocalstorage = cartlocalstorage.filter(prod => prod.idProducto != idProducto);
+
+    localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
+    window.location.reload();
+  };
 
   return (
     <Paper className={classes.paper}>
@@ -49,17 +55,31 @@ const TileCart = ({ prod }) => {
           <Grid xs container direction="column" justify="center">
             <Typography
               variant="h4"
-              style={{cursor: "pointer" }}
-              onClick={(e) => history.push("/product")}
+              style={{ cursor: "pointer" }}
+              onClick={(e) => history.push(`/product/${idProducto}`)}
             >
               {nombre}
             </Typography>
           </Grid>
-          <Grid xs={6} container  direction="column" alignItems="center" justify="center" >
+          <Grid
+            xs={6}
+            container
+            direction="column"
+            alignItems="center"
+            justify="center"
+          >
             <Quantity />
           </Grid>
-          
-          <Grid item className="pt-3">
+
+          <Grid item>
+            <div
+              style={{ textAlign: "end", paddingBottom: "15px", color: "red" }}
+            >
+              <CloseIcon
+                style={{ cursor: "pointer" }}
+                onClick={(e) => handleClickDelete()}
+              />
+            </div>
             {precioOferta === 0 ? (
               <Fragment>
                 <div className="mb-4"></div>

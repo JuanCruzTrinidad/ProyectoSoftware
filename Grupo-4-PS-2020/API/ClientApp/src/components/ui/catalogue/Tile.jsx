@@ -35,7 +35,7 @@ const Tile = ({ prod }) => {
   return (
     <Paper className={classes.paper}>
       <CardActionArea
-        onClick = {(e) => history.push('/product')}
+        onClick = {(e) => history.push(`/product/${idProducto}`)}
       >
         <Grid container>
           <Grid item>

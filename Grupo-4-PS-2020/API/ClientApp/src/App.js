@@ -64,7 +64,7 @@ function App() {
           <Route exact strict path="/catalogue">
             <Catalogue />
           </Route>
-          <Route exact stric path="/product">
+          <Route exact stric path="/product/:idproduct">
             <OneProduct/>
           </Route>
           <Route exact stric path="/cart">
