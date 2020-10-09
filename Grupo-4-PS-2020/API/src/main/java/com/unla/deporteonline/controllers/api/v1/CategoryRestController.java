@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.unla.deporteonline.entities.Category;
 import com.unla.deporteonline.services.ICategoryService;
-import com.unla.deporteonline.repositories.ICategoryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
