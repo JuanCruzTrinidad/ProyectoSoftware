@@ -42,6 +42,10 @@ public class ProductService implements IProductService {
 	public List<Producto> findProductByCategory(final int idCategory){
 		return iproductRepository.findProductByCategory(idCategory);
 	}
+
+	public List<Producto> findProductByName(final String nombre){
+		return iproductRepository.findProductByName(nombre);
+	}
 	/*
 	public Object agregarAtributo(int idProducto, final Atributos atributos){
 		Producto aux=null;

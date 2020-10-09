@@ -23,7 +23,7 @@ public class Direction {
     private int flat;
 
     @Column (name= "apartment")
-    private int apartment;
+    private String apartment;
 
     @Column (name= "postalCode", nullable = false)
     private int postalCode;
@@ -40,7 +40,7 @@ public class Direction {
     public Direction() {
     }
 
-    public Direction(int idDirection, String street, int number, int flat, int apartment, int postalCode,
+    public Direction(int idDirection, String street, int number, int flat, String apartment, int postalCode,
             String location, String province) {
         this.idDirection = idDirection;
         this.street = street;
@@ -52,7 +52,7 @@ public class Direction {
         this.province = province;
     }
 
-    public Direction(int idDirection, String street, int number, int flat, int apartment, int postalCode,
+    public Direction(int idDirection, String street, int number, int flat, String apartment, int postalCode,
             String location, String province, Set<Pedido> directionPedido) {
         this.idDirection = idDirection;
         this.street = street;
@@ -97,11 +97,11 @@ public class Direction {
         this.flat = flat;
     }
 
-    public int getApartment() {
+    public String getApartment() {
         return apartment;
     }
 
-    public void setApartment(int apartment) {
+    public void setApartment(String apartment) {
         this.apartment = apartment;
     }
 
