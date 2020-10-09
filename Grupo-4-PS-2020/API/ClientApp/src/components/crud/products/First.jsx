@@ -1,8 +1,9 @@
 import { Breadcrumbs, Button, Card, CardActions, CardContent, Container, Grid, makeStyles, MobileStepper, TextField, Typography, useTheme } from '@material-ui/core'
 import { Autorenew, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
+import { apiAxios } from '../../../config/axios';
 
-export const First = ( { nextStep, product, setProduct }) => {
+export const First = ({ nextStep, product, setProduct }) => {
 
     const images = [
         {
@@ -25,29 +26,9 @@ export const First = ( { nextStep, product, setProduct }) => {
         }
     ];
 
-    const categories = [
-        {
-            value: 1,
-            label: 'Zapatillas',
-        },
-        {
-            value: 2,
-            label: 'Remeras',
-        }
-    ];
-
-    const subCategories = [
-        {
-            value: 1,
-            label: 'Botines',
-        },
-        {
-            value: 2,
-            label: 'Boquita',
-        }
-    ];
-
     const [activeStep, setActiveStep] = React.useState(0);
+    const [categorieslist, setcategorieslist] = useState([]);
+    const [subCategorieslist, setSubCategorieslist] = useState([]);
     const theme = useTheme();
     const maxSteps = images.length;
 
@@ -58,6 +39,43 @@ export const First = ( { nextStep, product, setProduct }) => {
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+
+    const getCategoriesAPI = () => {
+        apiAxios
+            .get("/category/allcategories", {
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+                    "Access-Control-Allow-Headers":
+                        "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+                    "Content-Type": "application/json",
+                },
+            })
+            .then(({ data }) => {
+                setcategorieslist(data);
+                console.log(data);
+            })
+            .catch((error) => console.log(error));
+    };
+
+    const getSubCategoriesAPI = (idCategory) => {
+        console.log(idCategory)
+        apiAxios
+            .get(`/subcategory/subcategoryByCategory?idCategory=${idCategory}`,  {
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+                    "Access-Control-Allow-Headers":
+                        "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+                    "Content-Type": "application/json",
+                },
+            })
+            .then(({ data }) => {
+                setSubCategorieslist(data);
+            })
+            .catch((error) => console.log(error));
+    };
+
 
     const useStyles = makeStyles({
         root: {
@@ -86,8 +104,15 @@ export const First = ( { nextStep, product, setProduct }) => {
     const classes = useStyles();
 
     useEffect(() => {
+        console.log(product)
     }, [product])
 
+    useEffect(() => {
+        getCategoriesAPI()
+    }, [])
+    useEffect(() => {
+        getSubCategoriesAPI(product.category)
+    }, [product.category])
 
     return (
         <Container maxwidht="md" spacing={5}>
@@ -140,16 +165,17 @@ export const First = ( { nextStep, product, setProduct }) => {
                                             label="Categoría"
                                             fullWidth
                                             value={product.category}
-                                            onChange={e => setProduct({ ...product, category: e.target.value })}
+                                            onChange={e => setProduct({ ...product, category: parseInt(e.target.value,10) })}
                                             SelectProps={{
                                                 native: true,
                                             }}
                                             variant="outlined"
                                             margin="dense"
                                         >
-                                            {categories.map((option) => (
-                                                <option key={option.value} value={option.value}>
-                                                    {option.label}
+                                            <option key={"categoryNull"} value="categoryNull"></option>
+                                            {categorieslist.map((option) => (
+                                                <option key={option.idCategory} value={option.idCategory}>
+                                                    {option.name}
                                                 </option>
                                             ))}
                                         </TextField>
@@ -168,9 +194,10 @@ export const First = ( { nextStep, product, setProduct }) => {
                                             variant="outlined"
                                             margin="dense"
                                         >
-                                            {subCategories.map((option) => (
-                                                <option key={option.value} value={option.value}>
-                                                    {option.label}
+                                            <option key={"subcategoryNull"} value="subcategoryNull"></option>
+                                            {subCategorieslist.map((option) => (
+                                                <option key={option.idSubcategory} value={option.idSubcategory}>
+                                                    {option.name}
                                                 </option>
                                             ))}
                                         </TextField>
@@ -216,7 +243,7 @@ export const First = ( { nextStep, product, setProduct }) => {
                                             margin="dense"
                                         >
                                             {currencies.map((option) => (
-                                                <option key={option.value} value={option.value}>
+                                                <option key={option.id} value={option.id}>
                                                     {option.label}
                                                 </option>
                                             ))}
@@ -256,23 +283,23 @@ export const First = ( { nextStep, product, setProduct }) => {
                         <CardContent>
                             <Grid container spacing={3}>
                                 <Breadcrumbs aria-label="breadcrumb">
-                                    {categories.map(x => {
-                                        if (x.value == product.category) {
-                                            return (<Typography color="textPrimary">{x.label}</Typography>)
+                                    {categorieslist.map(x => {
+                                        if (x.idCategory == product.category) {
+                                            return (<Typography color="textPrimary">{x.name}</Typography>)
                                         }
                                     })}
-                                    {subCategories.map(x => {
-                                        if (x.value == product.subcategory) {
-                                            return (<Typography color="textPrimary">{x.label}</Typography>)
+                                    {subCategorieslist.map(x => {
+                                        if (x.idSubcategory == product.subcategory) {
+                                            return (<Typography color="textPrimary">{x.name}</Typography>)
                                         }
                                     })}
                                     <Typography color="textPrimary">{product.name}</Typography>
                                 </Breadcrumbs>
                             </Grid>
-                            <Grid container spacing={3} style={{marginTop: 20}} justify="center">
+                            <Grid container spacing={3} style={{ marginTop: 20 }} justify="center">
                                 {
-                                    activeStep === 0 ? 
-                                        ( <img
+                                    activeStep === 0 ?
+                                        (<img
                                             className={classes.img}
                                             src={images[0].imgPath}
                                             alt={images[0].label}
@@ -280,32 +307,32 @@ export const First = ( { nextStep, product, setProduct }) => {
                                         )
                                         :
                                         (
-                                            <iframe width="400" height="250" marginTop="20" 
-                                            src={images[1].imgPath} 
-                                            frameborder="0" 
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                            <iframe width="400" height="250" marginTop="20"
+                                                src={images[1].imgPath}
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                         )
                                 }
-                                { product.urlImage !== '' ? (
+                                {product.urlImage !== '' ? (
                                     <MobileStepper
-                                    steps={maxSteps}
-                                    position="static"
-                                    variant="text"
-                                    activeStep={activeStep}
-                                    nextButton={
-                                        <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-                                            Siguiente
+                                        steps={maxSteps}
+                                        position="static"
+                                        variant="text"
+                                        activeStep={activeStep}
+                                        nextButton={
+                                            <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+                                                Siguiente
                                     {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-                                        </Button>
-                                    }
-                                    backButton={
-                                        <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-                                            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                                            </Button>
+                                        }
+                                        backButton={
+                                            <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                                                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
                                     Anterior
                                     </Button>
-                                    }/>
-                                ): (<></>)
-                                } 
+                                        } />
+                                ) : (<></>)
+                                }
                             </Grid>
                             <Grid container spacing={3}>
                                 <Typography variant="body2" gutterBottom>
@@ -313,13 +340,13 @@ export const First = ( { nextStep, product, setProduct }) => {
                                 </Typography>
                             </Grid>
                             <Grid container spacing={3} justify="flex-end">
-                                    {
-                                        product.price !== 0 &&(
-                                            <Typography variant="h4" gutterBottom>
+                                {
+                                    product.price !== 0 && (
+                                        <Typography variant="h4" gutterBottom>
                                             ${product.price}
-                                            </Typography>
-                                        )
-                                    }
+                                        </Typography>
+                                    )
+                                }
                             </Grid>
                         </CardContent>
                     </Card>

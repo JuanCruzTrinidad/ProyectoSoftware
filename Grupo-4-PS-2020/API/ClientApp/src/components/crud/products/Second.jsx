@@ -3,16 +3,20 @@ import { EditAttributes } from '@material-ui/icons';
 import MaterialTable from 'material-table';
 import React, { useEffect, useState } from 'react'
 
-export const Second = ({previousStep, nextStep, setatributes, atributes}) => {
+export const Second = ({previousStep, nextStep, setatributes, atributes, handleSubmit}) => {
 
-    const colors = { 1:"Azul", 2: "Rojo",3: "Amarillo" };
-	const sizes = {  1: "XL", 2: "L", 3: "M"  };
+    // const colors = { 1:"Azul", 2: "Rojo",3: "Amarillo" };
+	// const sizes = {  1: "XL", 2: "L", 3: "M"  };
 
 	const [data, setData] = useState([]);	
     const [columns, setColumns] = useState([
-        { title: "Color", field: "color", lookup:colors},
-		{ title: "Talle", field: "size", lookup:sizes},
-		{title: "Cantidad", field: "count", type:"number"}
+        { title: "Color", field: "color"},
+		{ title: "Talle", field: "size"},
+		{title: "Cantidad", field: "count", type:"number"},
+		{title: 'Peso', field: 'weight', type: "number"},
+		{title: 'Ancho', field: 'width', type: "number"},
+		{title: 'Alto', field: 'heigth', type: "number"},
+		{title: 'Profundidad', field: 'depth', type: "number"}
     ]);
 	
 	useEffect(() => {
@@ -23,19 +27,21 @@ export const Second = ({previousStep, nextStep, setatributes, atributes}) => {
 			data.map( d => {
 			variable.push({
 				idproduct: 0,
-				color: colors[parseInt(d.color, 10)],
-				size:  sizes[parseInt(d.size, 10)],
+				color: d.color,
+				size:  d.size,
 				count: parseInt(d.count, 10),
-				sku: '' })
+				weight: parseFloat(d.weight, 10),
+				width: parseFloat(d.width, 10),
+				heigth: parseFloat(d.heigth, 10),
+				depth: parseFloat(d.depth, 10)})
 			})
-
 		setatributes(variable);
 		console.log(atributes)
 		}
 	}, [data])
 
     return (
-        <Container maxwidht="md" spacing={5} style={{marginTop:20, marginLeft: 100}}>
+        <Container maxwidht="md" spacing={5} style={{marginTop:20}}>
             <Grid container spacing={4} justify="center">
                 <MaterialTable
 					title="Talle - Color"
@@ -50,9 +56,9 @@ export const Second = ({previousStep, nextStep, setatributes, atributes}) => {
 							backgroundColor: "#C8EFE3",
 							color: "#001014",
 						},
-						actionsColumnIndex: 3
+						actionsColumnIndex: -1
 					}}
-					style={{width: 700}}
+					// style={{width: 700}}
 					editable={{
 						onRowAdd: (newData) =>
 							new Promise((resolve, reject) => {
@@ -99,9 +105,9 @@ export const Second = ({previousStep, nextStep, setatributes, atributes}) => {
 				<Grid item xs={4}>
 				<Button color="primary" variant="outlined" fullWidth onClick={e => {
 						e.preventDefault();
-						nextStep();
+						handleSubmit();
 					}}>
-						Siguiente
+						Finalizar
 					</Button>
 				</Grid>
 			</Grid>
