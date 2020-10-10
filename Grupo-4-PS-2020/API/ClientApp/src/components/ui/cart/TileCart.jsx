@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ButtonBase, Grid, Paper, Typography } from "@material-ui/core";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -28,19 +28,61 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TileCart = (props) => {
+  const {
+    idProducto,
+    nombre,
+    precio,
+    precioOferta,
+    imagen,
+    atributoselecc,
+  } = props;
+
   const history = useHistory();
   const classes = useStyles();
 
-  const { idProducto, nombre, precio, precioOferta, imagen } = props;
+  let cartlocalstorage = localStorage.getItem("cart");
+  cartlocalstorage = JSON.parse(cartlocalstorage);
+  const cartcant = cartlocalstorage.filter(
+    (prod) => prod.idProducto === idProducto
+  )[0].cant;
+
+  const [cant, setcant] = useState(cartcant);
 
   const handleClickDelete = () => {
     let cartlocalstorage = localStorage.getItem("cart");
     cartlocalstorage = JSON.parse(cartlocalstorage);
 
-    cartlocalstorage = cartlocalstorage.filter(prod => prod.idProducto != idProducto);
+    cartlocalstorage = cartlocalstorage.filter(
+      (prod) => prod.idProducto != idProducto
+    );
 
     localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
     window.location.reload();
+  };
+
+  const handleChangeCant = () => {
+    let cartlocalstorage = localStorage.getItem("cart");
+    cartlocalstorage = JSON.parse(cartlocalstorage);
+    cartlocalstorage = cartlocalstorage.filter(
+      (prod) => prod.idProducto !== idProducto
+    );
+
+    const auxprod = {
+      idProducto,
+      nombre,
+      precio,
+      precioOferta,
+      imagen,
+      atributoselecc,
+      cant,
+    };
+
+    if (cartlocalstorage === []) {
+      localStorage.setItem("cart", JSON.stringify([auxprod]));
+    } else {
+      cartlocalstorage.push(auxprod);
+      localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
+    }
   };
 
   return (
@@ -68,7 +110,11 @@ const TileCart = (props) => {
             alignItems="center"
             justify="center"
           >
-            <Quantity />
+            <Quantity
+              cant={cant}
+              setcant={setcant}
+              handleChangeCant={handleChangeCant}
+            />
           </Grid>
 
           <Grid item>
