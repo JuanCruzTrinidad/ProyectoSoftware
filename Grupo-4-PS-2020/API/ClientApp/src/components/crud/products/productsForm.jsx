@@ -21,27 +21,66 @@ export const ProductsForm = () => {
         ...state,
         SW,
     });
-
-    const createProductAPI = (newProduct) => {
+    const token = localStorage.getItem("token");
+    const createProductAPI = (createProduct) => {
         apiAxios
-          .post("/product/createProduct", newProduct, {
+          .post("/product/createProduct", createProduct, {
             headers: {
               "Access-Control-Allow-Origin": "*",
               "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
               "Access-Control-Allow-Headers":
                 "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
               "Content-Type": "application/json",
-            //   Authorization: `${token}`,
+               Authorization: `${token}`,
             },
           })
           .then(({ data }) => {
-            console.log(data);
+            let atributoslist = [];
+            atributes.map(a =>  atributoslist.push({
+                sku: 0,
+                talle: a.size,
+                color: a.color,
+                cantidad: a.count,
+                peso: a.weight,
+                ancho: a.width,
+                alto: a.heigth,
+                profundidad: a.depth,
+                producto: {
+                    idProducto: data.idProducto
+                }
+            }));
+            apiAxios.post("/attribute/createAttribute", atributoslist ,{
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+                  "Access-Control-Allow-Headers":
+                    "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+                  "Content-Type": "application/json",
+                   Authorization: `${token}`,
+                },
+              })
           })
           .catch((error) => console.log(error));
       };
 
     const handleSubmit = () => {
-        createProductAPI(product);
+        setProduct({...product, atributes: atributes})
+        console.log(product)
+        let createProduct = {
+            idProducto: product.id,
+            nombre: product.name,
+            descripcionCorta: product.shortDescription,
+            descripcionLarga: product.largeDescription,
+            visible: product.visibility,
+            precio: product.price,
+            precioOferta: product.price,
+            imagen: product.urlImage,
+            video: product.urlVideo,
+            subcategory:{
+                idSubcategory:product.subcategory
+            }
+        }
+        createProductAPI(createProduct);
     };
 
     const [product, setProduct] = useState({
@@ -55,7 +94,8 @@ export const ProductsForm = () => {
         urlVideo: '',
         money: '',
         price: 0,
-        atributes: []
+        atributes: [],
+        visibility: true
     })
 
     const [atributes, setatributes] = useState([])

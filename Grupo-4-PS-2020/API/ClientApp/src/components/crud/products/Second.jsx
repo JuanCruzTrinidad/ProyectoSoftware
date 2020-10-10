@@ -5,25 +5,23 @@ import React, { useEffect, useState } from 'react'
 
 export const Second = ({previousStep, nextStep, setatributes, atributes, handleSubmit}) => {
 
-    // const colors = { 1:"Azul", 2: "Rojo",3: "Amarillo" };
-	// const sizes = {  1: "XL", 2: "L", 3: "M"  };
-
 	const [data, setData] = useState([]);	
     const [columns, setColumns] = useState([
         { title: "Color", field: "color"},
 		{ title: "Talle", field: "size"},
-		{title: "Cantidad", field: "count", type:"number"},
-		{title: 'Peso', field: 'weight', type: "number"},
-		{title: 'Ancho', field: 'width', type: "number"},
-		{title: 'Alto', field: 'heigth', type: "number"},
-		{title: 'Profundidad', field: 'depth', type: "number"}
+		{title: "Cantidad", field: "count", type:"numeric"},
+		{title: 'Peso', field: 'weight', type: "numeric"},
+		{title: 'Ancho', field: 'width', type: "numeric"},
+		{title: 'Alto', field: 'heigth', type: "numeric"},
+		{title: 'Profundidad', field: 'depth', type: "numeric"}
     ]);
 	
 	useEffect(() => {
 
 		var variable = [];
+		console.log(data)
 		if(data.length > 0){
-			variable = atributes;
+			variable = [];
 			data.map( d => {
 			variable.push({
 				idproduct: 0,

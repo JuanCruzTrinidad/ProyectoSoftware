@@ -1,7 +1,9 @@
-import { Breadcrumbs, Button, Card, CardActions, CardContent, Container, Grid, makeStyles, MobileStepper, TextField, Typography, useTheme } from '@material-ui/core'
+import { Breadcrumbs, Button, Card, CardActions, CardContent, Checkbox, Container, Grid, makeStyles, MobileStepper, TextField, Typography, useTheme } from '@material-ui/core'
 import { Autorenew, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 import { apiAxios } from '../../../config/axios';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 export const First = ({ nextStep, product, setProduct }) => {
 
@@ -17,11 +19,11 @@ export const First = ({ nextStep, product, setProduct }) => {
     ];
     const currencies = [
         {
-            value: 1,
+            value: '$$',
             label: '$$',
         },
         {
-            value: 2,
+            value: '$',
             label: '$',
         }
     ];
@@ -117,7 +119,7 @@ export const First = ({ nextStep, product, setProduct }) => {
     return (
         <Container maxwidht="md" spacing={5}>
             <Grid container spacing={4}>
-                <Grid item xs={6} spacing={5}>
+                <Grid item xs={6} >
                     <Card className={classes.root} variant="outlined">
                         <CardContent>
                             <h3>Nuevo producto</h3>
@@ -187,7 +189,7 @@ export const First = ({ nextStep, product, setProduct }) => {
                                             label="SubCategoría"
                                             fullWidth
                                             value={product.subcategory}
-                                            onChange={e => setProduct({ ...product, subcategory: e.target.value })}
+                                            onChange={e => setProduct({ ...product, subcategory: parseInt(e.target.value, 10) })}
                                             SelectProps={{
                                                 native: true,
                                             }}
@@ -228,7 +230,8 @@ export const First = ({ nextStep, product, setProduct }) => {
                                     </Grid>
                                 </Grid>
                                 <Grid container alignContent="center" spacing={3}>
-                                    <Grid item xs={6}>
+                                 
+                                    <Grid item xs={3}>
                                         <TextField
                                             id="outlined-select-currency-native"
                                             select
@@ -249,7 +252,7 @@ export const First = ({ nextStep, product, setProduct }) => {
                                             ))}
                                         </TextField>
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
                                         <TextField
                                             id="price"
                                             label="Precio"
@@ -258,9 +261,22 @@ export const First = ({ nextStep, product, setProduct }) => {
                                             type="number"
                                             fullWidth
                                             value={product.price}
-                                            onChange={e => setProduct({ ...product, price: e.target.value })}
+                                            onChange={e => setProduct({ ...product, price: parseInt(e.target.value,10) })}
                                         />
                                     </Grid>
+                                    <Grid item xs={1}>
+                                    <Checkbox
+                                        checked={product.visibility}
+                                        onChange={e => setProduct({ ...product, visibility: e.target.checked })}
+                                        icon={<VisibilityOffIcon/>}
+                                        checkedIcon={<VisibilityIcon/>}
+                                        color="primary"
+                                    />
+                                    </Grid>
+                                    <Grid item xs={1}>
+                                        <Typography style={{marginTop: 10}} align="center"> Visible </Typography>
+                                    </Grid>
+                                    <Grid item xs={1}/>
                                 </Grid>
                                 <Grid container alignContent="center" spacing={3}>
                                     <Grid item xs={6}>
@@ -278,7 +294,7 @@ export const First = ({ nextStep, product, setProduct }) => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={6} spacing={5}>
+                <Grid item xs={6}>
                     <Card className={classes.root} variant="outlined">
                         <CardContent>
                             <Grid container spacing={3}>
