@@ -16,7 +16,7 @@ public class Payment {
     @Column (name= "name", nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "payment")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "payment")
     private Set<Pedido> paymentPedido = new HashSet<Pedido>();
 
     public Payment() {

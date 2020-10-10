@@ -2,7 +2,7 @@ create schema if not exists deporteonline;
 use deporteonline;
 
 
--- drop schema deporteonline;
+drop schema deporteonline;
 
 -- -- ------testeo------ 
 
@@ -40,3 +40,37 @@ use deporteonline;
 -- INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('3', '2', ':(', '1');
 -- INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('2', '1', 'REGULAR', '2');
 -- INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('4', '2', '-', '5');
+
+INSERT INTO `deporteonline`.`user` (`id`, `birthdate`, `email`, `enabled`, `islogged`, `lastname`, `name`, `password`) VALUES ('1', '1991-02-01', 'santi.fiorda04@gmail.com', TRUE, FALSE, 'Fiordalisi', 'Santiago', '1234');
+INSERT INTO `deporteonline`.`user` (`id`, `birthdate`, `email`, `enabled`, `islogged`, `lastname`, `name`, `password`) VALUES ('2', '1991-01-01', 'san@gmail.com', TRUE, FALSE, 'Fiorda', 'Santi', '1234');
+
+INSERT INTO `deporteonline`.`role` (`id`, `name`) VALUES ('1', 'admin');
+INSERT INTO `deporteonline`.`role` (`id`, `name`) VALUES ('2', 'comprador');
+
+INSERT INTO `deporteonline`.`role_user` (`user_id`, `role_id`) VALUES ('1', '1');
+INSERT INTO `deporteonline`.`role_user` (`user_id`, `role_id`) VALUES ('1', '2');
+INSERT INTO `deporteonline`.`role_user` (`user_id`, `role_id`) VALUES ('2', '1');
+
+INSERT INTO `deporteonline`.`category` (`id_category`, `name`) VALUES ('1', 'Deporte');
+INSERT INTO `deporteonline`.`category` (`id_category`, `name`) VALUES ('2', 'Urbano');
+
+INSERT INTO `deporteonline`.`subcategory` (`id_subcategory`, `name`, `id_category`) VALUES ('1', 'futbol', '1');
+INSERT INTO `deporteonline`.`subcategory` (`id_subcategory`, `name`, `id_category`) VALUES ('2', 'tenis', '1');
+INSERT INTO `deporteonline`.`subcategory` (`id_subcategory`, `name`, `id_category`) VALUES ('3', 'urban', '2');
+
+INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `imagen`, `nombre`, `precio`, `precio_oferta`, `video`, `visible`, `id_subcategory`) VALUES ('1', 'cami', 'camiseta', 'http://', 'camiseta', '200', '0', 'http://', TRUE, '1');
+INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `imagen`, `nombre`, `precio`, `precio_oferta`, `video`, `visible`, `id_subcategory`) VALUES ('2', 'short', 'short', 'http://', 'short', '150', '120', 'http://', TRUE, '1');
+INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `imagen`, `nombre`, `precio`, `precio_oferta`, `video`, `visible`, `id_subcategory`) VALUES ('3', 'cami', 'camiseta', 'http://', 'camiseta', '210', '0', 'http://', TRUE, '2');
+INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `imagen`, `nombre`, `precio`, `precio_oferta`, `video`, `visible`, `id_subcategory`) VALUES ('4', 'zapa', 'zapatilla', 'http://', 'zapatilla', '300', '200', 'http://', TRUE, '3');
+
+INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('1', '1', 'muy bueno', '5');
+INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('2', '1', 'bueno', '4');
+INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('3', '1', 'malo', '1');
+INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('2', '2', 'bueno', '3');
+INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('4', '2', 'regular', '2');
+
+INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('1', '20', '10', 'rojo', '20', '12', '40', '1');
+INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('2', '15', '15', 'azul', '15', '15', '30', '1');
+INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('3', '10', '10', 'verde', '10', '10', '33', '2');
+INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('4', '14', '14', 'amarillo', '14', '14', '34', '3');
+INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('5', '12', '12', 'naranja', '12', '12', '36', '4');

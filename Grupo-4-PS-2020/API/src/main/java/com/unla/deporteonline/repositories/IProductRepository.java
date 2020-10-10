@@ -23,6 +23,9 @@ public interface IProductRepository extends JpaRepository<Producto, Serializable
     public abstract List<Producto> findProductBySubcategory(@Param("idSubcategory") int idSubcategory);
     
     @Query("SELECT p FROM Producto p WHERE p.subcategory.category.idCategory = :idCategory and p.visible = true")
-	public abstract List<Producto> findProductByCategory(@Param("idCategory") int idCategory);
+    public abstract List<Producto> findProductByCategory(@Param("idCategory") int idCategory);
+    
+    @Query("SELECT p FROM Producto p WHERE p.nombre LIKE %:nombre% and p.visible = true")
+	public abstract List<Producto> findProductByName(@Param("nombre") String nombre);
 
 }

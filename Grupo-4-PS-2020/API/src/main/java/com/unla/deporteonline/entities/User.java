@@ -46,8 +46,8 @@ public class User {
     private Set<Valoracion> valoraciones= new HashSet<Valoracion>();
 
     //pedido
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "user")
-    private Set<Pedido> paymentPedido = new HashSet<Pedido>();
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "user")
+    private Set<Pedido> userPedido = new HashSet<Pedido>();
 
     
     public User() {}
@@ -149,7 +149,7 @@ public class User {
 
     public User(int id, String name, String lastname, LocalDate birthdate, String email, String password,
             boolean enabled, boolean islogged, Set<Role> roles, Set<Valoracion> valoraciones,
-            Set<Pedido> paymentPedido) {
+            Set<Pedido> userPedido) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -160,22 +160,22 @@ public class User {
         this.islogged = islogged;
         this.roles = roles;
         this.valoraciones = valoraciones;
-        this.paymentPedido = paymentPedido;
+        this.userPedido = userPedido;
     }
 
-    public Set<Pedido> getPaymentPedido() {
-        return paymentPedido;
+    public Set<Pedido> getUserPedido() {
+        return userPedido;
     }
 
-    public void setPaymentPedido(Set<Pedido> paymentPedido) {
-        this.paymentPedido = paymentPedido;
+    public void setUserPedido(Set<Pedido> userPedido) {
+        this.userPedido = userPedido;
     }
 
     @Override
     public String toString() {
         return "User [birthdate=" + birthdate + ", email=" + email + ", enabled=" + enabled + ", id=" + id
                 + ", islogged=" + islogged + ", lastname=" + lastname + ", name=" + name + ", password=" + password
-                + ", paymentPedido=" + paymentPedido + ", roles=" + roles + ", valoraciones=" + valoraciones + "]";
+                + ", userPedido=" + userPedido + ", roles=" + roles + ", valoraciones=" + valoraciones + "]";
     }
 
     
