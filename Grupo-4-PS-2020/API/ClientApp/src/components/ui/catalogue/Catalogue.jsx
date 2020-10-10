@@ -82,6 +82,11 @@ const Catalogue = () => {
     productlist.sort((a, b) => b.nombre.localeCompare(a.nombre));
   }
 
+  const handleClickSearch = () => {
+    
+  }
+
+
   useEffect(() => {
     getProductsAPI();
     getCategoriesAPI();
@@ -92,7 +97,7 @@ const Catalogue = () => {
       <Container maxWidth={"lg"} className="tilescolumn">
         <Grid container spacing={1}>
           <Grid item xs={3}>
-            <Search search={search} setsearch={setsearch} />
+            <Search search={search} setsearch={setsearch} handleClickSearch={handleClickSearch}/>
             <Sidebar
               visual={visual}
               setvisual={setvisual}
