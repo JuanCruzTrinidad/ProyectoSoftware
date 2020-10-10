@@ -15,6 +15,7 @@ import PaginationOutlined from "./PaginationOutlined";
 import { apiAxios } from "../../../config/axios";
 import Spinner from "../../ui/Spinner";
 
+
 const Catalogue = () => {
   //States
   const [visual, setvisual] = useState("card");
@@ -23,6 +24,7 @@ const Catalogue = () => {
   const [productlist, setproductlist] = useState([]);
   const [categorieslist, setcategorieslist] = useState([]);
   const [show, setshow] = useState(false);
+
 
   const getProductsAPI = () => {
     apiAxios
@@ -36,15 +38,7 @@ const Catalogue = () => {
 
   const getCategoriesAPI = () => {
     apiAxios
-      .get("/category/allcategories", {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-          "Access-Control-Allow-Headers":
-            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-          "Content-Type": "application/json",
-        },
-      })
+      .get("/category/allcategories")
       .then(({ data }) => {
         setcategorieslist(data);
         console.log(data);
@@ -53,12 +47,29 @@ const Catalogue = () => {
       .catch((error) => console.log(error));
   };
 
-  const listacategorias = [
-    { id: 1, name: "Categoria1" },
-    { id: 2, name: "Categoria2" },
-    { id: 3, name: "Categoria3" },
-    { id: 4, name: "Categoria4" },
-  ];
+  const getProductsByCategoryAPI = (catid) => {
+    apiAxios
+    .get("/product/productByCategory", {
+      params: { idCategory: catid },
+    })
+    .then(({ data }) => {
+      setproductlist(data);
+      console.log(data);
+    })
+    .catch((error) => console.log(error));
+  }
+
+  const getProductsBySubcategoryAPI = (subcatid) => {
+    apiAxios
+    .get("/product/productBySubcategory", {
+      params: { idSubcategory: subcatid },
+    })
+    .then(({ data }) => {
+      setproductlist(data);
+      console.log(data);
+    })
+    .catch((error) => console.log(error));
+  }
 
   //Ordenar productos
   if (order === "Menor precio") {
@@ -71,6 +82,11 @@ const Catalogue = () => {
     productlist.sort((a, b) => b.nombre.localeCompare(a.nombre));
   }
 
+  const handleClickSearch = () => {
+    
+  }
+
+
   useEffect(() => {
     getProductsAPI();
     getCategoriesAPI();
@@ -81,13 +97,15 @@ const Catalogue = () => {
       <Container maxWidth={"lg"} className="tilescolumn">
         <Grid container spacing={1}>
           <Grid item xs={3}>
-            <Search search={search} setsearch={setsearch} />
+            <Search search={search} setsearch={setsearch} handleClickSearch={handleClickSearch}/>
             <Sidebar
               visual={visual}
               setvisual={setvisual}
               categorieslist={categorieslist}
               order={order}
               setorder={setorder}
+              getProductsByCategoryAPI={getProductsByCategoryAPI}
+              getProductsBySubcategoryAPI={getProductsBySubcategoryAPI}
             />
           </Grid>
           {productlist.length === 0 ? (

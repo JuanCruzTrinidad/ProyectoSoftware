@@ -2,45 +2,57 @@ import { Button, Container, Grid } from '@material-ui/core';
 import { EditAttributes } from '@material-ui/icons';
 import MaterialTable from 'material-table';
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router';
 
-export const Second = ({previousStep, nextStep, setatributes, atributes}) => {
-
-    const colors = { 1:"Azul", 2: "Rojo",3: "Amarillo" };
-	const sizes = {  1: "XL", 2: "L", 3: "M"  };
-
+export const Second = ({previousStep, nextStep, setatributes, atributes, handleSubmit, product}) => {
+	let { id } = useParams();
 	const [data, setData] = useState([]);	
     const [columns, setColumns] = useState([
-        { title: "Color", field: "color", lookup:colors},
-		{ title: "Talle", field: "size", lookup:sizes},
-		{title: "Cantidad", field: "count", type:"number"}
+        { title: "Color", field: "color"},
+		{ title: "Talle", field: "size"},
+		{title: "Cantidad", field: "count", type:"numeric"},
+		{title: 'Peso', field: 'weight', type: "numeric"},
+		{title: 'Ancho', field: 'width', type: "numeric"},
+		{title: 'Alto', field: 'heigth', type: "numeric"},
+		{title: 'Profundidad', field: 'depth', type: "numeric"}
     ]);
 	
 	useEffect(() => {
-
 		var variable = [];
+		console.log(data)
 		if(data.length > 0){
-			variable = atributes;
+			variable = [];
 			data.map( d => {
 			variable.push({
 				idproduct: 0,
-				color: colors[parseInt(d.color, 10)],
-				size:  sizes[parseInt(d.size, 10)],
+				color: d.color,
+				size:  d.size,
 				count: parseInt(d.count, 10),
-				sku: '' })
+				weight: parseFloat(d.weight, 10),
+				width: parseFloat(d.width, 10),
+				heigth: parseFloat(d.heigth, 10),
+				depth: parseFloat(d.depth, 10)})
 			})
-
 		setatributes(variable);
 		console.log(atributes)
 		}
 	}, [data])
 
+	useEffect(() => {
+		console.log(atributes)
+		let variable = [];
+		variable = atributes;
+		setData(variable);
+	}, [product])
+
+
     return (
-        <Container maxwidht="md" spacing={5} style={{marginTop:20, marginLeft: 100}}>
+        <Container maxwidht="md" spacing={5} style={{marginTop:20}}>
             <Grid container spacing={4} justify="center">
                 <MaterialTable
 					title="Talle - Color"
 					columns={columns}
-					data={data}
+					data={atributes}
 					options={
 						{
 						rowStyle: {
@@ -50,9 +62,9 @@ export const Second = ({previousStep, nextStep, setatributes, atributes}) => {
 							backgroundColor: "#C8EFE3",
 							color: "#001014",
 						},
-						actionsColumnIndex: 3
+						actionsColumnIndex: -1
 					}}
-					style={{width: 700}}
+					// style={{width: 700}}
 					editable={{
 						onRowAdd: (newData) =>
 							new Promise((resolve, reject) => {
@@ -99,9 +111,9 @@ export const Second = ({previousStep, nextStep, setatributes, atributes}) => {
 				<Grid item xs={4}>
 				<Button color="primary" variant="outlined" fullWidth onClick={e => {
 						e.preventDefault();
-						nextStep();
+						handleSubmit();
 					}}>
-						Siguiente
+						Finalizar
 					</Button>
 				</Grid>
 			</Grid>
