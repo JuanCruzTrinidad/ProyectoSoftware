@@ -79,7 +79,7 @@ public class Subcategory {
         this.category = category;
     }
 
-    @JsonManagedReference (value = "prodsub")
+    //@JsonManagedReference (value = "prodsub")
     public Set<Producto> getProductos() {
         return productos;
     }

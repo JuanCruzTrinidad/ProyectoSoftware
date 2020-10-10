@@ -78,5 +78,10 @@ public class ProductRestController {
 	public List<Producto> findProductBycategory(@RequestParam("idCategory") int idCategory) {
 		return productService.findProductByCategory(idCategory);
 	}
+	//traer productos por nombre
+	@GetMapping("/productByName") 
+	public List<Producto> productByName(@RequestParam("nombre") String nombre) {
+		return productService.findProductByName(nombre);
+	}
 
 }

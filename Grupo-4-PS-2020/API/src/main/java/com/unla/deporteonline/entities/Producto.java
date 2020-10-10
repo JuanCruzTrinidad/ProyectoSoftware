@@ -49,7 +49,8 @@ public class Producto {
     private Set<Atributos> atributos= new HashSet<Atributos>();
 
     //subcategoria
-    @ManyToOne ( fetch = FetchType.EAGER, targetEntity = Subcategory.class, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne //(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties ( "productos" )
     @JoinColumn (name= "idSubcategory")
     private Subcategory subcategory;
 
@@ -157,7 +158,7 @@ public class Producto {
         this.atributos = atributos;
     }
 
-    @JsonBackReference (value = "prodsub")
+    //@JsonBackReference (value = "prodsub")
     public Subcategory getSubcategory() {
         return subcategory;
     }

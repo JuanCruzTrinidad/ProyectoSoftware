@@ -16,6 +16,8 @@ public interface IProductService {
     public List<Producto> findProductBySubcategory(final int idSubcategory);
 
     public List<Producto> findProductByCategory(final int idCategory);
+
+    public List<Producto> findProductByName(final String nombre);
     //public Object agregarAtributo(int idProducto, final Atributos atributos);
    
 }
