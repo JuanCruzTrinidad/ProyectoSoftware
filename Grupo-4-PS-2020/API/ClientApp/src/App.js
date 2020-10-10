@@ -61,6 +61,9 @@ function App() {
           <Route exact strict path="/admin/products">
             <ProductsForm/>
           </Route>
+          <Route exact strict path="/admin/products/:id">
+            <ProductsForm/>
+          </Route>
           <Route exact strict path="/catalogue">
             <Catalogue />
           </Route>

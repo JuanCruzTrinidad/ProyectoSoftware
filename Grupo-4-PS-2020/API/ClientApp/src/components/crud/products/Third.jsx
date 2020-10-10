@@ -8,7 +8,10 @@ export const Third = ({product, atributes, currentStep, previousStep, nextStep})
         { title: "Color", field: "color"},
 		{ title: "Talle", field: "size"},
 		{title: "Cantidad", field: "count", type:"number"},
-		{title: 'SKU', field: 'sku'}
+		{title: 'Peso', field: 'weight', type: "number"},
+		{title: 'Ancho', field: 'width', type: "number"},
+		{title: 'Alto', field: 'heigth', type: "number"},
+		{title: 'Profundidad', field: 'depth', type: "number"}
 	];
 
 	const [data, setdata] = useState([])
@@ -20,12 +23,14 @@ export const Third = ({product, atributes, currentStep, previousStep, nextStep})
 					color: a.color, 
 					size: a.size, 
 					count: a.count, 
-					sku: `${product.name.slice(0, 2)}-${a.color}-${a.size}` })
-			})
+					weigth: a.weigth,
+					width: a.width,
+					heigth: a.heigth,
+					depth: a.depth
+				})
 			if(variable.length > 1){
 				variable.shift()
-			}
-			
+			}})
 			setdata(variable);
 	}, [currentStep])
 
@@ -74,3 +79,4 @@ export const Third = ({product, atributes, currentStep, previousStep, nextStep})
         </Container>
     )
 }
+

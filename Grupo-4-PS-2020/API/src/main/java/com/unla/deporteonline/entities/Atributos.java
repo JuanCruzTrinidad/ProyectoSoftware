@@ -13,7 +13,7 @@ public class Atributos {
     private int sku;
 
     @Column(name = "talle",nullable = false)
-    private float talle;
+    private String talle;
 
     @Column (name = "color", nullable = false)
     private String color;
@@ -39,7 +39,7 @@ public class Atributos {
 
     public Atributos(){}
 
-    public Atributos(int sku, float talle, String color, float peso, float ancho, float alto, float profundidad) {
+    public Atributos(int sku, String talle, String color, float peso, float ancho, float alto, float profundidad) {
         this.sku = sku;
         this.talle = talle;
         this.color = color;
@@ -49,7 +49,7 @@ public class Atributos {
         this.profundidad = profundidad;
     }
 
-    public Atributos(int sku, float talle, String color, float peso, float ancho, float alto, float profundidad,
+    public Atributos(int sku, String talle, String color, float peso, float ancho, float alto, float profundidad,
             Producto producto) {
         this.sku = sku;
         this.talle = talle;
@@ -69,11 +69,11 @@ public class Atributos {
         this.sku = sku;
     }
 
-    public float getTalle() {
+    public String getTalle() {
         return talle;
     }
 
-    public void setTalle(float talle) {
+    public void setTalle(String talle) {
         this.talle = talle;
     }
 
