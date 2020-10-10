@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import "./Quantity.scss";
 
-const Quantity = () => {
-  const [cant, setcant] = useState(1);
+const Quantity = (props) => {
+  const { cant, setcant, handleChangeCant } = props;
+
+  useEffect(() => {
+    handleChangeCant();
+  }, [cant]);
 
   return (
     <div>
@@ -15,10 +19,7 @@ const Quantity = () => {
         >
           <RemoveIcon />
         </button>
-        <input
-          className="quantity-input__screen"
-          value={cant}
-        />
+        <input className="quantity-input__screen" value={cant} />
         <button
           className="quantity-input__modifier quantity-input__modifier--right"
           onClick={(e) => setcant(cant + 1)}

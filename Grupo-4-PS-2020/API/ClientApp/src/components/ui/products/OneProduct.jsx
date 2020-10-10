@@ -9,6 +9,7 @@ import {
   Divider,
   Grid,
   MenuItem,
+  Portal,
   Select,
   TextField,
   Tooltip,
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 export const OneProduct = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const history = useHistory();
 
   //States
   const [activeStep, setActiveStep] = useState(0);
@@ -75,6 +77,7 @@ export const OneProduct = () => {
   });
   const [listComments, setListComments] = useState([]);
   const [show, setshow] = useState(false);
+  const [disabled, setdisabled] = useState(true); //Disabled select del talle
 
   //Parametro que llega desde la url
   let { idproduct } = useParams();
@@ -135,17 +138,51 @@ export const OneProduct = () => {
   };
 
   const handleClickCarrito = () => {
-    let cartlocalstorage = localStorage.getItem("cart");
-    if (cartlocalstorage === null) {
-      localStorage.setItem("cart", JSON.stringify([product]));
-      alert("Producto agregado al carrito");
+    if (color === "" || size === "") {
+      alert("Los espacios de color y talle no deben quedar vacios");
     } else {
-      cartlocalstorage = JSON.parse(cartlocalstorage);
-      cartlocalstorage.push(product);
-      localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
-      alert("Producto agregado al carrito");
+      var cartlocalstorage = localStorage.getItem("cart");
+      product.atributoselecc = product.atributos.filter(
+        (atrib) => atrib.color === color && atrib.talle === size
+      );
+      product.cant = 1;
+      if (cartlocalstorage === null || cartlocalstorage === []) {
+        localStorage.setItem("cart", JSON.stringify([product]));
+        alert("Producto agregado al carrito");
+      } else {
+        cartlocalstorage = JSON.parse(cartlocalstorage);
+        cartlocalstorage.push(product);
+        localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
+        alert("Producto agregado al carrito");
+      }
     }
   };
+
+  const handleClickComprar = () => {
+    if (color === "" || size === "") {
+      alert("Los espacios de color y talle no deben quedar vacios");
+    } else {
+      var cartlocalstorage = localStorage.getItem("cart");
+      product.color = color;
+      product.talle = size;
+      product.cant = 1;
+      if (cartlocalstorage === null || cartlocalstorage === []) {
+        localStorage.setItem("cart", JSON.stringify([product]));
+        alert("Producto agregado al carrito");
+      } else {
+        cartlocalstorage = JSON.parse(cartlocalstorage);
+        cartlocalstorage.push(product);
+        localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
+      }
+      history.push("/cart");
+    }
+  };
+
+  useEffect(() => {
+    if (color !== "") {
+      setdisabled(false);
+    }
+  }, [color]);
 
   useEffect(() => {
     getProductById(idproduct);
@@ -271,7 +308,9 @@ export const OneProduct = () => {
                     fullWidth
                   >
                     {product.atributos.map((atrib) => (
-                      <MenuItem key={atrib.color} value={atrib.color}>{atrib.color}</MenuItem>
+                      <MenuItem key={atrib.color} value={atrib.color}>
+                        {atrib.color}
+                      </MenuItem>
                     ))}
                   </Select>
                 </Grid>
@@ -283,9 +322,17 @@ export const OneProduct = () => {
                     onChange={(e) => setSize(e.target.value)}
                     fullWidth
                   >
-                    {product.atributos.map((atrib) => (
-                      <MenuItem key={atrib.talle} value={atrib.talle}>{atrib.talle}</MenuItem>
-                    ))}
+                    {disabled ? (
+                      <MenuItem value="">Primero elija un color</MenuItem>
+                    ) : (
+                      product.atributos
+                        .filter((atrib) => atrib.color === color)
+                        .map((atrib) => (
+                          <MenuItem key={atrib.talle} value={atrib.talle}>
+                            {atrib.talle}
+                          </MenuItem>
+                        ))
+                    )}
                   </Select>
                 </Grid>
               </Grid>
@@ -294,6 +341,7 @@ export const OneProduct = () => {
                   color="primary"
                   variant="contained"
                   style={{ padding: 10, width: "80%", marginBottom: 10 }}
+                  onClick={(e) => handleClickComprar()}
                 >
                   Comprar
                 </Button>
