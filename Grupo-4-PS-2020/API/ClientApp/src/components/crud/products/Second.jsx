@@ -2,9 +2,10 @@ import { Button, Container, Grid } from '@material-ui/core';
 import { EditAttributes } from '@material-ui/icons';
 import MaterialTable from 'material-table';
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router';
 
-export const Second = ({previousStep, nextStep, setatributes, atributes, handleSubmit}) => {
-
+export const Second = ({previousStep, nextStep, setatributes, atributes, handleSubmit, product}) => {
+	let { id } = useParams();
 	const [data, setData] = useState([]);	
     const [columns, setColumns] = useState([
         { title: "Color", field: "color"},
@@ -17,7 +18,6 @@ export const Second = ({previousStep, nextStep, setatributes, atributes, handleS
     ]);
 	
 	useEffect(() => {
-
 		var variable = [];
 		console.log(data)
 		if(data.length > 0){
@@ -38,13 +38,21 @@ export const Second = ({previousStep, nextStep, setatributes, atributes, handleS
 		}
 	}, [data])
 
+	useEffect(() => {
+		console.log(atributes)
+		let variable = [];
+		variable = atributes;
+		setData(variable);
+	}, [product])
+
+
     return (
         <Container maxwidht="md" spacing={5} style={{marginTop:20}}>
             <Grid container spacing={4} justify="center">
                 <MaterialTable
 					title="Talle - Color"
 					columns={columns}
-					data={data}
+					data={atributes}
 					options={
 						{
 						rowStyle: {

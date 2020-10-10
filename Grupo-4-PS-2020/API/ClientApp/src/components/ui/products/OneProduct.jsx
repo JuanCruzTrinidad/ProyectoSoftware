@@ -32,12 +32,6 @@ import Spinner from "../Spinner";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const listaproductos = [
-  { id: 1, name: "Botines1" },
-  { id: 2, name: "Botines2" },
-  { id: 3, name: "Botines3" },
-];
-
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 400,
@@ -80,6 +74,7 @@ export const OneProduct = () => {
   const [listComments, setListComments] = useState([]);
   const [show, setshow] = useState(false);
   const [disabled, setdisabled] = useState(true); //Disabled select del talle
+  const [relationalsProduct, setrelationalsProduct] = useState([])
 
   //Parametro que llega desde la url
   let { idproduct } = useParams();
@@ -93,9 +88,22 @@ export const OneProduct = () => {
         setproduct(data);
         console.log(data);
         setshow(true);
+        getProductsBySubcategoryAPI(data.subcategory.idSubcategory)
       })
       .catch((error) => console.log(error));
   };
+
+  const getProductsBySubcategoryAPI = (subcatid) => {
+    apiAxios
+    .get("/product/productBySubcategory", {
+      params: { idSubcategory: subcatid },
+    })
+    .then(({ data }) => {
+      console.log(data);
+        setrelationalsProduct(data.slice(0, 3))
+    })
+    .catch((error) => console.log(error));
+  }
 
   const imagesCard = [
     {
@@ -202,7 +210,7 @@ export const OneProduct = () => {
   }, [color]);
 
   useEffect(() => {
-    getProductById(idproduct);
+    getProductById(idproduct)
   }, []);
 
   return show ? (
@@ -391,9 +399,9 @@ export const OneProduct = () => {
           style={{ marginTop: "2%" }}
         >
           <div className="card-group">
-            {listaproductos.map((prod, index) => (
-              <Grid item xs={4} key={prod.id}>
-                <MediaCard prod={prod} style={{ margin: "2%" }} />
+            {relationalsProduct.map((prod, index) => (
+              <Grid item xs={4} key={prod.idProducto}>
+                <MediaCard  key={prod.idProducto} prod={prod} style={{ margin: "2%" }} />
               </Grid>
             ))}
           </div>
@@ -484,7 +492,7 @@ export const OneProduct = () => {
               <Button onClick={handleClose} color="primary">
                 Cancel
               </Button>
-              <Button onClick={(event) => handleSubmit} color="primary">
+              <Button onClick={handleSubmit} color="primary">
                 Valorar
               </Button>
             </DialogActions>
