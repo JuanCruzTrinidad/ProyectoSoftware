@@ -109,7 +109,7 @@ const SubCategories = () => {
       })
       .then(({ data }) => {
         const optionsCategories = Object.fromEntries(
-          data.map((item) => [item.idCategory, item.name])
+          data.map((item) => [item.idCategory, `${item.idCategory} - ${item.name}`])
         );
         setColumns([
           {
