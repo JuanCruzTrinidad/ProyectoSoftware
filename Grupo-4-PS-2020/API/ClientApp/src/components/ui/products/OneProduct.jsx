@@ -29,6 +29,8 @@ import MediaCard from "../catalogue/Card";
 import { useHistory, useParams } from "react-router";
 import { apiAxios } from "../../../config/axios";
 import Spinner from "../Spinner";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const listaproductos = [
   { id: 1, name: "Botines1" },
@@ -178,6 +180,21 @@ export const OneProduct = () => {
     }
   };
 
+  const handleDeleteProduct = (e) => {
+      e.preventDefault();
+      let token = localStorage.getItem("token");
+      apiAxios.post("/product/deleteProduct", idproduct,{
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+           Authorization: `${token}`,
+        },
+      })
+  }
+
   useEffect(() => {
     if (color !== "") {
       setdisabled(false);
@@ -242,10 +259,19 @@ export const OneProduct = () => {
           </Grid>
           <Grid item xs={4}>
             <Paper elevantion={3} style={{ height: 500 }}>
+            <Grid container justify="flex-end">
+                  <EditIcon onClick={e =>{
+                    e.preventDefault();
+                    history.push('/admin/product/'+idproduct)
+                  }}
+                  style={{cursor: "pointer"}}/>
+                  <DeleteIcon onClick={handleDeleteProduct}
+                  style={{cursor: "pointer"}}/>
+                </Grid>
               <Grid container justify="center">
                 <Typography variant="h4" align="center" style={{ padding: 20 }}>
                   {product.nombre}
-                </Typography>
+                </Typography>               
               </Grid>
               <Grid container>
                 <Box component="fieldset" borderColor="transparent">

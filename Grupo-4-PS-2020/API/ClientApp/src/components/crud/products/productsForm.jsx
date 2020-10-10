@@ -22,6 +22,7 @@ export const ProductsForm = () => {
         SW,
     });
     const token = localStorage.getItem("token");
+    
     const createProductAPI = (createProduct) => {
         apiAxios
           .post("/product/createProduct", createProduct, {
