@@ -1,5 +1,6 @@
 import { Container, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router';
 import StepWizard from 'react-step-wizard';
 import { apiAxios } from '../../../config/axios';
 import { First } from './First';
@@ -22,7 +23,7 @@ export const ProductsForm = () => {
         SW,
     });
     const token = localStorage.getItem("token");
-    
+
     const createProductAPI = (createProduct) => {
         apiAxios
           .post("/product/createProduct", createProduct, {
@@ -95,14 +96,52 @@ export const ProductsForm = () => {
         urlVideo: '',
         money: '',
         price: 0,
+        ofert: 0,
         atributes: [],
         visibility: true
     })
 
     const [atributes, setatributes] = useState([])
+    let { id } = useParams();
+    const getProductById = (id) => {
+        apiAxios
+          .get("/product/ProductId", {
+            params: { idProducto: id },
+          })
+          .then(({ data }) => {
+            console.log(data);
+            setProduct({...product, 
+                name: data.nombre,
+                largeDescription: data.descripcionLarga,
+                shortDescription: data.descripcionCorta,
+                urlImage: data.imagen,
+                urlVideo: data.video,
+                visibility: data.visible,
+                price: data.precio,
+                ofert: data.precioOferta
+            });
+            let variable = [];
+            data.atributos.map(d => variable.push({
+                color: d.color,
+                size: d.talle,
+                weight: d.peso,
+                count: d.cantidad,
+                heigth: d.alto,
+                width: d.ancho,
+                depth: d.profundidad
+            }))
+            setatributes(variable);
+            console.log(atributes)
+          })
+          .catch((error) => console.log(error));
+      };
 
     useEffect(() => {
     }, [product])
+
+    useEffect(() => {
+        getProductById(id)
+    }, [id])
 
     const { SW, demo } = state;
 
@@ -115,8 +154,7 @@ export const ProductsForm = () => {
                     instance={setInstance}>
 
                     <First product={product} setProduct={setProduct}/>
-                    <Second atributes={atributes} setatributes={setatributes} handleSubmit={handleSubmit}/>
-                    {/* <Third atributes={atributes}  product={product} currentStep={state.currentStep}/>                 */}
+                    <Second atributes={atributes} setatributes={setatributes} handleSubmit={handleSubmit} product={product}/>
                 </StepWizard>
             </Grid>
         </Container>

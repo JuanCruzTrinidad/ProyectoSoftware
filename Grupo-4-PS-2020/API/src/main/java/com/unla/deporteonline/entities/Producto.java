@@ -49,7 +49,7 @@ public class Producto {
     private Set<Atributos> atributos= new HashSet<Atributos>();
 
     //subcategoria
-    @ManyToOne //(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne ( fetch = FetchType.EAGER, targetEntity = Subcategory.class, optional = false, cascade = CascadeType.ALL)
     @JoinColumn (name= "idSubcategory")
     private Subcategory subcategory;
 
@@ -73,18 +73,14 @@ public class Producto {
         this.subcategory = subcategory;
     }
 
-    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
-        float precio, float precioOferta, String imagen, String video) {
-        this.idProducto = idProducto;
-        this.nombre = nombre;
-        this.descripcionCorta = descripcionCorta;
-        this.descripcionLarga = descripcionLarga;
-        this.visible = visible;
-        this.precio = precio;
-        this.precioOferta = precioOferta;
-        this.imagen = imagen;
-        this.video = video;
-    }
+	/*
+	 * public Producto(int idProducto, String nombre, String descripcionCorta,
+	 * String descripcionLarga, boolean visible, float precio, float precioOferta,
+	 * String imagen, String video) { this.idProducto = idProducto; this.nombre =
+	 * nombre; this.descripcionCorta = descripcionCorta; this.descripcionLarga =
+	 * descripcionLarga; this.visible = visible; this.precio = precio;
+	 * this.precioOferta = precioOferta; this.imagen = imagen; this.video = video; }
+	 */
 
 
     public int getIdProducto() {

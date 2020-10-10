@@ -252,7 +252,7 @@ export const First = ({ nextStep, product, setProduct }) => {
                                             ))}
                                         </TextField>
                                     </Grid>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={3}>
                                         <TextField
                                             id="price"
                                             label="Precio"
@@ -262,6 +262,18 @@ export const First = ({ nextStep, product, setProduct }) => {
                                             fullWidth
                                             value={product.price}
                                             onChange={e => setProduct({ ...product, price: parseInt(e.target.value,10) })}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                    <TextField
+                                            id="ofert"
+                                            label="Oferta"
+                                            variant="outlined"
+                                            margin="dense"
+                                            type="number"
+                                            fullWidth
+                                            value={product.price}
+                                            onChange={e => setProduct({ ...product, ofert: parseInt(e.target.value,10) })}
                                         />
                                     </Grid>
                                     <Grid item xs={1}>
@@ -276,7 +288,6 @@ export const First = ({ nextStep, product, setProduct }) => {
                                     <Grid item xs={1}>
                                         <Typography style={{marginTop: 10}} align="center"> Visible </Typography>
                                     </Grid>
-                                    <Grid item xs={1}/>
                                 </Grid>
                                 <Grid container alignContent="center" spacing={3}>
                                     <Grid item xs={6}>
