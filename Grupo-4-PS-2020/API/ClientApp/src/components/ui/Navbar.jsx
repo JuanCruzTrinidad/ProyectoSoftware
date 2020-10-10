@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import { Nav, NavDropdown } from "react-bootstrap";
 import "../../index.css";
+import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 
 export const NavbarDU = () => {
   const history = useHistory();
@@ -93,7 +94,21 @@ export const NavbarDU = () => {
             ) : null}
           </Nav>
         </Navbar.Collapse>
+
         <Navbar.Collapse className="justify-content-end">
+          <Navbar.Brand
+            style={{
+              color: "#0E141B",
+              cursor: "pointer",
+              paddingRight: "10px",
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              history.replace("/cart");
+            }}
+          >
+            <ShoppingCartOutlinedIcon fontSize="large" />
+          </Navbar.Brand>
           {token === null ? (
             <>
               <Navbar.Brand

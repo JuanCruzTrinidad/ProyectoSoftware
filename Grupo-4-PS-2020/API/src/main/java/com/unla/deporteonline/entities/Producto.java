@@ -3,12 +3,9 @@ package com.unla.deporteonline.entities;
 import java.util.HashSet;
 import java.util.Set;
 
-import java.io.Serializable;
-
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
