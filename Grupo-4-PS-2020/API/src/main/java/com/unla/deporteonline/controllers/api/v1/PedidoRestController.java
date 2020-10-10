@@ -31,15 +31,22 @@ public class PedidoRestController {
 	@Qualifier("userService")
 	private IUserService userService;
 
-	//add Pedido
-	@PostMapping(value ="/createPedido", consumes="application/json")
-	public Object createPedidoVacio() {
+	//add Pedido,recibe idUser, busca user por id
+	@PostMapping(value ="/createPedidoVacio")
+	public Object createPedidoVacio(@RequestParam("idUser") Integer idUser) {
         
         Pedido createPedido = new Pedido();
-        //createPedido.setIdPedido(1);
-        //createPedido.setUser(userService.findById(idUser));
+        createPedido.setUser(userService.findById(idUser));
 		return pedidoService.savePedido(createPedido);
-	}
+    }
+    
+    //add Pedido (recibe el Pedido por json, necesita el user)(o idUser en json)
+    @PostMapping(value ="/createPedido", consumes="application/json")
+    public Object createPedido(@RequestBody Pedido createPedido) {
+        System.out.println("Pedido: " + createPedido.toString());
+		return pedidoService.savePedido(createPedido);
+    }
+
 
 	/* /update Pedido
 	@PostMapping(value ="/updatePedido", consumes="application/json")

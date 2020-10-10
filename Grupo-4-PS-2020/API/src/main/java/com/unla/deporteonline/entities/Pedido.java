@@ -31,22 +31,22 @@ public class Pedido {
     @Column(name= "subtotal")
     private float subtotal;
 
-    @ManyToOne 
+    @ManyToOne
     @JoinColumn (name= "idUser", nullable = false)
-    @JsonIgnoreProperties ( "userPedido" )
+    @JsonIgnoreProperties ( {"userPedido","roles","valoraciones"})
     private User user;
 
-    @ManyToOne 
+    @ManyToOne (optional = true)
     @JoinColumn (name= "idDiscount", nullable = true)
     @JsonIgnoreProperties ( "discountPedido" )
     private Discount discount;
 
-    @ManyToOne 
+    @ManyToOne (optional = true)
     @JoinColumn (name= "idDirection", nullable = true)
     @JsonIgnoreProperties ( "directionPedido" )
     private Direction direction;
 
-    @ManyToOne 
+    @ManyToOne (optional = true)
     @JoinColumn (name= "idPayment", nullable = true)
     @JsonIgnoreProperties ( "paymentPedido" )
     private Payment payment;

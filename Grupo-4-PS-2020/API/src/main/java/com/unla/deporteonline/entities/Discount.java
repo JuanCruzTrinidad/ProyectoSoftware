@@ -19,7 +19,7 @@ public class Discount {
     @Column (name= "percentage", nullable = false)
     private float percentage;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "discount")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "discount")
     private Set<Pedido> discountPedido = new HashSet<Pedido>();
 
     public Discount() {

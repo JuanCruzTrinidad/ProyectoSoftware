@@ -34,7 +34,7 @@ public class Direction {
     @Column (name= "province", nullable = false)
     private String province;
     
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "direction")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "direction")
     private Set<Pedido> directionPedido = new HashSet<Pedido>();
 
     public Direction() {
