@@ -21,9 +21,9 @@ const Cart = () => {
           >
             <div className="pt-3"></div>
             {cartlist !== null
-              ? cartlist.map((prod) => (
+              ? cartlist.map((prod, index) => (
                   <TileCart
-                    key={prod.idProducto}
+                    key={index}
                     idProducto={prod.idProducto}
                     nombre={prod.nombre}
                     precio={prod.precio}
