@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ButtonBase, Grid, Paper, Typography } from "@material-ui/core";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import { useHistory } from "react-router";
 import Quantity from "./Quantity";
 import CloseIcon from "@material-ui/icons/Close";
@@ -13,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     paddingRight: "15px",
     marginTop: 5,
-    marginLeft: 20,
     maxHeight: 150,
   },
   image: {
@@ -117,10 +115,10 @@ const TileCart = (props) => {
             >
               {nombre}
             </Typography>
-            <h5>{atributoselecc[0].color}</h5>
+            <Typography variant="subtitle1" gutterBottom>SKU: {atributoselecc[0].sku} - Talle: {atributoselecc[0].talle} - Color: {atributoselecc[0].color}</Typography>
           </Grid>
           <Grid
-            xs={6}
+            xs
             container
             direction="column"
             alignItems="center"
