@@ -21,7 +21,7 @@ public class Valoracion implements Serializable{
     private int valoracion;
 
     @Column(name= "comentario")
-    private String comentario;
+   private String comentario;
 
     //user
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -31,6 +31,7 @@ import { apiAxios } from "../../../config/axios";
 import Spinner from "../Spinner";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { Comments } from "./Comments";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,19 +63,13 @@ export const OneProduct = () => {
   //States
   const [activeStep, setActiveStep] = useState(0);
   const [product, setproduct] = useState({});
-  const [open, setOpen] = useState(false);
   const [value, setValue] = useState(2);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
-  const [comment, setComment] = useState({
-    title: "",
-    comment: "",
-    rating: 0,
-  });
-  const [listComments, setListComments] = useState([]);
   const [show, setshow] = useState(false);
   const [disabled, setdisabled] = useState(true); //Disabled select del talle
   const [relationalsProduct, setrelationalsProduct] = useState([]);
+  const [open, setOpen] = useState(false);
 
   //Parametro que llega desde la url
   let { idproduct } = useParams();
@@ -96,11 +91,12 @@ export const OneProduct = () => {
   const getProductsBySubcategoryAPI = (subcatid) => {
     apiAxios
       .get("/product/productBySubcategory", {
-        params: { idSubcategory: subcatid },
+        params: { idSubcategory: subcatid }
       })
       .then(({ data }) => {
         console.log(data);
-        setrelationalsProduct(data.slice(0, 3));
+        const result = data.filter(d => d.idProducto !== parseInt(idproduct, 10))
+        setrelationalsProduct(result.slice(0, 3));
       })
       .catch((error) => console.log(error));
   };
@@ -136,15 +132,6 @@ export const OneProduct = () => {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleSubmit = () => {
-    let variable = [];
-    variable = listComments;
-    variable.push(comment);
-    setListComments(variable);
-    handleClose();
-    setComment({});
   };
 
   const handleClickCarrito = (type) => {
@@ -221,6 +208,10 @@ export const OneProduct = () => {
     getProductById(idproduct);
   }, []);
 
+  useEffect(() => {
+
+  }, [product.valoraciones])
+
   return show ? (
     <>
       <Container maxWidth="md" spacing={4} style={{ marginTop: "2%" }}>
@@ -279,7 +270,7 @@ export const OneProduct = () => {
                 <EditIcon
                   onClick={(e) => {
                     e.preventDefault();
-                    history.push("/admin/product/" + idproduct);
+                    history.push("/admin/products/" + idproduct);
                   }}
                   style={{ cursor: "pointer" }}
                 />
@@ -408,112 +399,25 @@ export const OneProduct = () => {
           container
           spacing={5}
           justify="center"
-          style={{ marginTop: "2%" }}
         >
           <div className="card-group">
             {relationalsProduct.map((prod, index) => (
-              <Grid item xs={4} key={prod.idProducto}>
-                <MediaCard
-                  key={prod.idProducto}
-                  prod={prod}
-                  style={{ margin: "2%" }}
-                />
-              </Grid>
+                <Grid item xs={4} key={prod.idProducto} style={{margin: 30}}>
+                  <MediaCard
+                    key={prod.idProducto}
+                    prod={prod}
+                  />
+                </Grid>
             ))}
           </div>
         </Grid>
-        <Grid container spacing={5} justify="center">
-          {listComments.map((c) => {
-            return (
-              <Paper
-                elevation={3}
-                style={{
-                  height: 150,
-                  width: "78%",
-                  marginTop: "4%",
-                  padding: "2%",
-                }}
-              >
-                <Grid container justify="flex-start">
-                  <Box component="fieldset" borderColor="transparent">
-                    <Rating
-                      name="simple-controlled"
-                      value={c.rating}
-                      readOnly
-                      size="small"
-                    />
-                  </Box>
-                  <Tooltip title={"Añadir comentario"}>
-                    <AddCommentIcon
-                      style={{ cursor: "pointer", marginLeft: "82%" }}
-                      onClick={handleClickOpen}
-                    />
-                  </Tooltip>
-                </Grid>
-                <Typography variant="h5" style={{ fontStyle: "oblique" }}>
-                  {c.title}
-                </Typography>
-                <Typography variant="body2">{c.comment}</Typography>
-              </Paper>
-            );
-          })}
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title">Valoración</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Si gusta pueda añadir una valoración sobre este producto.
-              </DialogContentText>
-              <Grid container justify="center">
-                <Box component="fieldset" borderColor="transparent">
-                  <Rating
-                    name="simple-controlled"
-                    value={comment.rating}
-                    onChange={(event, newValue) => {
-                      console.log(newValue, event);
-                      setComment({ ...comment, rating: newValue });
-                    }}
-                  />
-                </Box>
-              </Grid>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Título del comentario"
-                value={comment.title}
-                onChange={(e) =>
-                  setComment({ ...comment, title: e.target.value })
-                }
-                fullWidth
-              />
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Comentario"
-                value={comment.comment}
-                onChange={(e) =>
-                  setComment({ ...comment, comment: e.target.value })
-                }
-                multiline
-                rows={2}
-                fullWidth
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleSubmit} color="primary">
-                Valorar
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </Grid>
+        {
+          product.valoraciones.length > 0 &&(
+            <Comments listComments={product.valoraciones} handleClickOpen={handleClickOpen} 
+            handleClose={handleClose} open={open} idproduct={idproduct}/>
+          )
+        }
+
       </Container>
     </>
   ) : (
