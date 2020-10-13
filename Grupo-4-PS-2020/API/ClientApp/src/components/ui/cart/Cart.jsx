@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container, Grid, Paper, Typography } from "@material-ui/core";
 import TileCart from "./TileCart";
+import { useHistory } from "react-router";
 
 const Cart = () => {
+  const history = useHistory();
+
   var cartlist = localStorage.getItem("cart");
   cartlist = JSON.parse(cartlist);
 
@@ -11,7 +14,9 @@ const Cart = () => {
   return (
     <div style={{ backgroundColor: "#F5F5F5" }}>
       <Container maxWidth={"lg"}>
-        <h1 style={{ textAlign: "center" }}>Carrito</h1>
+        <Typography variant="h3" align="center" gutterBottom>
+          CARRITO
+        </Typography>
         <Container maxWidth={"md"} style={{ backgroundColor: "white" }}>
           <Grid
             container
@@ -20,19 +25,23 @@ const Cart = () => {
             alignItems="stretch"
           >
             <div className="pt-3"></div>
-            {cartlist !== null
-              ? cartlist.map((prod) => (
-                  <TileCart
-                    key={prod.idProducto}
-                    idProducto={prod.idProducto}
-                    nombre={prod.nombre}
-                    precio={prod.precio}
-                    precioOferta={prod.precioOferta}
-                    imagen={prod.imagen}
-                    atributoselecc={prod.atributoselecc}
-                  />
-                ))
-              : null}
+            {cartlist.length !== 0 ? (
+              cartlist.map((prod, index) => (
+                <TileCart
+                  key={index}
+                  idProducto={prod.idProducto}
+                  nombre={prod.nombre}
+                  precio={prod.precio}
+                  precioOferta={prod.precioOferta}
+                  imagen={prod.imagen}
+                  atributoselecc={prod.atributoselecc}
+                />
+              ))
+            ) : (
+              <Typography variant="h6" align="center" gutterBottom>
+                No hay productos en el carrito
+              </Typography>
+            )}
           </Grid>
           <Grid
             container
@@ -47,23 +56,29 @@ const Cart = () => {
               justify="flex-end"
               alignItems="center"
             >
-              <h3>Total parcial</h3>
+              <Typography variant="h5" gutterBottom>
+                Total parcial
+              </Typography>
               <div className="pr-5"></div>
               {cartlist !== null
                 ? cartlist.forEach((prod) => {
                     precio += prod.precio * prod.cant;
                   })
                 : null}
-              <h3>$ {precio}</h3>
+              <Typography variant="h5" gutterBottom>
+                $ {precio}
+              </Typography>
             </Grid>
 
             <Button
               variant="contained"
-              color="primary"
-              href="#contained-buttons"
+              style={{ backgroundColor: "#007A9A", marginTop: "20px" }}
               size="large"
+              onClick={(e) => history.push('/order')}
             >
-              Continuar
+              <Typography variant="button" display="block">
+                Continuar
+              </Typography>
             </Button>
           </Grid>
         </Container>

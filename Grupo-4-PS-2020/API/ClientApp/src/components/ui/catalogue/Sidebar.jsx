@@ -59,12 +59,14 @@ const Sidebar = (props) => {
           <Fragment key={cat.idCategory}>
             <Grid container>
               <SplitButton
-                bsPrefix="btn btn-light btn-block"
+                bsPrefix="btn btn-block"
                 title={cat.name}
                 style={{
-                  padding: "3px",
+                  marginBottom: "10px",
                   marginLeft: "auto",
                   marginRight: "auto",
+                  backgroundColor: "#C8EFE3",
+                  borderRadius: "5px"
                 }}
                 onClick={(e) => getProductsByCategoryAPI(cat.idCategory)}
               >

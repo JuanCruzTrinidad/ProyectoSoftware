@@ -11,7 +11,6 @@ import "./catalogue.css";
 import Sidebar from "./Sidebar";
 import MediaCard from "./Card";
 import Search from "./Search";
-import PaginationOutlined from "./PaginationOutlined";
 import { apiAxios } from "../../../config/axios";
 import Spinner from "../../ui/Spinner";
 
@@ -71,6 +70,18 @@ const Catalogue = () => {
     .catch((error) => console.log(error));
   }
 
+  const getProductsByName = (search) => {
+    apiAxios
+    .get("/product/productByName", {
+      params: { nombre: search },
+    })
+    .then(({ data }) => {
+      setproductlist(data);
+      console.log(data);
+    })
+    .catch((error) => console.log(error));
+  }
+
   //Ordenar productos
   if (order === "Menor precio") {
     productlist.sort((a, b) => parseFloat(a.precio) - parseFloat(b.precio));
@@ -83,9 +94,8 @@ const Catalogue = () => {
   }
 
   const handleClickSearch = () => {
-    
+    getProductsByName(search);
   }
-
 
   useEffect(() => {
     getProductsAPI();
@@ -129,9 +139,6 @@ const Catalogue = () => {
               </Grid>
             </Fragment>
           )}
-        </Grid>
-        <Grid container>
-          <PaginationOutlined />
         </Grid>
       </Container>
     </div>

@@ -11,13 +11,14 @@ import { useHistory } from "react-router";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 290,
+    width: 290,
     marginBottom: 10,
     marginLeft: 15,
+    height: 340
   },
   media: {
-    maxWidth: 290,
-    height: 150,
+    maxWidth: "100%",
+    height: 220,
   },
 });
 
@@ -36,16 +37,16 @@ export default function MediaCard({ prod }) {
             <Fragment>
               <div className="mb-4"></div>
               <Typography gutterBottom variant="h5" component="h2">
-                ${precio}
+                $ {precio}
               </Typography>
             </Fragment>
           ) : (
             <Fragment>
               <Typography color="textSecondary">
-                <del>${precioOferta}</del>
+                <del>$ {precioOferta}</del>
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
-                ${precio}
+                $ {precio}
               </Typography>
             </Fragment>
           )}

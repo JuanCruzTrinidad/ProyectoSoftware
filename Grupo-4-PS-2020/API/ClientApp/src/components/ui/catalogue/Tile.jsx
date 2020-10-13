@@ -10,13 +10,14 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   paper: {
-    marginTop: 5,
+    marginTop: 8,
     marginLeft: 20,
     maxWidth: 900,
     maxHeight: 160,
   },
   image: {
     marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(2),
     width: 150,
     height: 160,
   },
@@ -60,14 +61,14 @@ const Tile = ({ prod }) => {
                 {precioOferta === 0 ? (
                   <Fragment>
                   <div className="mb-4"></div>
-                  <Typography variant="h6">${precio}</Typography>
+                  <Typography variant="h5">$ {precio}</Typography>
                   </Fragment>
                 ) : (
                   <Fragment>
                   <Typography variant="subtitle1" color="textSecondary">
-                    <del>${precioOferta}</del>
+                    <del>$ {precioOferta}</del>
                   </Typography>
-                  <Typography variant="h6">${precio}</Typography>
+                  <Typography variant="h5">$ {precio}</Typography>
                   </Fragment>
                 )}
      
