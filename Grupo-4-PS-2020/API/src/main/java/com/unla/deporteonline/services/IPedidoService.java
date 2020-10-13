@@ -10,6 +10,8 @@ public interface IPedidoService {
     
     public void deletePedido(Integer pedidoId);
     
-	public List<Pedido> findAll();
+    public List<Pedido> findAll();
+    
+    public List<Pedido> findByUserId(Integer id);
 
 }
