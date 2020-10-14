@@ -1,6 +1,6 @@
 import { Container, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import StepWizard from 'react-step-wizard';
 import { apiAxios } from '../../../config/axios';
 import { First } from './First';
@@ -23,10 +23,11 @@ export const ProductsForm = () => {
         SW,
     });
     const token = localStorage.getItem("token");
+    const history = useHistory();
 
-    const createProductAPI = (createProduct) => {
+    const createProductAPI = (createProduct, actionProdut) => {
         apiAxios
-          .post("/product/createProduct", createProduct, {
+          .post(`/post/createProduct`, createProduct, {
             headers: {
               "Access-Control-Allow-Origin": "*",
               "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
@@ -75,7 +76,7 @@ export const ProductsForm = () => {
             descripcionLarga: product.largeDescription,
             visible: product.visibility,
             precio: product.price,
-            precioOferta: product.price,
+            precioOferta: product.ofert,
             imagen: product.urlImage,
             video: product.urlVideo,
             subcategory:{
@@ -83,6 +84,14 @@ export const ProductsForm = () => {
             }
         }
         createProductAPI(createProduct);
+        // if(product.id > 0){
+        //     createProductAPI(createProduct, "updateProduct");
+        // }
+        // else{
+        //     createProductAPI(createProduct, "createProduct")
+        // }
+        
+        history.replace('/Home');
     };
 
     const [product, setProduct] = useState({
@@ -98,7 +107,7 @@ export const ProductsForm = () => {
         price: 0,
         ofert: 0,
         atributes: [],
-        visibility: true
+        visibility: true,
     })
 
     const [atributes, setatributes] = useState([])
@@ -118,7 +127,9 @@ export const ProductsForm = () => {
                 urlVideo: data.video,
                 visibility: data.visible,
                 price: data.precio,
-                ofert: data.precioOferta
+                ofert: data.precioOferta,
+                category: data.subcategory.category.idCategory,
+                subcategory: data.subcategory.idSubcategory
             });
             let variable = [];
             data.atributos.map(d => variable.push({
@@ -153,7 +164,7 @@ export const ProductsForm = () => {
                     nav={<NavWizard />}
                     instance={setInstance}>
 
-                    <First product={product} setProduct={setProduct}/>
+                    <First product={product} setProduct={setProduct} key={`${product.id}`}/>
                     <Second atributes={atributes} setatributes={setatributes} handleSubmit={handleSubmit} product={product}/>
                 </StepWizard>
             </Grid>

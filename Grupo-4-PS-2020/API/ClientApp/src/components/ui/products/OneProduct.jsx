@@ -29,8 +29,9 @@ import MediaCard from "../catalogue/Card";
 import { useHistory, useParams } from "react-router";
 import { apiAxios } from "../../../config/axios";
 import Spinner from "../Spinner";
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { Comments } from "./Comments";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,19 +63,13 @@ export const OneProduct = () => {
   //States
   const [activeStep, setActiveStep] = useState(0);
   const [product, setproduct] = useState({});
-  const [open, setOpen] = useState(false);
   const [value, setValue] = useState(2);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
-  const [comment, setComment] = useState({
-    title: "",
-    comment: "",
-    rating: 0,
-  });
-  const [listComments, setListComments] = useState([]);
   const [show, setshow] = useState(false);
   const [disabled, setdisabled] = useState(true); //Disabled select del talle
-  const [relationalsProduct, setrelationalsProduct] = useState([])
+  const [relationalsProduct, setrelationalsProduct] = useState([]);
+  const [open, setOpen] = useState(false);
 
   //Parametro que llega desde la url
   let { idproduct } = useParams();
@@ -88,22 +83,23 @@ export const OneProduct = () => {
         setproduct(data);
         console.log(data);
         setshow(true);
-        getProductsBySubcategoryAPI(data.subcategory.idSubcategory)
+        getProductsBySubcategoryAPI(data.subcategory.idSubcategory);
       })
       .catch((error) => console.log(error));
   };
 
   const getProductsBySubcategoryAPI = (subcatid) => {
     apiAxios
-    .get("/product/productBySubcategory", {
-      params: { idSubcategory: subcatid },
-    })
-    .then(({ data }) => {
-      console.log(data);
-        setrelationalsProduct(data.slice(0, 3))
-    })
-    .catch((error) => console.log(error));
-  }
+      .get("/product/productBySubcategory", {
+        params: { idSubcategory: subcatid }
+      })
+      .then(({ data }) => {
+        console.log(data);
+        const result = data.filter(d => d.idProducto !== parseInt(idproduct, 10))
+        setrelationalsProduct(result.slice(0, 3));
+      })
+      .catch((error) => console.log(error));
+  };
 
   const imagesCard = [
     {
@@ -138,70 +134,69 @@ export const OneProduct = () => {
     setOpen(false);
   };
 
-  const handleSubmit = () => {
-    let variable = [];
-    variable = listComments;
-    variable.push(comment);
-    setListComments(variable);
-    handleClose();
-    setComment({});
-  };
-
-  const handleClickCarrito = () => {
+  const handleClickCarrito = (type) => {
     if (color === "" || size === "") {
       alert("Los espacios de color y talle no deben quedar vacios");
     } else {
-      var cartlocalstorage = localStorage.getItem("cart");
+      let cartlocalstorage = localStorage.getItem("cart");
+
+      //Pongo el atributo seleccionado en el objeto
       product.atributoselecc = product.atributos.filter(
         (atrib) => atrib.color === color && atrib.talle === size
       );
-      product.cant = 1;
-      if (cartlocalstorage === null || cartlocalstorage === []) {
-        localStorage.setItem("cart", JSON.stringify([product]));
-        alert("Producto agregado al carrito");
-      } else {
-        cartlocalstorage = JSON.parse(cartlocalstorage);
-        cartlocalstorage.push(product);
-        localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
-        alert("Producto agregado al carrito");
-      }
-    }
-  };
 
-  const handleClickComprar = () => {
-    if (color === "" || size === "") {
-      alert("Los espacios de color y talle no deben quedar vacios");
-    } else {
-      var cartlocalstorage = localStorage.getItem("cart");
-      product.color = color;
-      product.talle = size;
-      product.cant = 1;
-      if (cartlocalstorage === null || cartlocalstorage === []) {
+      if (cartlocalstorage === null || cartlocalstorage === undefined ||cartlocalstorage === "[]") {
+        product.cant = 1;
         localStorage.setItem("cart", JSON.stringify([product]));
         alert("Producto agregado al carrito");
       } else {
         cartlocalstorage = JSON.parse(cartlocalstorage);
-        cartlocalstorage.push(product);
-        localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
+        //Mismo producto con el mismo sku que esta en el carrito
+        const auxprod = cartlocalstorage.filter(
+          (prod) =>
+            prod.idProducto === product.idProducto &&
+            prod.atributoselecc[0].sku === product.atributoselecc[0].sku
+        )[0];
+
+        if (auxprod === undefined) {
+          product.cant = 1;
+          cartlocalstorage.push(product);
+          localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
+          if (type === "cart") alert("Producto agregado al carrito");
+        } else {
+          //Si el producto tiene el mismo sku que el producto en carrito
+          product.cant = auxprod.cant + 1;
+
+          //Filtro el producto exactamente igual del carrito
+          cartlocalstorage = cartlocalstorage.filter(
+            (prod) =>
+              prod.idProducto != product.idProducto &&
+              prod.atributoselecc[0].sku != product.atributoselecc[0].sku
+          );
+
+          cartlocalstorage.push(product);
+          localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
+          if (type === "cart") alert("Producto agregado al carrito");
+        }
       }
-      history.push("/cart");
+      if (type === "buy") history.push("/cart");
     }
   };
 
   const handleDeleteProduct = (e) => {
-      e.preventDefault();
-      let token = localStorage.getItem("token");
-      apiAxios.post("/product/deleteProduct", idproduct,{
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-          "Access-Control-Allow-Headers":
-            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-          "Content-Type": "application/json",
-           Authorization: `${token}`,
-        },
-      })
-  }
+    e.preventDefault();
+    let token = localStorage.getItem("token");
+    apiAxios.post("/product/deleteProduct", idproduct, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+        "Access-Control-Allow-Headers":
+          "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    });
+  };
 
   useEffect(() => {
     if (color !== "") {
@@ -210,8 +205,12 @@ export const OneProduct = () => {
   }, [color]);
 
   useEffect(() => {
-    getProductById(idproduct)
+    getProductById(idproduct);
   }, []);
+
+  useEffect(() => {
+
+  }, [product.valoraciones])
 
   return show ? (
     <>
@@ -267,19 +266,23 @@ export const OneProduct = () => {
           </Grid>
           <Grid item xs={4}>
             <Paper elevantion={3} style={{ height: 500 }}>
-            <Grid container justify="flex-end">
-                  <EditIcon onClick={e =>{
+              <Grid container justify="flex-end">
+                <EditIcon
+                  onClick={(e) => {
                     e.preventDefault();
-                    history.push('/admin/product/'+idproduct)
+                    history.push("/admin/products/" + idproduct);
                   }}
-                  style={{cursor: "pointer"}}/>
-                  <DeleteIcon onClick={handleDeleteProduct}
-                  style={{cursor: "pointer"}}/>
-                </Grid>
+                  style={{ cursor: "pointer" }}
+                />
+                <DeleteIcon
+                  onClick={handleDeleteProduct}
+                  style={{ cursor: "pointer" }}
+                />
+              </Grid>
               <Grid container justify="center">
                 <Typography variant="h4" align="center" style={{ padding: 20 }}>
                   {product.nombre}
-                </Typography>               
+                </Typography>
               </Grid>
               <Grid container>
                 <Box component="fieldset" borderColor="transparent">
@@ -375,7 +378,7 @@ export const OneProduct = () => {
                   color="primary"
                   variant="contained"
                   style={{ padding: 10, width: "80%", marginBottom: 10 }}
-                  onClick={(e) => handleClickComprar()}
+                  onClick={(e) => handleClickCarrito("buy")}
                 >
                   Comprar
                 </Button>
@@ -384,7 +387,7 @@ export const OneProduct = () => {
                   variant="contained"
                   fullWidth
                   style={{ padding: 10, width: "80%" }}
-                  onClick={(e) => handleClickCarrito()}
+                  onClick={(e) => handleClickCarrito("cart")}
                 >
                   Agregar al carrito
                 </Button>
@@ -396,108 +399,25 @@ export const OneProduct = () => {
           container
           spacing={5}
           justify="center"
-          style={{ marginTop: "2%" }}
         >
           <div className="card-group">
             {relationalsProduct.map((prod, index) => (
-              <Grid item xs={4} key={prod.idProducto}>
-                <MediaCard  key={prod.idProducto} prod={prod} style={{ margin: "2%" }} />
-              </Grid>
+                <Grid item xs={4} key={prod.idProducto} style={{margin: 30}}>
+                  <MediaCard
+                    key={prod.idProducto}
+                    prod={prod}
+                  />
+                </Grid>
             ))}
           </div>
         </Grid>
-        <Grid container spacing={5} justify="center">
-          {listComments.map((c) => {
-            return (
-              <Paper
-                elevation={3}
-                style={{
-                  height: 150,
-                  width: "78%",
-                  marginTop: "4%",
-                  padding: "2%",
-                }}
-              >
-                <Grid container justify="flex-start">
-                  <Box component="fieldset" borderColor="transparent">
-                    <Rating
-                      name="simple-controlled"
-                      value={c.rating}
-                      readOnly
-                      size="small"
-                    />
-                  </Box>
-                  <Tooltip title={"Añadir comentario"}>
-                    <AddCommentIcon
-                      style={{ cursor: "pointer", marginLeft: "82%" }}
-                      onClick={handleClickOpen}
-                    />
-                  </Tooltip>
-                </Grid>
-                <Typography variant="h5" style={{ fontStyle: "oblique" }}>
-                  {c.title}
-                </Typography>
-                <Typography variant="body2">{c.comment}</Typography>
-              </Paper>
-            );
-          })}
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title">Valoración</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Si gusta pueda añadir una valoración sobre este producto.
-              </DialogContentText>
-              <Grid container justify="center">
-                <Box component="fieldset" borderColor="transparent">
-                  <Rating
-                    name="simple-controlled"
-                    value={comment.rating}
-                    onChange={(event, newValue) => {
-                      console.log(newValue, event);
-                      setComment({ ...comment, rating: newValue });
-                    }}
-                  />
-                </Box>
-              </Grid>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Título del comentario"
-                value={comment.title}
-                onChange={(e) =>
-                  setComment({ ...comment, title: e.target.value })
-                }
-                fullWidth
-              />
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Comentario"
-                value={comment.comment}
-                onChange={(e) =>
-                  setComment({ ...comment, comment: e.target.value })
-                }
-                multiline
-                rows={2}
-                fullWidth
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleSubmit} color="primary">
-                Valorar
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </Grid>
+        {
+          product.valoraciones.length > 0 &&(
+            <Comments listComments={product.valoraciones} handleClickOpen={handleClickOpen} 
+            handleClose={handleClose} open={open} idproduct={idproduct}/>
+          )
+        }
+
       </Container>
     </>
   ) : (

@@ -15,14 +15,20 @@ const Quantity = (props) => {
       <div className="quantity-input">
         <button
           className="quantity-input__modifier quantity-input__modifier--left"
-          onClick={(e) => setcant(cant - 1)}
+          onClick={(e) => {
+            if (cant !== 1) {
+              setcant(cant - 1);
+            }
+          }}
         >
           <RemoveIcon />
         </button>
-        <input className="quantity-input__screen" value={cant} />
+        <input className="quantity-input__screen" value={cant} disabled/>
         <button
           className="quantity-input__modifier quantity-input__modifier--right"
-          onClick={(e) => setcant(cant + 1)}
+          onClick={(e) => {
+            setcant(cant + 1);
+          }}
         >
           <AddIcon />
         </button>
