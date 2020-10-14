@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import ShippingForm from "./ShippingForm";
+import Details from './Details';
 
 const useStyles = makeStyles((theme) => ({
   backButton: {
@@ -71,7 +72,7 @@ export default function StepperOrder() {
           />
         );
       case 1:
-        return "What is an ad group anyways?";
+        return <Details />;
       case 2:
         return "This is the bit I really care about!";
       case 3:
@@ -79,6 +80,56 @@ export default function StepperOrder() {
       default:
         return "Unknown stepIndex";
     }
+  }
+
+  const addToLocalStorage = () => {
+
+    // const domicilio = {
+
+    // }
+
+    //   let order = localStorage.getItem("order");
+
+    //   if (order === '[]' || order === null) {
+    //     localStorage.setItem("order", JSON.stringify())
+    //   }
+
+    //   if (cartlocalstorage === null || cartlocalstorage === undefined || cartlocalstorage === "[]") {
+    //     product.cant = 1;
+    //     localStorage.setItem("cart", JSON.stringify([product]));
+    //     alert("Producto agregado al carrito");
+    //   } else {
+    //     cartlocalstorage = JSON.parse(cartlocalstorage);
+    //     //Mismo producto con el mismo sku que esta en el carrito
+    //     const auxprod = cartlocalstorage.filter(
+    //       (prod) =>
+    //         prod.idProducto === product.idProducto &&
+    //         prod.atributoselecc[0].sku === product.atributoselecc[0].sku
+    //     )[0];
+
+    //     if (auxprod === undefined) {
+    //       product.cant = 1;
+    //       cartlocalstorage.push(product);
+    //       localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
+    //       if (type === "cart") alert("Producto agregado al carrito");
+    //     } else {
+    //       //Si el producto tiene el mismo sku que el producto en carrito
+    //       product.cant = auxprod.cant + 1;
+
+    //       //Filtro el producto exactamente igual del carrito
+    //       cartlocalstorage = cartlocalstorage.filter(
+    //         (prod) =>
+    //           prod.idProducto != product.idProducto &&
+    //           prod.atributoselecc[0].sku != product.atributoselecc[0].sku
+    //       );
+
+    //       cartlocalstorage.push(product);
+    //       localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
+    //       if (type === "cart") alert("Producto agregado al carrito");
+    //     }
+    //   }
+    //   if (type === "buy") history.push("/cart");
+    // }
   }
 
   const handleNext = () => {
