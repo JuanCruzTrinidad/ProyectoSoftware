@@ -5,13 +5,18 @@ import java.util.List;
 import com.unla.deporteonline.entities.Producto;
 import com.unla.deporteonline.services.IProductService;
 
+import io.micrometer.core.ipc.http.HttpSender.Method;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
+import org.springframework.security.web.header.Header;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,7 +73,8 @@ public class ProductRestController {
 	}
 
 	//traer productos por Subcategoria
-	@GetMapping("/productBySubcategory") 
+	@GetMapping(path = "/productBySubcategory", produces=MediaType.APPLICATION_JSON_VALUE)
+	//@RequestMapping(value = "/productBySubcategory", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET ) 
 	public List<Producto> findProductBySubcategory(@RequestParam("idSubcategory") int idSubcategory) {
 		return productService.findProductBySubcategory(idSubcategory);
 	}

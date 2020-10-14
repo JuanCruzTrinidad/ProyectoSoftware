@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { apiAxios } from '../../../config/axios';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { useParams } from 'react-router';
 
 export const First = ({ nextStep, product, setProduct }) => {
 
@@ -272,7 +273,7 @@ export const First = ({ nextStep, product, setProduct }) => {
                                             margin="dense"
                                             type="number"
                                             fullWidth
-                                            value={product.price}
+                                            value={product.ofert}
                                             onChange={e => setProduct({ ...product, ofert: parseInt(e.target.value,10) })}
                                         />
                                     </Grid>
