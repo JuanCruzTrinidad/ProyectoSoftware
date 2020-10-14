@@ -9,6 +9,7 @@ const SubCategories = () => {
   //States
   const [subcatlist, setsubcatlist] = useState([]);
   const [showtable, setshowtable] = useState(false);
+  const [columns, setColumns] = useState([]);
 
   const history = useHistory();
 
@@ -34,7 +35,6 @@ const SubCategories = () => {
       .then(({ data }) => {
         setsubcatlist(data);
         console.log(data);
-        setshowtable(true);
       })
       .catch((error) => console.log(error));
   };
@@ -95,42 +95,54 @@ const SubCategories = () => {
       .catch((error) => console.log(error));
   };
 
-  const list = [
-    { id: 1, name: "Zapatillas", nameGoogle: "Zapatos", categorie: 0 },
-    { id: 2, name: "Botines", nameGoogle: "Botas", categorie: 1 },
-    { id: 3, name: "Camisetas", nameGoogle: "Camisas", categorie: 1 },
-  ];
-
-  const optionsCategories = {
-    0: "Categoria 0",
-    1: "Categoria 1",
-    2: "Categoria 2",
+  const getCategoriesAPI = () => {
+    apiAxios
+      .get("/category/allcategories", {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        const optionsCategories = Object.fromEntries(
+          data.map((item) => [item.idCategory, item.name])
+        );
+        setColumns([
+          {
+            title: "ID",
+            field: "id",
+            type: "numeric",
+            align: "justify",
+            hidden: true,
+          },
+          {
+            title: "Nombre",
+            field: "name",
+            type: "string",
+          },
+          { title: "Taxonomia Google", field: "nameGoogle", type: "string" },
+          {
+            title: "Categoria",
+            field: "category.idCategory",
+            lookup: optionsCategories,
+          },
+        ]);
+        setshowtable(true);
+      })
+      .catch((error) => console.log(error));
   };
-
-  //const [data, setData] = useState(list);
-
-  const [columns, setColumns] = useState([
-    {
-      title: "ID",
-      field: "id",
-      type: "numeric",
-      align: "justify",
-      hidden: true,
-    },
-    {
-      title: "Nombre",
-      field: "name",
-      type: "string",
-    },
-    { title: "Taxonomia Google", field: "nameGoogle", type: "string" },
-    { title: "Categoria", field: "category", lookup: optionsCategories },
-  ]);
 
   useEffect(() => {
     getSubcategoriesAPI();
+    getCategoriesAPI();
+    // eslint-disable-next-line
   }, []);
 
-  return (
+  return showtable ? (
     <div className="container-fluid contenedor">
       <div className="p-5">
         <MaterialTable
@@ -146,38 +158,46 @@ const SubCategories = () => {
               color: "#001014",
             },
             actionsColumnIndex: 3,
+            pageSize: 10,
           }}
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
+                createSubcategoryAPI(newData);
                 setTimeout(() => {
-                  setsubcatlist([...subcatlist, newData]);
+                  // setsubcatlist([...subcatlist, newData]);
                   resolve();
-                }, 1000);
+                }, 6500);
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
+                updateSubcategoryAPI(newData);
+                const dataUpdate = [...subcatlist];
+                const index = oldData.tableData.id;
+                dataUpdate[index] = newData;
+                setsubcatlist([...dataUpdate]);
                 setTimeout(() => {
-                  const dataUpdate = [...subcatlist];
-                  const index = oldData.tableData.id;
-                  dataUpdate[index] = newData;
-                  setsubcatlist([...dataUpdate]);
                   resolve();
-                }, 1000);
+                }, 1500);
               }),
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
+                deleteSubcategoryAPI(oldData.idSubcategory);
+                const dataDelete = [...subcatlist];
+                const index = oldData.tableData.id;
+                dataDelete.splice(index, 1);
+                setsubcatlist([...dataDelete]);
                 setTimeout(() => {
-                  const dataDelete = [...subcatlist];
-                  const index = oldData.tableData.id;
-                  dataDelete.splice(index, 1);
-                  setsubcatlist([...dataDelete]);
                   resolve();
-                }, 1000);
+                }, 1500);
               }),
           }}
         />
       </div>
+    </div>
+  ) : (
+    <div style={{ padding: "200px" }}>
+      <Spinner />
     </div>
   );
 };

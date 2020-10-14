@@ -8,7 +8,7 @@ import { Button as ButtonRB } from "react-bootstrap";
 import SplitButton from "react-bootstrap/SplitButton";
 
 const Sidebar = (props) => {
-  const { visual, setvisual, listacategorias, order, setorder } = props;
+  const { visual, setvisual, categorieslist, order, setorder, getProductsByCategoryAPI, getProductsBySubcategoryAPI } = props;
 
   return (
     <Card className="sidecat">
@@ -55,8 +55,8 @@ const Sidebar = (props) => {
 
         <h4 className="pt-4 pb-2 text-center">Categorias</h4>
 
-        {listacategorias.map((cat) => (
-          <Fragment key={cat.id}>
+        {categorieslist.map((cat) => (
+          <Fragment key={cat.idCategory}>
             <Grid container>
               <SplitButton
                 bsPrefix="btn btn-light btn-block"
@@ -66,10 +66,14 @@ const Sidebar = (props) => {
                   marginLeft: "auto",
                   marginRight: "auto",
                 }}
+                onClick={(e) => getProductsByCategoryAPI(cat.idCategory)}
               >
-                <Dropdown.Item eventKey="1">Action</Dropdown.Item>
-                <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-                <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
+                {cat.subcategorys.map((subcat) => (
+                  <Dropdown.Item 
+                    key={subcat.idSubcategory}
+                    onClick={(e) => getProductsBySubcategoryAPI(subcat.idSubcategory)}
+                  >{subcat.name}</Dropdown.Item>
+                ))}
               </SplitButton>
             </Grid>
           </Fragment>

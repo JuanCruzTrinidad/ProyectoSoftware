@@ -13,6 +13,8 @@ import MediaCard from "./Card";
 import Search from "./Search";
 import PaginationOutlined from "./PaginationOutlined";
 import { apiAxios } from "../../../config/axios";
+import Spinner from "../../ui/Spinner";
+
 
 const Catalogue = () => {
   //States
@@ -20,8 +22,11 @@ const Catalogue = () => {
   const [search, setsearch] = useState("");
   const [order, setorder] = useState("Default");
   const [productlist, setproductlist] = useState([]);
+  const [categorieslist, setcategorieslist] = useState([]);
+  const [show, setshow] = useState(false);
 
-  useEffect(() => {
+
+  const getProductsAPI = () => {
     apiAxios
       .get("/product/allproduct")
       .then(({ data }) => {
@@ -29,14 +34,42 @@ const Catalogue = () => {
         console.log(data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  };
 
-  const listacategorias = [
-    { id: 1, name: "Categoria1" },
-    { id: 2, name: "Categoria2" },
-    { id: 3, name: "Categoria3" },
-    { id: 4, name: "Categoria4" },
-  ];
+  const getCategoriesAPI = () => {
+    apiAxios
+      .get("/category/allcategories")
+      .then(({ data }) => {
+        setcategorieslist(data);
+        console.log(data);
+        setshow(true);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const getProductsByCategoryAPI = (catid) => {
+    apiAxios
+    .get("/product/productByCategory", {
+      params: { idCategory: catid },
+    })
+    .then(({ data }) => {
+      setproductlist(data);
+      console.log(data);
+    })
+    .catch((error) => console.log(error));
+  }
+
+  const getProductsBySubcategoryAPI = (subcatid) => {
+    apiAxios
+    .get("/product/productBySubcategory", {
+      params: { idSubcategory: subcatid },
+    })
+    .then(({ data }) => {
+      setproductlist(data);
+      console.log(data);
+    })
+    .catch((error) => console.log(error));
+  }
 
   //Ordenar productos
   if (order === "Menor precio") {
@@ -49,18 +82,30 @@ const Catalogue = () => {
     productlist.sort((a, b) => b.nombre.localeCompare(a.nombre));
   }
 
-  return (
+  const handleClickSearch = () => {
+    
+  }
+
+
+  useEffect(() => {
+    getProductsAPI();
+    getCategoriesAPI();
+  }, [])
+
+  return show ? (
     <div className="contenedor">
       <Container maxWidth={"lg"} className="tilescolumn">
         <Grid container spacing={1}>
           <Grid item xs={3}>
-            <Search search={search} setsearch={setsearch} />
+            <Search search={search} setsearch={setsearch} handleClickSearch={handleClickSearch}/>
             <Sidebar
               visual={visual}
               setvisual={setvisual}
-              listacategorias={listacategorias}
+              categorieslist={categorieslist}
               order={order}
               setorder={setorder}
+              getProductsByCategoryAPI={getProductsByCategoryAPI}
+              getProductsBySubcategoryAPI={getProductsBySubcategoryAPI}
             />
           </Grid>
           {productlist.length === 0 ? (
@@ -89,6 +134,10 @@ const Catalogue = () => {
           <PaginationOutlined />
         </Grid>
       </Container>
+    </div>
+  ) : (
+    <div style={{ padding: "200px" }}>
+      <Spinner />
     </div>
   );
 };

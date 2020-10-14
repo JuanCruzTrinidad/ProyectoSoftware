@@ -3,12 +3,9 @@ package com.unla.deporteonline.entities;
 import java.util.HashSet;
 import java.util.Set;
 
-import java.io.Serializable;
-
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -77,18 +74,14 @@ public class Producto {
         this.subcategory = subcategory;
     }
 
-    public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
-        float precio, float precioOferta, String imagen, String video) {
-        this.idProducto = idProducto;
-        this.nombre = nombre;
-        this.descripcionCorta = descripcionCorta;
-        this.descripcionLarga = descripcionLarga;
-        this.visible = visible;
-        this.precio = precio;
-        this.precioOferta = precioOferta;
-        this.imagen = imagen;
-        this.video = video;
-    }
+	/*
+	 * public Producto(int idProducto, String nombre, String descripcionCorta,
+	 * String descripcionLarga, boolean visible, float precio, float precioOferta,
+	 * String imagen, String video) { this.idProducto = idProducto; this.nombre =
+	 * nombre; this.descripcionCorta = descripcionCorta; this.descripcionLarga =
+	 * descripcionLarga; this.visible = visible; this.precio = precio;
+	 * this.precioOferta = precioOferta; this.imagen = imagen; this.video = video; }
+	 */
 
 
     public int getIdProducto() {

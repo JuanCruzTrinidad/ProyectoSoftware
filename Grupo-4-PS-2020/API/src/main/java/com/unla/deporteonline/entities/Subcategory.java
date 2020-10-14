@@ -1,11 +1,9 @@
 package com.unla.deporteonline.entities;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -25,7 +23,7 @@ public class Subcategory {
 
     @ManyToOne //(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name= "idCategory")
-    @JsonIgnoreProperties ( "subcategorys" )
+    @JsonIgnoreProperties ("subcategorys")
     private Category category;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "subcategory")

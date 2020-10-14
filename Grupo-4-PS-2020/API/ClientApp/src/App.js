@@ -18,6 +18,7 @@ import SubCategories from './components/crud/categories/SubCategories';
 import { ProductsForm } from './components/crud/products/productsForm';
 import Catalogue from './components/ui/catalogue/Catalogue';
 import { OneProduct } from './components/ui/products/OneProduct';
+import Cart from './components/ui/cart/Cart';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -60,11 +61,17 @@ function App() {
           <Route exact strict path="/admin/products">
             <ProductsForm/>
           </Route>
+          <Route exact strict path="/admin/products/:id">
+            <ProductsForm/>
+          </Route>
           <Route exact strict path="/catalogue">
             <Catalogue />
           </Route>
-          <Route exact stric path="/product">
+          <Route exact stric path="/product/:idproduct">
             <OneProduct/>
+          </Route>
+          <Route exact stric path="/cart">
+            <Cart />
           </Route>
         </Switch>
         <Footer />

@@ -1,6 +1,5 @@
 package com.unla.deporteonline.entities;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;

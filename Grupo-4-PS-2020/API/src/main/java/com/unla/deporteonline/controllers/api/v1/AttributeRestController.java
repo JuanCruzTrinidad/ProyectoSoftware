@@ -27,9 +27,12 @@ public class AttributeRestController {
 
 //Agregar Atributo
 @PostMapping(value ="/createAttribute", consumes="application/json")
-public Object createAttribute(@RequestBody Atributos createAttribute) {
+public String createAttribute(@RequestBody List<Atributos> createAttribute) {
 	System.out.println("Attribute: " + createAttribute.toString());
-	return attributeService.saveAttribute(createAttribute);
+	for(Atributos a: createAttribute) {
+		attributeService.saveAttribute(a);
+	}
+	return "Atributos creados";
 }
 
 //update Atributo
