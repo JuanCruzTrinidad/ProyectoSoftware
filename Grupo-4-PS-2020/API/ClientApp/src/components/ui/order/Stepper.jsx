@@ -32,27 +32,68 @@ function getSteps() {
   ];
 }
 
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-    case 0:
-      return <ShippingForm />;
-    case 1:
-      return "What is an ad group anyways?";
-    case 2:
-      return "This is the bit I really care about!";
-    case 3:
-      return "This is the bit I really care about!";
-    default:
-      return "Unknown stepIndex";
-  }
-}
-
 export default function StepperOrder() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
+  const [error, seterror] = useState(false);
+
+  //States shipping form
+  const [street, setstreet] = useState("");
+  const [number, setnumber] = useState("");
+  const [floor, setfloor] = useState("");
+  const [dep, setdep] = useState("");
+  const [postalcode, setpostalcode] = useState("");
+  const [locality, setlocality] = useState("");
+  const [province, setprovince] = useState("");
+
+  function getStepContent(stepIndex) {
+    switch (stepIndex) {
+      case 0:
+        return (
+          <ShippingForm
+            street={street}
+            setstreet={setstreet}
+            number={number}
+            setnumber={setnumber}
+            floor={floor}
+            setfloor={setfloor}
+            dep={dep}
+            setdep={setdep}
+            postalcode={postalcode}
+            setpostalcode={setpostalcode}
+            locality={locality}
+            setlocality={setlocality}
+            province={province}
+            setprovince={setprovince}
+            error={error}
+          />
+        );
+      case 1:
+        return "What is an ad group anyways?";
+      case 2:
+        return "This is the bit I really care about!";
+      case 3:
+        return "This is the bit I really care about!";
+      default:
+        return "Unknown stepIndex";
+    }
+  }
+
   const handleNext = () => {
+    if (
+      street === "" ||
+      number === "" ||
+      postalcode === "" ||
+      locality === "" ||
+      province === ""
+    ) {
+      seterror(true);
+      return;
+    }
+    seterror(false);
+
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -88,7 +129,7 @@ export default function StepperOrder() {
                 <Typography className={classes.instructions}>
                   {getStepContent(activeStep)}
                 </Typography>
-                <div>
+                <div className="pb-5 pt-3">
                   <Button
                     disabled={activeStep === 0}
                     onClick={handleBack}
