@@ -74,3 +74,29 @@ INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`
 INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('3', '10', '10', 'verde', '10', '10', '33', '2');
 INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('4', '14', '14', 'amarillo', '14', '14', '34', '3');
 INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('5', '12', '12', 'naranja', '12', '12', '36', '4');
+
+INSERT INTO `deporteonline`.`payment` (`id_payment`, `name`) VALUES ('1', 'efectivo');
+INSERT INTO `deporteonline`.`payment` (`id_payment`, `name`) VALUES ('2', 'tarjeta');
+INSERT INTO `deporteonline`.`payment` (`id_payment`, `name`) VALUES ('3', 'mercadopago');
+
+INSERT INTO `deporteonline`.`discount` (`id_discount`, `code`, `percentage`) VALUES ('1', '20porcentaje', '20');
+INSERT INTO `deporteonline`.`discount` (`id_discount`, `code`, `percentage`) VALUES ('2', '15porcentaje', '15');
+INSERT INTO `deporteonline`.`discount` (`id_discount`, `code`, `percentage`) VALUES ('3', '10porcentaje', '10');
+
+INSERT INTO `deporteonline`.`direction` (`id_direction`, `apartment`, `flat`, `location`, `number`, `postal_code`, `province`, `street`) VALUES ('1', 'A', '11', 'CABA', '123', '1564', 'Buenos Aires', 'Corrientes');
+INSERT INTO `deporteonline`.`direction` (`id_direction`, `location`, `number`, `postal_code`, `province`, `street`) VALUES ('2', 'Burzaco', '456', '1852', 'Buenos Aires', 'Alsina');
+INSERT INTO `deporteonline`.`direction` (`id_direction`, `location`, `number`, `postal_code`, `province`, `street`) VALUES ('3', 'Lomas de Zamora', '362', '1832', 'Buenos Aires', 'Belgrano');
+
+INSERT INTO `deporteonline`.`pedido` (`id_pedido`, `descuento`, `shipping_cost`, `subtotal`, `total`, `id_direction`, `id_discount`, `id_payment`, `id_user`) VALUES ('1', '200', '100', '1200', '1000', '1', '1', '1', '1');
+INSERT INTO `deporteonline`.`pedido` (`id_pedido`, `descuento`, `shipping_cost`, `subtotal`, `total`, `id_direction`, `id_discount`, `id_payment`, `id_user`) VALUES ('2', '100', '150', '2430', '2330', '2', '2', '2', '1');
+INSERT INTO `deporteonline`.`pedido` (`id_pedido`, `coment`, `descuento`, `shipping_cost`, `subtotal`, `total`, `id_direction`, `id_discount`, `id_payment`, `id_user`) VALUES ('3', ':)', '250', '130', '2453', '2329', '3', '1', '3', '2');
+
+INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('1', '1', '2');
+INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('2', '1', '1');
+INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('3', '1', '2');
+INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('4', '2', '1');
+INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('5', '2', '4');
+INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('2', '3', '1');
+
+
+INSERT INTO `deporteonline`.`pedido` (`id_pedido`, `shipping_cost`, `subtotal`, `total`, `id_direction`, `id_payment`, `id_user`) VALUES ('4', '123', '4521', '4500', '4', '2', '2');

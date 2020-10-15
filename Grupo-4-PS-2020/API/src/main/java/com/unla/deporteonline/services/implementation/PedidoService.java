@@ -31,4 +31,8 @@ public class PedidoService implements IPedidoService {
 		return ipedidoRepository.findAll();
 	}
 
+	public List<Pedido> findByUserId(Integer id){
+		return ipedidoRepository.findByUserId(id);
+	}
+
 }
