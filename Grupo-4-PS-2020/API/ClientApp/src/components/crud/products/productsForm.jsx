@@ -11,89 +11,16 @@ import styles from './wizard.less';
 
 export const ProductsForm = () => {
 
-    const onChangeStep = (e) =>{
-        updateState({...state, currentStep: e.currentStep})
-    };
     const [state, updateState] = useState({
         form: {},
         currentStep: 0
     });
-    const setInstance = SW => updateState({
-        ...state,
-        SW,
-    });
+
+    const { SW, demo } = state;
+
+    let { id } = useParams();
     const token = localStorage.getItem("token");
     const history = useHistory();
-
-    const createProductAPI = (createProduct, actionProdut) => {
-        apiAxios
-          .post(`/post/createProduct`, createProduct, {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-              "Access-Control-Allow-Headers":
-                "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-              "Content-Type": "application/json",
-               Authorization: `${token}`,
-            },
-          })
-          .then(({ data }) => {
-            let atributoslist = [];
-            atributes.map(a =>  atributoslist.push({
-                sku: 0,
-                talle: a.size,
-                color: a.color,
-                cantidad: a.count,
-                peso: a.weight,
-                ancho: a.width,
-                alto: a.heigth,
-                profundidad: a.depth,
-                producto: {
-                    idProducto: data.idProducto
-                }
-            }));
-            apiAxios.post("/attribute/createAttribute", atributoslist ,{
-                headers: {
-                  "Access-Control-Allow-Origin": "*",
-                  "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-                  "Access-Control-Allow-Headers":
-                    "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-                  "Content-Type": "application/json",
-                   Authorization: `${token}`,
-                },
-              })
-          })
-          .catch((error) => console.log(error));
-      };
-
-    const handleSubmit = () => {
-        setProduct({...product, atributes: atributes})
-        console.log(product)
-        let createProduct = {
-            idProducto: product.id,
-            nombre: product.name,
-            descripcionCorta: product.shortDescription,
-            descripcionLarga: product.largeDescription,
-            visible: product.visibility,
-            precio: product.price,
-            precioOferta: product.ofert,
-            imagen: product.urlImage,
-            video: product.urlVideo,
-            subcategory:{
-                idSubcategory:product.subcategory
-            }
-        }
-        createProductAPI(createProduct);
-        // if(product.id > 0){
-        //     createProductAPI(createProduct, "updateProduct");
-        // }
-        // else{
-        //     createProductAPI(createProduct, "createProduct")
-        // }
-        
-        history.replace('/Home');
-    };
-
     const [product, setProduct] = useState({
         id: 0,
         name: '',
@@ -109,9 +36,24 @@ export const ProductsForm = () => {
         atributes: [],
         visibility: true,
     })
-
     const [atributes, setatributes] = useState([])
-    let { id } = useParams();
+    useEffect(() => {
+    }, [product.id])
+
+    useEffect(() => {
+        if(id !== undefined){
+            getProductById(id)
+        }
+    }, [id])
+
+    const onChangeStep = (e) =>{
+        updateState({...state, currentStep: e.currentStep})
+    };
+    const setInstance = SW => updateState({
+        ...state,
+        SW,
+    });
+
     const getProductById = (id) => {
         apiAxios
           .get("/product/ProductId", {
@@ -120,6 +62,7 @@ export const ProductsForm = () => {
           .then(({ data }) => {
             console.log(data);
             setProduct({...product, 
+                id: data.idProducto,
                 name: data.nombre,
                 largeDescription: data.descripcionLarga,
                 shortDescription: data.descripcionCorta,
@@ -133,6 +76,7 @@ export const ProductsForm = () => {
             });
             let variable = [];
             data.atributos.map(d => variable.push({
+                sku : d.sku,
                 color: d.color,
                 size: d.talle,
                 weight: d.peso,
@@ -142,19 +86,111 @@ export const ProductsForm = () => {
                 depth: d.profundidad
             }))
             setatributes(variable);
-            console.log(atributes)
+            console.log(variable)
+          })
+          .catch((error) => console.log(error));
+      };
+    
+
+    const createProductAPI = (createProduct, actionProdut) => {
+        apiAxios
+          .post(`/product/${actionProdut}`, createProduct, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+              "Access-Control-Allow-Headers":
+                "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+              "Content-Type": "application/json",
+               Authorization: `${token}`,
+            },
+          })
+          .then(({ data }) => {
+            let atributoslist = [];
+            let atributosUpdate = [];
+            atributes.map(a => {
+            if(a.sku === 0){
+                atributoslist.push({
+                    sku: 0,
+                    talle: a.size,
+                    color: a.color,
+                    cantidad: a.count,
+                    peso: a.weight,
+                    ancho: a.width,
+                    alto: a.heigth,
+                    profundidad: a.depth,
+                    producto: {
+                        idProducto: data.idProducto
+                    }
+                })
+            } 
+            else{
+                atributosUpdate.push({
+                    sku: a.sku,
+                    talle: a.size,
+                    color: a.color,
+                    cantidad: a.count,
+                    peso: a.weight,
+                    ancho: a.width,
+                    alto: a.heigth,
+                    profundidad: a.depth,
+                    producto: {
+                        idProducto: data.idProducto
+                    }
+                })
+            }
+        });
+            apiAxios.post("/attribute/createAttribute", atributoslist ,{
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+                  "Access-Control-Allow-Headers":
+                    "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+                  "Content-Type": "application/json",
+                   Authorization: `${token}`,
+                },
+              })
+              apiAxios.post("/attribute/updateAttribute", atributosUpdate ,{
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+                  "Access-Control-Allow-Headers":
+                    "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+                  "Content-Type": "application/json",
+                   Authorization: `${token}`,
+                },
+              })
           })
           .catch((error) => console.log(error));
       };
 
-    useEffect(() => {
-    }, [product])
+    const handleSubmit = () => {
+        console.log(product)
+        let createProduct = {
+            idProducto: product.id,
+            nombre: product.name,
+            descripcionCorta: product.shortDescription,
+            descripcionLarga: product.largeDescription,
+            visible: product.visibility,
+            precio: product.price,
+            precioOferta: product.ofert,
+            imagen: product.urlImage,
+            video: product.urlVideo,
+            subcategory:{
+                idSubcategory:product.subcategory
+            }
+        }
+        //createProductAPI(createProduct);
+        if(product.id > 0){
+            createProductAPI(createProduct, "updateProduct");
+        }
+        else{
+            createProductAPI(createProduct, "createProduct")
+        }
+        
+        history.replace('/Home');
+    };
 
-    useEffect(() => {
-        getProductById(id)
-    }, [id])
 
-    const { SW, demo } = state;
 
     return (
         <Container maxWidth="md" fixed>
