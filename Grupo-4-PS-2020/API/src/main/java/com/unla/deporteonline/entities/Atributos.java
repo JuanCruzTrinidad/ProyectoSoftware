@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="atributos")
@@ -56,7 +57,7 @@ public class Atributos {
         this.profundidad = profundidad;
     }
 
-    public Atributos(int sku, float talle, String color, float peso, float ancho, float alto, float profundidad,
+    public Atributos(int sku, String talle, String color, float peso, float ancho, float alto, float profundidad,
             Producto producto, Set<DetallePedido> detallePedidos) {
 
         this.sku = sku;
