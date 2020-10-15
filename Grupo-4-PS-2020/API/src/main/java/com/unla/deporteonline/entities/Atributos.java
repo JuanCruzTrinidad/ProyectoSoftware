@@ -1,8 +1,12 @@
 package com.unla.deporteonline.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="atributos")
@@ -36,6 +40,10 @@ public class Atributos {
     @JoinColumn (name= "idProducto")
     private Producto producto;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "atributos")
+    private Set<DetallePedido> detallePedidos = new HashSet<DetallePedido>();
+
+
 
     public Atributos(){}
 
@@ -50,7 +58,8 @@ public class Atributos {
     }
 
     public Atributos(int sku, String talle, String color, float peso, float ancho, float alto, float profundidad,
-            Producto producto) {
+            Producto producto, Set<DetallePedido> detallePedidos) {
+
         this.sku = sku;
         this.talle = talle;
         this.color = color;
@@ -59,6 +68,7 @@ public class Atributos {
         this.alto = alto;
         this.profundidad = profundidad;
         this.producto = producto;
+        this.detallePedidos = detallePedidos;
     }
 
     public int getSku() {
@@ -126,10 +136,21 @@ public class Atributos {
         this.producto = producto;
     }
 
+    
+    @JsonManagedReference(value = "atributosDetalle")
+    public Set<DetallePedido> getDetallePedidos() {
+        return detallePedidos;
+    }
+
+    public void setDetallePedidos(Set<DetallePedido> detallePedidos) {
+        this.detallePedidos = detallePedidos;
+    }
+
     @Override
     public String toString() {
-        return "Atributos [alto=" + alto + ", ancho=" + ancho + ", color=" + color + ", peso=" + peso + ", producto="
-                + producto + ", profundidad=" + profundidad + ", sku=" + sku + ", talle=" + talle + "]";
+        return "Atributos [alto=" + alto + ", ancho=" + ancho + ", color=" + color + ", detallePedidos="
+                + detallePedidos + ", peso=" + peso + ", producto=" + producto + ", profundidad=" + profundidad
+                + ", sku=" + sku + ", talle=" + talle + "]";
     }
 
     

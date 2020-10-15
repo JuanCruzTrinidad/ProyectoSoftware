@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container, Grid, Paper, Typography } from "@material-ui/core";
 import TileCart from "./TileCart";
+import { useHistory } from "react-router";
 
 const Cart = () => {
+  const history = useHistory();
+
   var cartlist = localStorage.getItem("cart");
   cartlist = JSON.parse(cartlist);
 
@@ -70,8 +73,8 @@ const Cart = () => {
             <Button
               variant="contained"
               style={{ backgroundColor: "#007A9A", marginTop: "20px" }}
-              href="#contained-buttons"
               size="large"
+              onClick={(e) => history.push('/order')}
             >
               <Typography variant="button" display="block">
                 Continuar

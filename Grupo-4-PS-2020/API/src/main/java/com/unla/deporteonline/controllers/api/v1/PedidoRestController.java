@@ -48,13 +48,13 @@ public class PedidoRestController {
     }
 
 
-	/* /update Pedido
+	//update Pedido
 	@PostMapping(value ="/updatePedido", consumes="application/json")
 	public Object updatePedido(@RequestBody Pedido updatePedido) {
 		System.out.println("update Pedido: " + updatePedido.toString());
 		return pedidoService.savePedido(updatePedido);
     }
-    */
+   
 
 
 	//Delete Pedido
@@ -74,6 +74,12 @@ public class PedidoRestController {
 	@GetMapping("/allPedidos")
 	public List<Pedido> findAll(){
 		return pedidoService.findAll();
+	}
+
+	//traer pedidos por id usuario
+	@GetMapping("/pedidoByUserId")
+	public List<Pedido> pedidoByUserId(@RequestParam("id") int id){
+		return pedidoService.findByUserId(id);
 	}
 
 
