@@ -33,7 +33,8 @@ const TileCart = (props) => {
     precioOferta,
     imagen,
     atributoselecc,
-    setprice
+    actualizarSubtotal,
+    //setpreecio
   } = props;
 
   const history = useHistory();
@@ -93,17 +94,7 @@ const TileCart = (props) => {
       localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
     }
 
-    //Cambio el precio total
-    var cartlist = localStorage.getItem("cart");
-    cartlist = JSON.parse(cartlist);
-  
-    let price = 0;
-    if (cartlist !== null) {
-      cartlist.forEach((prod) => {
-        price += prod.precio * prod.cant;
-      });
-    }
-    setprice(price);
+    actualizarSubtotal();
   };
 
   return (

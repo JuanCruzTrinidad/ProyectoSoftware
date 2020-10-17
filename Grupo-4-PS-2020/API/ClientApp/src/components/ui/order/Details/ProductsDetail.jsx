@@ -32,7 +32,7 @@ const ProductsDetail = (props) => {
   return (
     <Paper className={classes.paper}>
       <Grid container>
-        <Grid item xs={9}>
+        <Grid item xs={9} className="pl-1">
           <Typography
             variant="h6"
             style={{ cursor: "pointer" }}

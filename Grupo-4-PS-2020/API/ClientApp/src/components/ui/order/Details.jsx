@@ -22,8 +22,8 @@ const Details = () => {
       </Typography>
       <Grid container>
         <Grid item xs={6}>
-          <Typography variant="h5" gutterBottom style={{ textAlign: "center" }}>
-            Detalle productos
+          <Typography variant="h5" gutterBottom style={{ textAlign: "center" }} className="pb-3">
+            Productos
           </Typography>
           <Grid item xs={9} style={{ marginLeft: "auto", marginRight: "auto" }}>
             {cartlist.length !== 0 ? (
@@ -45,8 +45,8 @@ const Details = () => {
           </Grid>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="h5" gutterBottom style={{ textAlign: "center" }}>
-            Detalle total
+          <Typography variant="h5" gutterBottom style={{ textAlign: "center" }} className="pb-3">
+            Total
           </Typography>
           <Grid item xs={9} style={{ marginLeft: "auto", marginRight: "auto" }}>
             <TotalDetail />

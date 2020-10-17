@@ -184,7 +184,7 @@ export default function StepperOrder() {
                 <Typography className={classes.instructions}>
                   {getStepContent(activeStep)}
                 </Typography>
-                <div className="pb-5 pt-3">
+                <div className="pb-5 pt-5" style={{textAlign:"right"}}>
                   <Button
                     disabled={activeStep === 0}
                     onClick={handleBack}
@@ -194,6 +194,7 @@ export default function StepperOrder() {
                   </Button>
                   <Button
                     variant="contained"
+                    style={{backgroundColor: "#007A9A"}}
                     color="primary"
                     onClick={handleNext}
                   >
