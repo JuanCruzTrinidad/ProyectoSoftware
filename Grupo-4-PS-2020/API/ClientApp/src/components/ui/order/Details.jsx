@@ -22,10 +22,10 @@ const Details = () => {
       </Typography>
       <Grid container>
         <Grid item xs={6}>
-          <Typography variant="h6" gutterBottom style={{ textAlign: "center" }}>
+          <Typography variant="h5" gutterBottom style={{ textAlign: "center" }}>
             Detalle productos
           </Typography>
-          <Grid item xs={9}>
+          <Grid item xs={9} style={{ marginLeft: "auto", marginRight: "auto" }}>
             {cartlist.length !== 0 ? (
               cartlist.map((prod, index) => (
                 <ProductsDetail
@@ -33,9 +33,8 @@ const Details = () => {
                   idProducto={prod.idProducto}
                   nombre={prod.nombre}
                   precio={prod.precio}
-                  precioOferta={prod.precioOferta}
-                  imagen={prod.imagen}
                   atributoselecc={prod.atributoselecc}
+                  cant={prod.cant}
                 />
               ))
             ) : (
@@ -46,10 +45,12 @@ const Details = () => {
           </Grid>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="h6" gutterBottom style={{ textAlign: "center" }}>
+          <Typography variant="h5" gutterBottom style={{ textAlign: "center" }}>
             Detalle total
           </Typography>
-          <TotalDetail />
+          <Grid item xs={9} style={{ marginLeft: "auto", marginRight: "auto" }}>
+            <TotalDetail />
+          </Grid>
         </Grid>
       </Grid>
     </Fragment>

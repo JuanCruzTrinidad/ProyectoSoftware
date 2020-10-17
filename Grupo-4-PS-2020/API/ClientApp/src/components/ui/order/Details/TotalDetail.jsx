@@ -13,10 +13,28 @@ import {
 const TotalDetail = () => {
   return (
     <Fragment>
-      <h3>prods</h3>
-      <h3>envio</h3>
-      <h3>peso weas</h3>
-      <h3>Total total</h3>
+      <Grid container>
+        <Grid container>
+          <Grid item xs={6}>
+            <Typography variant="h6">Subtotal productos</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6">$dsfas</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6">Subtotal envio</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6">$dsfas</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6">Total</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6">$dsfas</Typography>
+          </Grid>
+        </Grid>
+      </Grid>
     </Fragment>
   );
 };
