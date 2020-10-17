@@ -107,6 +107,19 @@ const Cart = () => {
             alignItems="flex-end"
             className="pt-5 pb-3"
           >
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "#007A9A",
+                color: "white",
+                marginTop: "20px",
+              }}
+              onClick={(e) => window.location.reload()}
+            >
+              <Typography variant="button" display="block">
+              &#x21bb;
+              </Typography>
+            </Button>
             <Grid
               container
               direction="row"
