@@ -12,7 +12,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import ShippingForm from "./ShippingForm";
-import Details from './Details';
+import Details from "./Details";
+import { useHistory } from "react-router";
+import { apiAxios } from "../../../config/axios";
 
 const useStyles = makeStyles((theme) => ({
   backButton: {
@@ -34,6 +36,14 @@ function getSteps() {
 }
 
 export default function StepperOrder() {
+  const history = useHistory();
+
+  //Si no esta logeado no debe poder entrar a esta pagina
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    history.push("/");
+  }
+
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
@@ -51,7 +61,7 @@ export default function StepperOrder() {
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
-      case 0:
+      case 1:
         return (
           <ShippingForm
             street={street}
@@ -71,7 +81,7 @@ export default function StepperOrder() {
             error={error}
           />
         );
-      case 1:
+      case 0:
         return <Details />;
       case 2:
         return "This is the bit I really care about!";
@@ -82,55 +92,37 @@ export default function StepperOrder() {
     }
   }
 
-  const addToLocalStorage = () => {
+  //Se pone el idDirection en order de localstorage
+  const addDirectionLocalStorage = (iddirec) => {
+    var orderls = localStorage.getItem("order");
+    orderls = JSON.parse(orderls);
 
-    // const domicilio = {
+    const direction = {
+      idDirection: iddirec,
+    };
+    orderls.direction = direction;
 
-    // }
+    localStorage.setItem("order", JSON.stringify(orderls));
+  };
 
-    //   let order = localStorage.getItem("order");
-
-    //   if (order === '[]' || order === null) {
-    //     localStorage.setItem("order", JSON.stringify())
-    //   }
-
-    //   if (cartlocalstorage === null || cartlocalstorage === undefined || cartlocalstorage === "[]") {
-    //     product.cant = 1;
-    //     localStorage.setItem("cart", JSON.stringify([product]));
-    //     alert("Producto agregado al carrito");
-    //   } else {
-    //     cartlocalstorage = JSON.parse(cartlocalstorage);
-    //     //Mismo producto con el mismo sku que esta en el carrito
-    //     const auxprod = cartlocalstorage.filter(
-    //       (prod) =>
-    //         prod.idProducto === product.idProducto &&
-    //         prod.atributoselecc[0].sku === product.atributoselecc[0].sku
-    //     )[0];
-
-    //     if (auxprod === undefined) {
-    //       product.cant = 1;
-    //       cartlocalstorage.push(product);
-    //       localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
-    //       if (type === "cart") alert("Producto agregado al carrito");
-    //     } else {
-    //       //Si el producto tiene el mismo sku que el producto en carrito
-    //       product.cant = auxprod.cant + 1;
-
-    //       //Filtro el producto exactamente igual del carrito
-    //       cartlocalstorage = cartlocalstorage.filter(
-    //         (prod) =>
-    //           prod.idProducto != product.idProducto &&
-    //           prod.atributoselecc[0].sku != product.atributoselecc[0].sku
-    //       );
-
-    //       cartlocalstorage.push(product);
-    //       localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
-    //       if (type === "cart") alert("Producto agregado al carrito");
-    //     }
-    //   }
-    //   if (type === "buy") history.push("/cart");
-    // }
-  }
+  const createDirectionAPI = (direc) => {
+    apiAxios
+      .post("/direction/createDirection", direc, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        addDirectionLocalStorage(data.idDirection);
+        //console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
 
   const handleNext = () => {
     if (
@@ -144,6 +136,18 @@ export default function StepperOrder() {
       return;
     }
     seterror(false);
+
+    const direction = {
+      street,
+      number: parseInt(number, 10),
+      flat: parseInt(floor, 10),
+      apartment: dep,
+      postalCode: parseInt(postalcode, 10),
+      location: locality,
+      province,
+    };
+
+    createDirectionAPI(direction);
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };

@@ -9,7 +9,35 @@ const Cart = () => {
   var cartlist = localStorage.getItem("cart");
   cartlist = JSON.parse(cartlist);
 
-  let precio = 0;
+  const [price, setprice] = useState(0);
+
+  const handleNext = () => {
+    //Creo el order y completo el subtotal
+    var orderls = localStorage.getItem("order");
+    if (orderls === null) {
+      const order = {
+        user: null,
+        coment: null,
+        shippingCost: null,
+        total: null,
+        descuento: null,
+        subtotal: price,
+        discount: null,
+        direction: null,
+        payment: null,
+      };
+
+      localStorage.setItem("order", JSON.stringify(order));
+    } else {
+      orderls = JSON.parse(orderls);
+
+      orderls.subtotal = price;
+
+      localStorage.setItem("order", JSON.stringify(orderls));
+    }
+
+    history.push("/order");
+  };
 
   return (
     <div style={{ backgroundColor: "#F5F5F5" }}>
@@ -35,6 +63,7 @@ const Cart = () => {
                   precioOferta={prod.precioOferta}
                   imagen={prod.imagen}
                   atributoselecc={prod.atributoselecc}
+                  setprice={setprice}
                 />
               ))
             ) : (
@@ -60,13 +89,8 @@ const Cart = () => {
                 Total parcial
               </Typography>
               <div className="pr-5"></div>
-              {cartlist !== null
-                ? cartlist.forEach((prod) => {
-                    precio += prod.precio * prod.cant;
-                  })
-                : null}
               <Typography variant="h5" gutterBottom>
-                $ {precio}
+                $ {price}
               </Typography>
             </Grid>
 
@@ -74,7 +98,7 @@ const Cart = () => {
               variant="contained"
               style={{ backgroundColor: "#007A9A", marginTop: "20px" }}
               size="large"
-              onClick={(e) => history.push('/order')}
+              onClick={(e) => handleNext()}
             >
               <Typography variant="button" display="block">
                 Continuar
