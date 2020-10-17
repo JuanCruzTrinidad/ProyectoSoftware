@@ -15,6 +15,7 @@ import ShippingForm from "./ShippingForm";
 import Details from "./Details";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
+import { SellerComments } from "./SellerComments";
 
 const useStyles = makeStyles((theme) => ({
   backButton: {
@@ -82,7 +83,7 @@ export default function StepperOrder() {
           />
         );
       case 0:
-        return <Details />;
+        return <SellerComments />;
       case 2:
         return "This is the bit I really care about!";
       case 3:
