@@ -1,22 +1,28 @@
 import React, { Fragment, useState, useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
 import {
-  ButtonBase,
-  Container,
   Grid,
-  Paper,
   Typography,
 } from "@material-ui/core";
+import {shippingCalculate} from '../../../../helpers/shippingCalculate';
 
 const TotalDetail = () => {
-  let subtotalprod = 0;
 
+  //Subtotal productos
+  let subtotalprod = 0;
   var orderls = localStorage.getItem("order");
   orderls = JSON.parse(orderls);
-
   subtotalprod = orderls.subtotal;
+
+
+  //Subtotal envio
+  var directionls = localStorage.getItem("direction");
+  directionls = JSON.parse(directionls);
+
+  var cartls = localStorage.getItem("cart");
+  cartls = JSON.parse(cartls);
+  let subtotalshipping = shippingCalculate(directionls.province, directionls.postalCode, cartls);
+  console.log(subtotalshipping);
+
 
   return (
     <Fragment>

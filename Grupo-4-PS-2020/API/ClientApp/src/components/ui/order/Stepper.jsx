@@ -15,6 +15,7 @@ import ShippingForm from "./ShippingForm";
 import Details from "./Details";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
+import {SellerComments} from './SellerComments';
 
 const useStyles = makeStyles((theme) => ({
   backButton: {
@@ -120,6 +121,7 @@ export default function StepperOrder() {
       .then(({ data }) => {
         addDirectionLocalStorage(data.idDirection);
         //console.log(data);
+        localStorage.setItem("direction", JSON.stringify(data)); //Agrego la dire al ls
       })
       .catch((error) => console.log(error));
   };
