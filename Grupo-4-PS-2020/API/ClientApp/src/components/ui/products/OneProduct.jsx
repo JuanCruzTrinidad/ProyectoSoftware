@@ -206,7 +206,7 @@ export const OneProduct = () => {
 
   useEffect(() => {
     getProductById(idproduct);
-  }, []);
+  }, [idproduct]);
 
   useEffect(() => {
 

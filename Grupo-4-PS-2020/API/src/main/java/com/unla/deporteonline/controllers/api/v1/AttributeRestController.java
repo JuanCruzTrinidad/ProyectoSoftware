@@ -28,7 +28,7 @@ public class AttributeRestController {
 //Agregar Atributo
 @PostMapping(value ="/createAttribute", consumes="application/json")
 public String createAttribute(@RequestBody List<Atributos> createAttribute) {
-	System.out.println("Attribute: " + createAttribute.toString());
+	System.out.println("Attributes: " + createAttribute.toString());
 	for(Atributos a: createAttribute) {
 		attributeService.saveAttribute(a);
 	}
@@ -37,9 +37,12 @@ public String createAttribute(@RequestBody List<Atributos> createAttribute) {
 
 //update Atributo
 @PostMapping(value ="/updateAttribute", consumes="application/json")
-public Object updateAttribute(@RequestBody Atributos updateAttribute) {
-    System.out.println("update product: " + updateAttribute.toString());
-    return attributeService.saveAttribute(updateAttribute);
+public Object updateAttribute(@RequestBody List<Atributos> updateAttribute) {
+    System.out.println("update atributes: " + updateAttribute.toString());
+	for(Atributos a: updateAttribute) {
+		attributeService.saveAttribute(a);
+	}
+	return "Atributos udpateados";
 }
 
 

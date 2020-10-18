@@ -106,9 +106,9 @@ export const First = ({ nextStep, product, setProduct }) => {
 
     const classes = useStyles();
 
-    useEffect(() => {
-        console.log(product)
-    }, [product])
+    // useEffect(() => {
+    //     console.log(product)
+    // }, [product])
 
     useEffect(() => {
         getCategoriesAPI()
