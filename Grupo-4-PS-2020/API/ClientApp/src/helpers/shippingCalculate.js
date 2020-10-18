@@ -31,7 +31,7 @@ export const useShippingCalculate =  (provincia, codigo_postal, products = []) =
         headers: {
             'Authorization': `Bearer ${data.token}`
         }
-    }).then(response => {console.log(response})
+    }).then(response => {console.log(response)})
 })
 var response = ''
 return response
