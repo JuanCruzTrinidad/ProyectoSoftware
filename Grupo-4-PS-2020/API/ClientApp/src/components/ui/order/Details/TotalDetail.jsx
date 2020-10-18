@@ -3,7 +3,7 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-import {shippingCalculate} from '../../../../helpers/shippingCalculate';
+import { useShippingCalculate } from "../../../../helpers/shippingCalculate";
 
 const TotalDetail = () => {
 
@@ -19,8 +19,8 @@ const TotalDetail = () => {
   directionls = JSON.parse(directionls);
 
   var cartls = localStorage.getItem("cart");
-  cartls = JSON.parse(cartls);
-  let subtotalshipping = shippingCalculate(directionls.province, directionls.postalCode, cartls);
+  cartls = JSON.parse(cartls); //directionls.province, directionls.postalCode, cartls
+  let subtotalshipping = useShippingCalculate();
   console.log(subtotalshipping);
 
 
