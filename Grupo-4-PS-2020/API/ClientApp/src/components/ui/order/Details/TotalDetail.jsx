@@ -3,7 +3,7 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-import { useShippingCalculate } from "../../../../helpers/shippingCalculate";
+import {useShippingCalculate} from '../../../../helpers/shippingCalculate';
 
 const TotalDetail = () => {
 
@@ -13,15 +13,19 @@ const TotalDetail = () => {
   orderls = JSON.parse(orderls);
   subtotalprod = orderls.subtotal;
 
-
   //Subtotal envio
-  var directionls = localStorage.getItem("direction");
-  directionls = JSON.parse(directionls);
+  // var directionls = localStorage.getItem("direction");
+  // directionls = JSON.parse(directionls);
 
   var cartls = localStorage.getItem("cart");
-  cartls = JSON.parse(cartls); //directionls.province, directionls.postalCode, cartls
-  let subtotalshipping = useShippingCalculate('B',  '1842', cartls);
-  console.log(subtotalshipping);
+  cartls = JSON.parse(cartls);
+
+  useShippingCalculate("aaa", 1313, cartls);
+  //console.log(subtotalshipping);
+
+
+
+  console.log("hola");
 
 
   return (

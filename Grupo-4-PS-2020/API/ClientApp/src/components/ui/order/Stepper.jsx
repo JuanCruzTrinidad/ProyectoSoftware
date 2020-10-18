@@ -16,6 +16,7 @@ import Details from "./Details";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
 import {SellerComments} from './SellerComments';
+import {useShippingCalculate} from '../../../helpers/shippingCalculate';
 
 const useStyles = makeStyles((theme) => ({
   backButton: {
