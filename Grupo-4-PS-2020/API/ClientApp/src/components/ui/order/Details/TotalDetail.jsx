@@ -20,7 +20,7 @@ const TotalDetail = () => {
 
   var cartls = localStorage.getItem("cart");
   cartls = JSON.parse(cartls); //directionls.province, directionls.postalCode, cartls
-  let subtotalshipping = useShippingCalculate();
+  let subtotalshipping = useShippingCalculate('B',  '1842', cartls);
   console.log(subtotalshipping);
 
 

@@ -13,9 +13,6 @@ export const useShippingCalculate =  (provincia, codigo_postal, products = []) =
     params.append('api-key', API_KEY);
     params.append('secret-key', SECRET_KEY); //params auth
 
-
-    Axios.post(urlToken, params).then(({data}) => {settoken(data.token)})
-    console.log(token)
     var paquetes = '';
     var peso = 0;
     products.map((p, i) => { //añado medidas de paquetes y peso
@@ -29,14 +26,13 @@ export const useShippingCalculate =  (provincia, codigo_postal, products = []) =
     urlRequest.searchParams.append('peso', peso);
     urlRequest.searchParams.append('paquetes', paquetes);
 
-    var response = '';
-    console.log(token)
-    Axios.get(urlRequest, {
+    Axios.post(urlToken, params).then(({data}) => {
+        Axios.get(urlRequest, {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${data.token}`
         }
-    }).then(d => response = d.data); //devuelvo body
-    console.log(response);
-
+    }).then(response => {console.log(response})
+})
+var response = ''
 return response
 }
