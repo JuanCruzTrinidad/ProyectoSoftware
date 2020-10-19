@@ -17,7 +17,6 @@ export const useShippingCalculate = (
   params.append("api-key", API_KEY);
   params.append("secret-key", SECRET_KEY); //params auth
 
-<<<<<<< HEAD
   var paquetes = "";
   var peso = 0;
   products.map((p, i) => {
@@ -27,12 +26,6 @@ export const useShippingCalculate = (
       `${p.atributoselecc[0].alto}x${p.atributoselecc[0].ancho}x${p.atributoselecc[0].profundidad},`;
     peso += p.atributoselecc[0].peso;
   });
-=======
-    var urlToken = new URL('https://api.enviopack.com/auth');
-    var params = new URLSearchParams();
-    params.append('api-key', API_KEY);
-    params.append('secret-key', SECRET_KEY); //params auth
->>>>>>> a893aee5ca41845e8d4aa074fab48acec6f84972
 
   var urlRequest = new URL(
     "https://api.enviopack.com/cotizar/precio/a-domicilio"
@@ -52,10 +45,6 @@ export const useShippingCalculate = (
     });
   });
 
-<<<<<<< HEAD
-  return response;
-};
-=======
     Axios.post(urlToken, params).then(({data}) => {
         Axios.get(urlRequest, {
         headers: {
@@ -66,4 +55,3 @@ export const useShippingCalculate = (
 
 //return response
 }
->>>>>>> a893aee5ca41845e8d4aa074fab48acec6f84972

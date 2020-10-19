@@ -13,11 +13,10 @@ const TotalDetail = () => {
   subtotalprod = orderls.subtotal;
 
   //Subtotal envio
-  // var directionls = localStorage.getItem("direction");
-  // directionls = JSON.parse(directionls);
+  var directionls = localStorage.getItem("direction");
+  directionls = JSON.parse(directionls);
 
   var cartls = localStorage.getItem("cart");
-
   cartls = JSON.parse(cartls); //directionls.province, directionls.postalCode, cartls
 
   //Calculo envio

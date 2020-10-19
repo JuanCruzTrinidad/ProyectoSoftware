@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
+import Provinces from '../../../helpers/Provinces.json';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,13 +38,18 @@ export default function ShippingForm(props) {
     error,
   } = props;
 
-  const provincesAPI = async () => {
-    const url = "https://apis.datos.gob.ar/georef/api/provincias";
+  // const provincesAPI = async () => {
+  //   const url = "https://apis.datos.gob.ar/georef/api/provincias";
 
-    let response = await fetch(url);
-    let data = await response.json();
-    return data;
-  };
+  //   let response = await fetch(url);
+  //   let data = await response.json();
+  //   return data;
+  // };
+
+
+
+  console.log(Provinces);
+
 
   const localitysAPI = async (province) => {
     const url = `https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&campos=nombre&max=1500&orden=nombre`;
@@ -53,9 +59,9 @@ export default function ShippingForm(props) {
     return data;
   };
 
-  useEffect(() => {
-    provincesAPI().then((data) => setprovinceslist(data.provincias));
-  }, []);
+  // useEffect(() => {
+  //   provincesAPI().then((data) => setprovinceslist(data.provincias));
+  // }, []);
 
   useEffect(() => {
     if (province !== "") {
@@ -122,7 +128,7 @@ export default function ShippingForm(props) {
             onChange={(e) => setprovince(e.target.value)}
             style={{ width: "32ch" }}
           >
-            {provinceslist.map((prov) => (
+            {Provinces.provinces.map((prov) => (
               <MenuItem key={prov.id} value={prov.nombre}>
                 {prov.nombre}
               </MenuItem>

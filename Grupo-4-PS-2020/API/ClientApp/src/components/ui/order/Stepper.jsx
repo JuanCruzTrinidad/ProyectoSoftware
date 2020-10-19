@@ -63,7 +63,7 @@ export default function StepperOrder() {
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
-      case 1:
+      case 0:
         return (
           <ShippingForm
             street={street}
@@ -83,7 +83,7 @@ export default function StepperOrder() {
             error={error}
           />
         );
-      case 0:
+      case 1:
         return <Details />;
       case 2:
         return "This is the bit I really care about!";
