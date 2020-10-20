@@ -12,7 +12,7 @@ import {
 import ProductsDetail from "./Details/ProductsDetail";
 import TotalDetail from "./Details/TotalDetail";
 
-const Details = () => {
+const Details = ({postalcode, province}) => {
   var cartlist = localStorage.getItem("cart");
   cartlist = JSON.parse(cartlist);
   return (
@@ -49,7 +49,9 @@ const Details = () => {
             Total
           </Typography>
           <Grid item xs={9} style={{ marginLeft: "auto", marginRight: "auto" }}>
-            <TotalDetail />
+            <TotalDetail 
+            postalcode={postalcode}
+            province={province}/>
           </Grid>
         </Grid>
       </Grid>
