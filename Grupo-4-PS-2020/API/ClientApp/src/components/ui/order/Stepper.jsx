@@ -185,7 +185,7 @@ export default function StepperOrder() {
               </div>
             ) : (
               <div>
-                <Typography className={classes.instructions}>
+                <Typography component={'span'} className={classes.instructions}>
                   {getStepContent(activeStep)}
                 </Typography>
                 <div className="pb-5 pt-5" style={{ textAlign: "right" }}>
