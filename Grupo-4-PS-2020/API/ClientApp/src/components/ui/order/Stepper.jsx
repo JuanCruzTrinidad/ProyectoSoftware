@@ -15,8 +15,9 @@ import ShippingForm from "./ShippingForm";
 import Details from "./Details";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
-import {SellerComments} from './SellerComments';
-import {useShippingCalculate} from '../../../helpers/shippingCalculate';
+import { SellerComments } from "./SellerComments";
+import { useShippingCalculate } from "../../../helpers/shippingCalculate";
+import PaymentMethod from "./PaymentMethod";
 
 const useStyles = makeStyles((theme) => ({
   backButton: {
@@ -61,39 +62,6 @@ export default function StepperOrder() {
   const [locality, setlocality] = useState("");
   const [province, setprovince] = useState("");
 
-  function getStepContent(stepIndex) {
-    switch (stepIndex) {
-      case 0:
-        return (
-          <ShippingForm
-            street={street}
-            setstreet={setstreet}
-            number={number}
-            setnumber={setnumber}
-            floor={floor}
-            setfloor={setfloor}
-            dep={dep}
-            setdep={setdep}
-            postalcode={postalcode}
-            setpostalcode={setpostalcode}
-            locality={locality}
-            setlocality={setlocality}
-            province={province}
-            setprovince={setprovince}
-            error={error}
-          />
-        );
-      case 1:
-        return <Details />;
-      case 2:
-        return "This is the bit I really care about!";
-      case 3:
-        return <SellerComments />;
-      default:
-        return "Unknown stepIndex";
-    }
-  }
-
   //Se pone el idDirection en order de localstorage
   const addDirectionLocalStorage = (iddirec) => {
     var orderls = localStorage.getItem("order");
@@ -120,9 +88,9 @@ export default function StepperOrder() {
         },
       })
       .then(({ data }) => {
-        addDirectionLocalStorage(data.idDirection);
-        //console.log(data);
         localStorage.setItem("direction", JSON.stringify(data)); //Agrego la dire al ls
+
+        addDirectionLocalStorage(data.idDirection);
       })
       .catch((error) => console.log(error));
   };
@@ -163,6 +131,39 @@ export default function StepperOrder() {
     setActiveStep(0);
   };
 
+  function getStepContent(stepIndex) {
+    switch (stepIndex) {
+      case 0:
+        return (
+          <ShippingForm
+            street={street}
+            setstreet={setstreet}
+            number={number}
+            setnumber={setnumber}
+            floor={floor}
+            setfloor={setfloor}
+            dep={dep}
+            setdep={setdep}
+            postalcode={postalcode}
+            setpostalcode={setpostalcode}
+            locality={locality}
+            setlocality={setlocality}
+            province={province}
+            setprovince={setprovince}
+            error={error}
+          />
+        );
+      case 1:
+        return <Details postalcode={postalcode} province={province}/>;
+      case 2:
+        return <PaymentMethod />;
+      case 3:
+        return <SellerComments />;
+      default:
+        return "Unknown stepIndex";
+    }
+  }
+
   return (
     <Container maxWidth={"lg"}>
       <Stepper activeStep={activeStep} alternativeLabel>
@@ -187,7 +188,7 @@ export default function StepperOrder() {
                 <Typography className={classes.instructions}>
                   {getStepContent(activeStep)}
                 </Typography>
-                <div className="pb-5 pt-5" style={{textAlign:"right"}}>
+                <div className="pb-5 pt-5" style={{ textAlign: "right" }}>
                   <Button
                     disabled={activeStep === 0}
                     onClick={handleBack}
@@ -197,7 +198,7 @@ export default function StepperOrder() {
                   </Button>
                   <Button
                     variant="contained"
-                    style={{backgroundColor: "#007A9A"}}
+                    style={{ backgroundColor: "#007A9A" }}
                     color="primary"
                     onClick={handleNext}
                   >

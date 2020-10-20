@@ -47,10 +47,6 @@ export default function ShippingForm(props) {
   // };
 
 
-
-  console.log(Provinces);
-
-
   const localitysAPI = async (province) => {
     const url = `https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&campos=nombre&max=1500&orden=nombre`;
 
