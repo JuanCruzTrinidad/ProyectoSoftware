@@ -54,6 +54,11 @@ public class DiscountRestController {
 			return discountService.findDiscountById(idDiscount);
 		}
 
+	@GetMapping("/discountByCode")
+		public float findDiscountByCode(@RequestParam("code") String code){
+			return discountService.findDiscountByCode(code);
+		}
+
 	//Traes todos los descuentos
 	@GetMapping("/allDiscount")
 	public List<Discount> findAll(){

@@ -23,6 +23,14 @@ public class DiscountService implements IDiscountService {
 		return idiscountRepository.findById(id).get();
 	}
 
+	public float findDiscountByCode(String code){
+		float disc = 0;
+		if( idiscountRepository.findDiscountByCode(code)!= null){
+			disc = idiscountRepository.findDiscountByCode(code).getPercentage();
+		}
+		return disc;
+	}
+
 	public void deleteDiscount(Integer discountId) {
 		idiscountRepository.delete(idiscountRepository.findById(discountId).get());
 	}
