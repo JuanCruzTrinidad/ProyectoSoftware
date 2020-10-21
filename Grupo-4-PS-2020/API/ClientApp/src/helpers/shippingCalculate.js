@@ -1,6 +1,10 @@
-import { responsiveFontSizes } from "@material-ui/core";
+import {
+  responsiveFontSizes
+} from "@material-ui/core";
 import Axios from "axios";
-import { useState } from "react";
+import {
+  useState
+} from "react";
 const API_KEY = "819eec64c7e9fe943501a6c67587f0c26d2978f7";
 const SECRET_KEY = "cc90512c17c6e50a5af9801139dd0f56a2dc4c1e";
 
@@ -9,8 +13,6 @@ export const useShippingCalculate = (
   codigo_postal,
   products = []
 ) => {
-
-  const [response, setresponse] = useState('');
 
   var urlToken = new URL("https://api.enviopack.com/auth");
   var params = new URLSearchParams();
@@ -35,23 +37,18 @@ export const useShippingCalculate = (
   urlRequest.searchParams.append("peso", peso);
   urlRequest.searchParams.append("paquetes", paquetes);
 
-  Axios.post(urlToken, params).then(({ data }) => {
+  Axios.post(urlToken, params).then(({
+    data
+  }) => {
     Axios.get(urlRequest, {
       headers: {
-        Authorization: `Bearer ${data.token}`,
-      },
-    }).then((response) => {
-      setresponse(response);
-    });
-  });
+        'Authorization': `Bearer ${data.token}`
+      }
+    }).then(response => {
+      localStorage.setItem("shippingcost", JSON.stringify(response.data));
+      console.log(response.data);
+    })
+  })
 
-    Axios.post(urlToken, params).then(({data}) => {
-        Axios.get(urlRequest, {
-        headers: {
-            'Authorization': `Bearer ${data.token}`
-        }
-    }).then(response => {localStorage.setItem("shippingcost", JSON.stringify(response.data))})
-})
-
-//return response
+  //return response
 }

@@ -15,8 +15,9 @@ import ShippingForm from "./ShippingForm";
 import Details from "./Details";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
-import {SellerComments} from './SellerComments';
-import {useShippingCalculate} from '../../../helpers/shippingCalculate';
+import { SellerComments } from "./SellerComments";
+import { useShippingCalculate } from "../../../helpers/shippingCalculate";
+import PaymentMethod from "./PaymentMethod";
 
 const useStyles = makeStyles((theme) => ({
   backButton: {
@@ -61,38 +62,14 @@ export default function StepperOrder() {
   const [locality, setlocality] = useState("");
   const [province, setprovince] = useState("");
 
-  function getStepContent(stepIndex) {
-    switch (stepIndex) {
-      case 0:
-        return (
-          <ShippingForm
-            street={street}
-            setstreet={setstreet}
-            number={number}
-            setnumber={setnumber}
-            floor={floor}
-            setfloor={setfloor}
-            dep={dep}
-            setdep={setdep}
-            postalcode={postalcode}
-            setpostalcode={setpostalcode}
-            locality={locality}
-            setlocality={setlocality}
-            province={province}
-            setprovince={setprovince}
-            error={error}
-          />
-        );
-      case 1:
-        return <Details />;
-      case 2:
-        return "This is the bit I really care about!";
-      case 3:
-        return <SellerComments />;
-      default:
-        return "Unknown stepIndex";
-    }
-  }
+  //States paymentMethod
+  const [paymentmethod, setpaymentmethod] = useState("");
+  const [typedoc, settypedoc] = useState("");
+  const [doc, setdoc] = useState("");
+  const [cardnumber, setcardnumber] = useState("");
+  const [expiry, setexpiry] = useState("");
+  const [cvc, setcvc] = useState("");
+  const [paydone, setpaydone] = useState(false);
 
   //Se pone el idDirection en order de localstorage
   const addDirectionLocalStorage = (iddirec) => {
@@ -120,37 +97,68 @@ export default function StepperOrder() {
         },
       })
       .then(({ data }) => {
-        addDirectionLocalStorage(data.idDirection);
-        //console.log(data);
         localStorage.setItem("direction", JSON.stringify(data)); //Agrego la dire al ls
+
+        addDirectionLocalStorage(data.idDirection);
       })
       .catch((error) => console.log(error));
   };
 
   const handleNext = () => {
-    if (
-      street === "" ||
-      number === "" ||
-      postalcode === "" ||
-      locality === "" ||
-      province === ""
-    ) {
-      seterror(true);
-      return;
+    //Si esta en ShippingForm
+    switch (activeStep) {
+      case 2: //ShippingForm
+        if (
+          street === "" ||
+          number === "" ||
+          postalcode === "" ||
+          locality === "" ||
+          province === ""
+        ) {
+          seterror(true);
+          return;
+        }
+        seterror(false);
+
+        const direction = {
+          street,
+          number: parseInt(number, 10),
+          flat: parseInt(floor, 10),
+          apartment: dep,
+          postalCode: parseInt(postalcode, 10),
+          location: locality,
+          province,
+        };
+
+        createDirectionAPI(direction);
+        break;
+      case 1: //Details
+        break;
+      case 0: //PaymentMethod
+        console.log(paymentmethod);
+        console.log(typedoc);
+        console.log(doc);
+        if (
+          paymentmethod.length === 0 ||
+          ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
+            (typedoc.length === 0 || doc.length === 0)) ||
+          ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
+            (cardnumber.length === 0 ||
+              expiry.length === 0 ||
+              cvc.length === 0)) || (paymentmethod === "mercadopago" && paydone === false)
+        ) {
+          seterror(true);
+          return;
+        }
+        seterror(false);
+
+        //Llamar a api, preguntar por los metodos de pago y guardar el que coincide con el mio.
+        break;
+      case 3: //SellerComments
+        break;
+      default:
+        break;
     }
-    seterror(false);
-
-    const direction = {
-      street,
-      number: parseInt(number, 10),
-      flat: parseInt(floor, 10),
-      apartment: dep,
-      postalCode: parseInt(postalcode, 10),
-      location: locality,
-      province,
-    };
-
-    createDirectionAPI(direction);
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -162,6 +170,58 @@ export default function StepperOrder() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  function getStepContent(stepIndex) {
+    switch (stepIndex) {
+      case 2:
+        return (
+          <ShippingForm
+            street={street}
+            setstreet={setstreet}
+            number={number}
+            setnumber={setnumber}
+            floor={floor}
+            setfloor={setfloor}
+            dep={dep}
+            setdep={setdep}
+            postalcode={postalcode}
+            setpostalcode={setpostalcode}
+            locality={locality}
+            setlocality={setlocality}
+            province={province}
+            setprovince={setprovince}
+            error={error}
+          />
+        );
+      case 1:
+        return <Details postalcode={postalcode} province={province} />;
+      case 0:
+        return (
+          <PaymentMethod
+            paymentmethod={paymentmethod}
+            setpaymentmethod={setpaymentmethod}
+            typedoc={typedoc}
+            settypedoc={settypedoc}
+            doc={doc}
+            setdoc={setdoc}
+            error={error}
+            seterror={seterror}
+            cardnumber={cardnumber}
+            setcardnumber={setcardnumber}
+            expiry={expiry}
+            setexpiry={setexpiry}
+            cvc={cvc}
+            setcvc={setcvc}
+            paydone={paydone}
+            setpaydone={setpaydone}
+          />
+        );
+      case 3:
+        return <SellerComments />;
+      default:
+        return "Unknown stepIndex";
+    }
+  }
 
   return (
     <Container maxWidth={"lg"}>
@@ -184,10 +244,10 @@ export default function StepperOrder() {
               </div>
             ) : (
               <div>
-                <Typography className={classes.instructions}>
+                <Typography component={"span"} className={classes.instructions}>
                   {getStepContent(activeStep)}
                 </Typography>
-                <div className="pb-5 pt-5" style={{textAlign:"right"}}>
+                <div className="pb-5 pt-5" style={{ textAlign: "right" }}>
                   <Button
                     disabled={activeStep === 0}
                     onClick={handleBack}
@@ -197,7 +257,7 @@ export default function StepperOrder() {
                   </Button>
                   <Button
                     variant="contained"
-                    style={{backgroundColor: "#007A9A"}}
+                    style={{ backgroundColor: "#007A9A" }}
                     color="primary"
                     onClick={handleNext}
                   >
