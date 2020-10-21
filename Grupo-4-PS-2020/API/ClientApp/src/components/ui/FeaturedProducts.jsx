@@ -1,49 +1,59 @@
-import React from 'react'
-import { CardDeck, Card } from 'react-bootstrap';
+import React, { useState } from 'react';
+import ItemsCarousel from 'react-items-carousel';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { apiAxios } from '../../config/axios';
+import MediaCard from './catalogue/Card';
+import { useEffect } from 'react';
+
 
 export const FeaturedProducts = () => {
-    return (
-        <CardDeck>
-        <Card>
-          <Card.Img variant="top" src="https://http2.mlstatic.com/D_NQ_NP_835776-MLA43129713174_082020-O.webp" />
-          <Card.Body>
-            <Card.Title>Card title</Card.Title>
-            <Card.Text>
-              This is a wider card with supporting text below as a natural lead-in to
-              additional content. This content is a little bit longer.
-            </Card.Text>
-          </Card.Body>
-          <Card.Footer>
-            <small className="text-muted">Last updated 3 mins ago</small>
-          </Card.Footer>
-        </Card>
-        <Card>
-          <Card.Img variant="top" src="https://http2.mlstatic.com/D_NQ_NP_835776-MLA43129713174_082020-O.webp" />
-          <Card.Body>
-            <Card.Title>Card title</Card.Title>
-            <Card.Text>
-              This card has supporting text below as a natural lead-in to additional
-              content.{' '}
-            </Card.Text>
-          </Card.Body>
-          <Card.Footer>
-            <small className="text-muted">Last updated 3 mins ago</small>
-          </Card.Footer>
-        </Card>
-        <Card>
-          <Card.Img variant="top" src="https://http2.mlstatic.com/D_NQ_NP_835776-MLA43129713174_082020-O.webp" />
-          <Card.Body>
-            <Card.Title>Card title</Card.Title>
-            <Card.Text>
-              This is a wider card with supporting text below as a natural lead-in to
-              additional content. This card has even longer content than the first to
-              show that equal height action.
-            </Card.Text>
-          </Card.Body>
-          <Card.Footer>
-            <small className="text-muted">Last updated 3 mins ago</small>
-          </Card.Footer>
-        </Card>
-      </CardDeck>
-    )
-}
+  const [activeItemIndex, setActiveItemIndex] = useState(0);
+  const [productlist, setproductlist] = useState([]);
+  const chevronWidth = 40;
+
+  const getProductsAPI = () => {
+    apiAxios
+      .get("/product/allproduct")
+      .then(({ data }) => {
+        setproductlist(data);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    getProductsAPI();
+  }, [])
+  return (
+    <div style={{ padding: `0 ${chevronWidth}px` }}>
+      <ItemsCarousel
+        requestToChangeActive={setActiveItemIndex}
+        activeItemIndex={activeItemIndex}
+        numberOfCards={2}
+        gutter={20}
+        leftChevron={<ChevronLeftIcon/>}
+        rightChevron={<ChevronRightIcon/>}
+        outsideChevron
+        chevronWidth={chevronWidth}
+      >
+        
+          {
+            productlist.map((prod) => (
+              <MediaCard key={prod.idProducto} prod={prod} />
+            ))
+          }
+                    {
+            productlist.map((prod) => (
+              <MediaCard key={prod.idProducto} prod={prod} />
+            ))
+          }
+        
+        {/* <div style={{ height: 200, background: '#EEE' }}>First card</div>
+        <div style={{ height: 200, background: '#EEE' }}>Second card</div>
+        <div style={{ height: 200, background: '#EEE' }}>Third card</div>
+        <div style={{ height: 200, background: '#EEE' }}>Fourth card</div> */}
+      </ItemsCarousel>
+    </div>
+  );
+};
