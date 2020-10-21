@@ -62,6 +62,15 @@ export default function StepperOrder() {
   const [locality, setlocality] = useState("");
   const [province, setprovince] = useState("");
 
+  //States paymentMethod
+  const [paymentmethod, setpaymentmethod] = useState("");
+  const [typedoc, settypedoc] = useState("");
+  const [doc, setdoc] = useState("");
+  const [cardnumber, setcardnumber] = useState("");
+  const [expiry, setexpiry] = useState("");
+  const [cvc, setcvc] = useState("");
+  const [paydone, setpaydone] = useState(false);
+
   //Se pone el idDirection en order de localstorage
   const addDirectionLocalStorage = (iddirec) => {
     var orderls = localStorage.getItem("order");
@@ -96,29 +105,60 @@ export default function StepperOrder() {
   };
 
   const handleNext = () => {
-    if (
-      street === "" ||
-      number === "" ||
-      postalcode === "" ||
-      locality === "" ||
-      province === ""
-    ) {
-      seterror(true);
-      return;
+    //Si esta en ShippingForm
+    switch (activeStep) {
+      case 2: //ShippingForm
+        if (
+          street === "" ||
+          number === "" ||
+          postalcode === "" ||
+          locality === "" ||
+          province === ""
+        ) {
+          seterror(true);
+          return;
+        }
+        seterror(false);
+
+        const direction = {
+          street,
+          number: parseInt(number, 10),
+          flat: parseInt(floor, 10),
+          apartment: dep,
+          postalCode: parseInt(postalcode, 10),
+          location: locality,
+          province,
+        };
+
+        createDirectionAPI(direction);
+        break;
+      case 1: //Details
+        break;
+      case 0: //PaymentMethod
+        console.log(paymentmethod);
+        console.log(typedoc);
+        console.log(doc);
+        if (
+          paymentmethod.length === 0 ||
+          ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
+            (typedoc.length === 0 || doc.length === 0)) ||
+          ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
+            (cardnumber.length === 0 ||
+              expiry.length === 0 ||
+              cvc.length === 0)) || (paymentmethod === "mercadopago" && paydone === false)
+        ) {
+          seterror(true);
+          return;
+        }
+        seterror(false);
+
+        //Llamar a api, preguntar por los metodos de pago y guardar el que coincide con el mio.
+        break;
+      case 3: //SellerComments
+        break;
+      default:
+        break;
     }
-    seterror(false);
-
-    const direction = {
-      street,
-      number: parseInt(number, 10),
-      flat: parseInt(floor, 10),
-      apartment: dep,
-      postalCode: parseInt(postalcode, 10),
-      location: locality,
-      province,
-    };
-
-    createDirectionAPI(direction);
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -133,7 +173,7 @@ export default function StepperOrder() {
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
-      case 0:
+      case 2:
         return (
           <ShippingForm
             street={street}
@@ -154,9 +194,28 @@ export default function StepperOrder() {
           />
         );
       case 1:
-        return <Details postalcode={postalcode} province={province}/>;
-      case 2:
-        return <PaymentMethod />;
+        return <Details postalcode={postalcode} province={province} />;
+      case 0:
+        return (
+          <PaymentMethod
+            paymentmethod={paymentmethod}
+            setpaymentmethod={setpaymentmethod}
+            typedoc={typedoc}
+            settypedoc={settypedoc}
+            doc={doc}
+            setdoc={setdoc}
+            error={error}
+            seterror={seterror}
+            cardnumber={cardnumber}
+            setcardnumber={setcardnumber}
+            expiry={expiry}
+            setexpiry={setexpiry}
+            cvc={cvc}
+            setcvc={setcvc}
+            paydone={paydone}
+            setpaydone={setpaydone}
+          />
+        );
       case 3:
         return <SellerComments />;
       default:
@@ -185,7 +244,7 @@ export default function StepperOrder() {
               </div>
             ) : (
               <div>
-                <Typography component={'span'} className={classes.instructions}>
+                <Typography component={"span"} className={classes.instructions}>
                   {getStepContent(activeStep)}
                 </Typography>
                 <div className="pb-5 pt-5" style={{ textAlign: "right" }}>
