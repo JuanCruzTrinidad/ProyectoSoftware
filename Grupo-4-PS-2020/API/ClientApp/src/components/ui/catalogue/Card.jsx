@@ -17,9 +17,12 @@ const useStyles = makeStyles({
     height: 340
   },
   media: {
-    maxWidth: "100%",
+    maxWidth: "auto",
     height: 220,
-  },
+    maxHeight: 220,
+    padding: 10,
+    margin: 5
+  }
 });
 
 export default function MediaCard({ prod }) {
