@@ -47,7 +47,6 @@ public class PedidoRestController {
 		return pedidoService.savePedido(createPedido);
     }
 
-
 	//update Pedido
 	@PostMapping(value ="/updatePedido", consumes="application/json")
 	public Object updatePedido(@RequestBody Pedido updatePedido) {
@@ -55,8 +54,6 @@ public class PedidoRestController {
 		return pedidoService.savePedido(updatePedido);
     }
    
-
-
 	//Delete Pedido
 	@DeleteMapping(value ="/deletePedido")
 	public String deletePedidoPhysical(@RequestParam("idPedido") Integer idPedido){

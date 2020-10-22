@@ -12,7 +12,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import ShippingForm from "./ShippingForm";
-import Details from './Details';
+import Details from "./Details";
+import { useHistory } from "react-router";
+import { apiAxios } from "../../../config/axios";
+import { SellerComments } from "./SellerComments";
+import { useShippingCalculate } from "../../../helpers/shippingCalculate";
+import PaymentMethod from "./PaymentMethod";
 
 const useStyles = makeStyles((theme) => ({
   backButton: {
@@ -34,6 +39,14 @@ function getSteps() {
 }
 
 export default function StepperOrder() {
+  const history = useHistory();
+
+  //Si no esta logeado no debe poder entrar a esta pagina
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    history.push("/");
+  }
+
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
@@ -49,9 +62,118 @@ export default function StepperOrder() {
   const [locality, setlocality] = useState("");
   const [province, setprovince] = useState("");
 
+  //States paymentMethod
+  const [paymentmethod, setpaymentmethod] = useState("");
+  const [typedoc, settypedoc] = useState("");
+  const [doc, setdoc] = useState("");
+  const [cardnumber, setcardnumber] = useState("");
+  const [expiry, setexpiry] = useState("");
+  const [cvc, setcvc] = useState("");
+  const [paydone, setpaydone] = useState(false);
+
+  //Se pone el idDirection en order de localstorage
+  const addDirectionLocalStorage = (iddirec) => {
+    var orderls = localStorage.getItem("order");
+    orderls = JSON.parse(orderls);
+
+    const direction = {
+      idDirection: iddirec,
+    };
+    orderls.direction = direction;
+
+    localStorage.setItem("order", JSON.stringify(orderls));
+  };
+
+  const createDirectionAPI = (direc) => {
+    apiAxios
+      .post("/direction/createDirection", direc, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        localStorage.setItem("direction", JSON.stringify(data)); //Agrego la dire al ls
+
+        addDirectionLocalStorage(data.idDirection);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleNext = () => {
+    //Si esta en ShippingForm
+    switch (activeStep) {
+      case 2: //ShippingForm
+        if (
+          street === "" ||
+          number === "" ||
+          postalcode === "" ||
+          locality === "" ||
+          province === ""
+        ) {
+          seterror(true);
+          return;
+        }
+        seterror(false);
+
+        const direction = {
+          street,
+          number: parseInt(number, 10),
+          flat: parseInt(floor, 10),
+          apartment: dep,
+          postalCode: parseInt(postalcode, 10),
+          location: locality,
+          province,
+        };
+
+        createDirectionAPI(direction);
+        break;
+      case 1: //Details
+        break;
+      case 0: //PaymentMethod
+        console.log(paymentmethod);
+        console.log(typedoc);
+        console.log(doc);
+        if (
+          paymentmethod.length === 0 ||
+          ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
+            (typedoc.length === 0 || doc.length === 0)) ||
+          ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
+            (cardnumber.length === 0 ||
+              expiry.length === 0 ||
+              cvc.length === 0)) || (paymentmethod === "mercadopago" && paydone === false)
+        ) {
+          seterror(true);
+          return;
+        }
+        seterror(false);
+
+        //Llamar a api, preguntar por los metodos de pago y guardar el que coincide con el mio.
+        break;
+      case 3: //SellerComments
+        break;
+      default:
+        break;
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
   function getStepContent(stepIndex) {
     switch (stepIndex) {
-      case 0:
+      case 2:
         return (
           <ShippingForm
             street={street}
@@ -72,89 +194,34 @@ export default function StepperOrder() {
           />
         );
       case 1:
-        return <Details />;
-      case 2:
-        return "This is the bit I really care about!";
+        return <Details postalcode={postalcode} province={province} />;
+      case 0:
+        return (
+          <PaymentMethod
+            paymentmethod={paymentmethod}
+            setpaymentmethod={setpaymentmethod}
+            typedoc={typedoc}
+            settypedoc={settypedoc}
+            doc={doc}
+            setdoc={setdoc}
+            error={error}
+            seterror={seterror}
+            cardnumber={cardnumber}
+            setcardnumber={setcardnumber}
+            expiry={expiry}
+            setexpiry={setexpiry}
+            cvc={cvc}
+            setcvc={setcvc}
+            paydone={paydone}
+            setpaydone={setpaydone}
+          />
+        );
       case 3:
-        return "This is the bit I really care about!";
+        return <SellerComments />;
       default:
         return "Unknown stepIndex";
     }
   }
-
-  const addToLocalStorage = () => {
-
-    // const domicilio = {
-
-    // }
-
-    //   let order = localStorage.getItem("order");
-
-    //   if (order === '[]' || order === null) {
-    //     localStorage.setItem("order", JSON.stringify())
-    //   }
-
-    //   if (cartlocalstorage === null || cartlocalstorage === undefined || cartlocalstorage === "[]") {
-    //     product.cant = 1;
-    //     localStorage.setItem("cart", JSON.stringify([product]));
-    //     alert("Producto agregado al carrito");
-    //   } else {
-    //     cartlocalstorage = JSON.parse(cartlocalstorage);
-    //     //Mismo producto con el mismo sku que esta en el carrito
-    //     const auxprod = cartlocalstorage.filter(
-    //       (prod) =>
-    //         prod.idProducto === product.idProducto &&
-    //         prod.atributoselecc[0].sku === product.atributoselecc[0].sku
-    //     )[0];
-
-    //     if (auxprod === undefined) {
-    //       product.cant = 1;
-    //       cartlocalstorage.push(product);
-    //       localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
-    //       if (type === "cart") alert("Producto agregado al carrito");
-    //     } else {
-    //       //Si el producto tiene el mismo sku que el producto en carrito
-    //       product.cant = auxprod.cant + 1;
-
-    //       //Filtro el producto exactamente igual del carrito
-    //       cartlocalstorage = cartlocalstorage.filter(
-    //         (prod) =>
-    //           prod.idProducto != product.idProducto &&
-    //           prod.atributoselecc[0].sku != product.atributoselecc[0].sku
-    //       );
-
-    //       cartlocalstorage.push(product);
-    //       localStorage.setItem("cart", JSON.stringify(cartlocalstorage));
-    //       if (type === "cart") alert("Producto agregado al carrito");
-    //     }
-    //   }
-    //   if (type === "buy") history.push("/cart");
-    // }
-  }
-
-  const handleNext = () => {
-    if (
-      street === "" ||
-      number === "" ||
-      postalcode === "" ||
-      locality === "" ||
-      province === ""
-    ) {
-      seterror(true);
-      return;
-    }
-    seterror(false);
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
 
   return (
     <Container maxWidth={"lg"}>
@@ -177,10 +244,10 @@ export default function StepperOrder() {
               </div>
             ) : (
               <div>
-                <Typography className={classes.instructions}>
+                <Typography component={"span"} className={classes.instructions}>
                   {getStepContent(activeStep)}
                 </Typography>
-                <div className="pb-5 pt-3">
+                <div className="pb-5 pt-5" style={{ textAlign: "right" }}>
                   <Button
                     disabled={activeStep === 0}
                     onClick={handleBack}
@@ -190,6 +257,7 @@ export default function StepperOrder() {
                   </Button>
                   <Button
                     variant="contained"
+                    style={{ backgroundColor: "#007A9A" }}
                     color="primary"
                     onClick={handleNext}
                   >

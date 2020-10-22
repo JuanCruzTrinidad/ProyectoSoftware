@@ -1,0 +1,102 @@
+{
+  "provinces": [
+    {
+      "id": "A",
+      "nombre": "Salta"
+    },
+    {
+      "id": "B",
+      "nombre": "Buenos Aires"
+    },
+    {
+      "id": "N",
+      "nombre": "Misiones"
+    },
+    {
+      "id": "D",
+      "nombre": "San Luis"
+    },
+    {
+      "id": "J",
+      "nombre": "San Juan"
+    },
+    {
+      "id": "E",
+      "nombre": "Entre Ríos"
+    },
+    {
+      "id": "Z",
+      "nombre": "Santa Cruz"
+    },
+
+    {
+      "id": "R",
+      "nombre": "Río Negro"
+    },
+    {
+      "id": "U",
+      "nombre": "Chubut"
+    },
+    {
+      "id": "X",
+      "nombre": "Córdoba"
+    },
+
+    {
+      "id": "M",
+      "nombre": "Mendoza"
+    },
+    {
+      "id": "F",
+      "nombre": "La Rioja"
+    },
+    {
+      "id": "K",
+      "nombre": "Catamarca"
+    },
+    {
+      "id": "G",
+      "nombre": "Santiago del Estero"
+    },
+    {
+      "id": "W",
+      "nombre": "Corrientes"
+    },
+    {
+      "id": "S",
+      "nombre": "Santa Fe"
+    },
+    {
+      "id": "T",
+      "nombre": "Tucumán"
+    },
+    {
+      "id": "Q",
+      "nombre": "Neuquén"
+    },
+    {
+      "id": "H",
+      "nombre": "Chaco"
+    },
+    {
+      "id": "P",
+      "nombre": "Formosa"
+    },
+    {
+      "id": "Y",
+      "nombre": "Jujuy"
+    },
+    {
+      "id": "C",
+      "nombre": "Ciudad Autónoma de Buenos Aires"
+    },
+    {
+      "id": "V",
+      "nombre": "Tierra del Fuego, Antártida e Islas del Atlántico Sur"
+    },
+    {
+      "id": "L",
+      "nombre": "La Pampa"
+    }
+  ]
+}

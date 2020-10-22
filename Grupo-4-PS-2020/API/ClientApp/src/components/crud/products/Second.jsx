@@ -5,45 +5,42 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
 
 export const Second = ({previousStep, nextStep, setatributes, atributes, handleSubmit, product}) => {
-	let { id } = useParams();
+
 	const [data, setData] = useState([]);	
-    const [columns, setColumns] = useState([
+    const columns = [
+		{title: "sku", field: "sku", hidden: true},
         { title: "Color", field: "color"},
 		{ title: "Talle", field: "size"},
-		{title: "Cantidad", field: "count", type:"numeric"},
 		{title: 'Peso', field: 'weight', type: "numeric"},
 		{title: 'Ancho', field: 'width', type: "numeric"},
 		{title: 'Alto', field: 'heigth', type: "numeric"},
 		{title: 'Profundidad', field: 'depth', type: "numeric"}
-    ]);
+    ];
 	
 	useEffect(() => {
 		var variable = [];
-		console.log(data)
-		if(data.length > 0){
-			variable = [];
-			data.map( d => {
+		console.log(data);
+		if(atributes.length > 0){
+			atributes.map( d => {
 			variable.push({
 				idproduct: 0,
+				sku: d.sku,
 				color: d.color,
 				size:  d.size,
-				count: parseInt(d.count, 10),
 				weight: parseFloat(d.weight, 10),
 				width: parseFloat(d.width, 10),
 				heigth: parseFloat(d.heigth, 10),
 				depth: parseFloat(d.depth, 10)})
 			})
 		setatributes(variable);
-		console.log(atributes)
 		}
 	}, [data])
 
 	useEffect(() => {
-		console.log(atributes)
 		let variable = [];
 		variable = atributes;
 		setData(variable);
-	}, [product])
+	}, [product.id])
 
 
     return (
@@ -69,27 +66,27 @@ export const Second = ({previousStep, nextStep, setatributes, atributes, handleS
 						onRowAdd: (newData) =>
 							new Promise((resolve, reject) => {
 								setTimeout(() => {
-									setData([...data, newData]);
+									setatributes([...atributes, newData]);
 									resolve();
 								}, 1000);
 							}),
 						onRowUpdate: (newData, oldData) =>
 							new Promise((resolve, reject) => {
 								setTimeout(() => {
-									const dataUpdate = [...data];
+									const dataUpdate = [...atributes];
 									const index = oldData.tableData.id;
 									dataUpdate[index] = newData;
-									setData([...dataUpdate]);
+									setatributes([...dataUpdate]);
 									resolve();
 								}, 1000);
 							}),
 						onRowDelete: (oldData) =>
 							new Promise((resolve, reject) => {
 								setTimeout(() => {
-									const dataDelete = [...data];
+									const dataDelete = [...atributes];
 									const index = oldData.tableData.id;
 									dataDelete.splice(index, 1);
-									setData([...dataDelete]);
+									setatributes([...dataDelete]);
 									resolve();
 								}, 1000);
 							}),
