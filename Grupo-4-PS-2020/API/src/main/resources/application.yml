@@ -6,7 +6,7 @@ spring:
 
     url: jdbc:mysql://localhost:3306/deporteonline?serverTimezone=UTC
     username: root
-    password: localhost
+    password: root
   jpa:
     show-sql: true
     hibernate:
