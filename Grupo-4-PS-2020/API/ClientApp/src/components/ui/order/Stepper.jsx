@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -84,6 +84,19 @@ export default function StepperOrder() {
     localStorage.setItem("order", JSON.stringify(orderls));
   };
 
+  //Se pone el idPayment en order de localstorage
+  const addPaymentMethodLocalStorage = (idpm) => {
+    var orderls = localStorage.getItem("order");
+    orderls = JSON.parse(orderls);
+
+    const payment = {
+      idPayment: idpm,
+    };
+    orderls.payment = payment;
+
+    localStorage.setItem("order", JSON.stringify(orderls));
+  };
+
   const createDirectionAPI = (direc) => {
     apiAxios
       .post("/direction/createDirection", direc, {
@@ -100,6 +113,62 @@ export default function StepperOrder() {
         localStorage.setItem("direction", JSON.stringify(data)); //Agrego la dire al ls
 
         addDirectionLocalStorage(data.idDirection);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const getPaymentMethodsAPI = async () => {
+    await apiAxios
+      .get("/payment/allPayment", {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        const payment = {
+          name: paymentmethod,
+        };
+
+        if (data.length === 0) {
+          //Si la bd esta vacia
+          createPaymentMethodAPI(payment);
+        } else {
+          const paymentmethodDB = data.filter((p) => p.name === paymentmethod);
+
+          if (paymentmethodDB.length !== 0) {
+            //Si existe en la bd
+            addPaymentMethodLocalStorage(paymentmethodDB[0].idPayment);
+          } else {
+            //Si no se encuentra crear paymentmethod
+            createPaymentMethodAPI(payment);
+          }
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const createPaymentMethodAPI = (pm) => {
+    apiAxios
+      .post("/payment/createPayment", pm, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data);
+
+        //Guarda id en ls order
+        addPaymentMethodLocalStorage(data.idPayment);
       })
       .catch((error) => console.log(error));
   };
@@ -135,9 +204,6 @@ export default function StepperOrder() {
       case 1: //Details
         break;
       case 0: //PaymentMethod
-        console.log(paymentmethod);
-        console.log(typedoc);
-        console.log(doc);
         if (
           paymentmethod.length === 0 ||
           ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
@@ -145,14 +211,17 @@ export default function StepperOrder() {
           ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
             (cardnumber.length === 0 ||
               expiry.length === 0 ||
-              cvc.length === 0)) || (paymentmethod === "mercadopago" && paydone === false)
+              cvc.length === 0)) ||
+          (paymentmethod === "mercadopago" && paydone === false)
         ) {
           seterror(true);
           return;
         }
         seterror(false);
 
-        //Llamar a api, preguntar por los metodos de pago y guardar el que coincide con el mio.
+        //Get paymentmethods de la bd
+        getPaymentMethodsAPI();
+
         break;
       case 3: //SellerComments
         break;
@@ -160,7 +229,7 @@ export default function StepperOrder() {
         break;
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    //setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
