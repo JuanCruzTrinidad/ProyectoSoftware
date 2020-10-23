@@ -53,9 +53,9 @@ public class DiscountRestController {
 		public Discount findDiscountById(@RequestParam("idDiscount") int idDiscount) {
 			return discountService.findDiscountById(idDiscount);
 		}
-
+	//traer descuento por codigo
 	@GetMapping("/discountByCode")
-		public float findDiscountByCode(@RequestParam("code") String code){
+		public Discount findDiscountByCode(@RequestParam("code") String code){
 			return discountService.findDiscountByCode(code);
 		}
 

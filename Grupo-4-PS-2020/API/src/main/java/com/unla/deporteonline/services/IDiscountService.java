@@ -13,6 +13,6 @@ public interface IDiscountService {
 	
 	public List<Discount> findAll();
 
-	public float findDiscountByCode(String code);
+	public Discount findDiscountByCode(String code);
     
 }
