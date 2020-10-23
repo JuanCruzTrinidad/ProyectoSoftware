@@ -1,19 +1,35 @@
 import React, { Fragment, useState, useEffect } from "react";
 
-import { Grid, Typography } from "@material-ui/core";
-import { useShippingCalculate } from "../../../../helpers/shippingCalculate";
+import { Grid, Typography, TextField, useControlled } from "@material-ui/core";
+import { shippingCalculate } from "../../../../helpers/shippingCalculate";
 import Provinces from "../../../../helpers/Provinces.json";
-import Spinner from '../../Spinner';
+import Spinner from "../../Spinner";
+import SendRoundedIcon from "@material-ui/icons/SendRounded";
+import { apiAxios } from "../../../../config/axios";
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
-const TotalDetail = ({ postalcode, province }) => {
+const TotalDetail = (props) => {
   const [show, setshow] = useState(false);
-  const [subtotalship, setsubtotalship] = useState(0);
+  const [discountcode, setdiscountcode] = useState("");
+
+  const token = localStorage.getItem("token");
+
+  const {
+    postalcode,
+    province,
+    subtotalship,
+    setsubtotalship,
+    percentage,
+    setpercentage,
+    subtotalprod,
+    setsubtotalprod,
+  } = props;
 
   //Subtotal productos
-  let subtotalprod = 0;
   var orderls = localStorage.getItem("order");
   orderls = JSON.parse(orderls);
-  subtotalprod = orderls.subtotal;
+  setsubtotalprod(orderls.subtotal);
 
   //Subtotal envio
   var provinceSelecc = Provinces.provinces.filter(
@@ -22,8 +38,10 @@ const TotalDetail = ({ postalcode, province }) => {
   var cartls = localStorage.getItem("cart");
   cartls = JSON.parse(cartls);
 
-  //Calculo envio
-  useShippingCalculate(provinceSelecc[0].id, Number(postalcode), cartls); //Falta ponerle los values al select de las provincias
+  if (subtotalship === 0) {
+    //Calculo envio
+    shippingCalculate(provinceSelecc[0].id, Number(postalcode), cartls);
+  }
 
   var shipls;
   var value;
@@ -37,13 +55,39 @@ const TotalDetail = ({ postalcode, province }) => {
       value = valueshipping;
       setsubtotalship(Number(value));
     }
-  }, 3000);
-
-  console.log(subtotalship);
+  }, 2000);
 
   setTimeout(() => {
     setshow(true);
-  }, 4000);
+  }, 2200);
+
+  const getDiscountByCodeAPI = async (code) => {
+    await apiAxios
+      .get("/discount/discountByCode", {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+        params: {
+          code,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data);
+        if (data !== null) {
+          setpercentage(data);
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleClickSearchCode = (code) => {
+    getDiscountByCodeAPI(code);
+  };
 
   return show ? (
     <Fragment>
@@ -61,18 +105,68 @@ const TotalDetail = ({ postalcode, province }) => {
           <Grid item xs={3} className="pb-3">
             <Typography variant="h6">$ {subtotalship}</Typography>
           </Grid>
+          {percentage !== 0 ? (
+            <Fragment>
+              <Grid item xs={9}>
+                <Typography variant="h6">Subtotal</Typography>
+              </Grid>
+              <Grid item xs={3} className="pb-3">
+                <Typography variant="h6">
+                  $ {subtotalprod + subtotalship}
+                </Typography>
+              </Grid>
+              <Grid item xs={9}>
+                <Typography variant="subtitle2">
+                  Descuento %{percentage}
+                </Typography>
+              </Grid>
+              <Grid item xs={3} className="pb-3">
+                <Typography variant="subtitle2">
+                  $ -{((subtotalprod + subtotalship) * percentage) / 100}
+                </Typography>
+              </Grid>
+            </Fragment>
+          ) : null}
           <Grid item xs={9}>
             <Typography variant="h6">Total</Typography>
           </Grid>
           <Grid item xs={3}>
             <Typography variant="h6">
-              $ {subtotalship + subtotalprod}
+              $ {subtotalship + subtotalprod -((subtotalprod + subtotalship) * percentage) / 100}
             </Typography>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={12}>
+            <TextField
+              id="outlined-basic"
+              label="Ingrese su codigo de descuento"
+              variant="outlined"
+              value={discountcode}
+              onChange={(e) => setdiscountcode(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      edge="end"
+                      aria-label="toggle password visibility"
+                      onClick={(e) => handleClickSearchCode(discountcode)}
+                    >
+                      <SendRoundedIcon
+                        style={{ fontSize: "30px", color: "#007A9A" }}
+                      />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </Grid>
         </Grid>
       </Grid>
     </Fragment>
-  ) : <Spinner />;
+  ) : (
+    <Spinner />
+  );
 };
 
 export default TotalDetail;

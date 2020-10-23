@@ -71,6 +71,14 @@ export default function StepperOrder() {
   const [cvc, setcvc] = useState("");
   const [paydone, setpaydone] = useState(false);
 
+  //State sellercomment
+  const [comment, setcomment] = useState("");
+
+  //States details
+  const [subtotalship, setsubtotalship] = useState(0);
+  const [percentage, setpercentage] = useState(0);
+  const [subtotalprod, setsubtotalprod] = useState(0);
+
   //Se pone el idDirection en order de localstorage
   const addDirectionLocalStorage = (iddirec) => {
     var orderls = localStorage.getItem("order");
@@ -176,7 +184,7 @@ export default function StepperOrder() {
   const handleNext = () => {
     //Si esta en ShippingForm
     switch (activeStep) {
-      case 2: //ShippingForm
+      case 0: //ShippingForm
         if (
           street === "" ||
           number === "" ||
@@ -202,8 +210,16 @@ export default function StepperOrder() {
         createDirectionAPI(direction);
         break;
       case 1: //Details
+        //Add shippingcost, discount, descuento y total al localstorage
+        var orderls = localStorage.getItem("order");
+        orderls = JSON.parse(orderls);
+
+        orderls.shippingCost = subtotalship;
+        orderls.descuento = ((subtotalprod + subtotalship) * percentage) / 100;
+        orderls.total = subtotalship + subtotalprod - ((subtotalprod + subtotalship) * percentage) / 100;
+        localStorage.setItem("order", JSON.stringify(orderls));
         break;
-      case 0: //PaymentMethod
+      case 2: //PaymentMethod
         if (
           paymentmethod.length === 0 ||
           ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
@@ -224,12 +240,18 @@ export default function StepperOrder() {
 
         break;
       case 3: //SellerComments
+        //Agrego comment al local storage
+        var orderls = localStorage.getItem("order");
+        orderls = JSON.parse(orderls);
+
+        orderls.coment = comment;
+        localStorage.setItem("order", JSON.stringify(orderls));
         break;
       default:
         break;
     }
 
-    //setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
@@ -242,7 +264,7 @@ export default function StepperOrder() {
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
-      case 2:
+      case 0:
         return (
           <ShippingForm
             street={street}
@@ -263,8 +285,19 @@ export default function StepperOrder() {
           />
         );
       case 1:
-        return <Details postalcode={postalcode} province={province} />;
-      case 0:
+        return (
+          <Details
+            postalcode={postalcode}
+            province={province}
+            subtotalship={subtotalship}
+            setsubtotalship={setsubtotalship}
+            percentage={percentage}
+            setpercentage={setpercentage}
+            subtotalprod={subtotalprod}
+            setsubtotalprod={setsubtotalprod}
+          />
+        );
+      case 2:
         return (
           <PaymentMethod
             paymentmethod={paymentmethod}
@@ -286,7 +319,7 @@ export default function StepperOrder() {
           />
         );
       case 3:
-        return <SellerComments />;
+        return <SellerComments comment={comment} setcomment={setcomment} />;
       default:
         return "Unknown stepIndex";
     }
@@ -331,7 +364,7 @@ export default function StepperOrder() {
                     onClick={handleNext}
                   >
                     {activeStep === steps.length - 1
-                      ? "Finalizar"
+                      ? "Enviar y finalizar compra"
                       : "Siguiente"}
                   </Button>
                 </div>
