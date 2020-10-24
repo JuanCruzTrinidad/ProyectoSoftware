@@ -78,6 +78,7 @@ export default function StepperOrder() {
   const [subtotalship, setsubtotalship] = useState(0);
   const [percentage, setpercentage] = useState(0);
   const [subtotalprod, setsubtotalprod] = useState(0);
+  const [discountid, setdiscountid] = useState();
 
   //Se pone el idDirection en order de localstorage
   const addDirectionLocalStorage = (iddirec) => {
@@ -181,6 +182,63 @@ export default function StepperOrder() {
       .catch((error) => console.log(error));
   };
 
+  const createOrderDetailAPI = (idpedido) => {
+    var cartls = localStorage.getItem("cart");
+    cartls = JSON.parse(cartls);
+
+    cartls.map((prod) => {
+      let detallePedido = {
+        fk_pedido: idpedido,
+        fk_atributos: prod.atributoselecc[0].sku,
+        cantidad: prod.cant,
+      };
+
+      apiAxios
+        .post("/detallePedido/createDetallePedido", detallePedido, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+            "Access-Control-Allow-Headers":
+              "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+        })
+        .then(({ data }) => {
+          console.log(data);
+        })
+        .catch((error) => console.log(error));
+    });
+
+    setTimeout(() => {
+      localStorage.removeItem('cart');
+      localStorage.removeItem('order');
+      localStorage.removeItem('shippingcost');
+      localStorage.removeItem('direction');
+    }, 2000);
+  };
+
+  const createOrderAPI = () => {
+    var orderls = localStorage.getItem("order");
+    orderls = JSON.parse(orderls);
+
+    apiAxios
+      .post("/pedido/createPedido", orderls, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        createOrderDetailAPI(data.idPedido);
+      })
+      .catch((error) => console.log(error));
+  };
+
   const handleNext = () => {
     //Si esta en ShippingForm
     switch (activeStep) {
@@ -208,15 +266,41 @@ export default function StepperOrder() {
         };
 
         createDirectionAPI(direction);
+
+        //Agrego el usuario al pedido
+        var orderls = localStorage.getItem("order");
+        orderls = JSON.parse(orderls);
+        var userls = localStorage.getItem("iduser");
+        userls = JSON.parse(userls);
+
+        const user = {
+          id: userls,
+        };
+
+        orderls.user = user;
+        localStorage.setItem("order", JSON.stringify(orderls));
         break;
       case 1: //Details
         //Add shippingcost, discount, descuento y total al localstorage
         var orderls = localStorage.getItem("order");
         orderls = JSON.parse(orderls);
 
+        let discount;
+        if(discountid === undefined){
+          discount = null;
+        } else {
+          discount = {
+            idDiscount: discountid,
+          };
+        }
+
         orderls.shippingCost = subtotalship;
         orderls.descuento = ((subtotalprod + subtotalship) * percentage) / 100;
-        orderls.total = subtotalship + subtotalprod - ((subtotalprod + subtotalship) * percentage) / 100;
+        orderls.total =
+          subtotalship +
+          subtotalprod -
+          ((subtotalprod + subtotalship) * percentage) / 100;
+        orderls.discount = discount;
         localStorage.setItem("order", JSON.stringify(orderls));
         break;
       case 2: //PaymentMethod
@@ -246,6 +330,8 @@ export default function StepperOrder() {
 
         orderls.coment = comment;
         localStorage.setItem("order", JSON.stringify(orderls));
+
+        createOrderAPI();
         break;
       default:
         break;
@@ -295,6 +381,8 @@ export default function StepperOrder() {
             setpercentage={setpercentage}
             subtotalprod={subtotalprod}
             setsubtotalprod={setsubtotalprod}
+            discountid={discountid}
+            setdiscountid={setdiscountid}
           />
         );
       case 2:
@@ -339,10 +427,12 @@ export default function StepperOrder() {
           <div>
             {activeStep === steps.length ? (
               <div>
-                <Typography className={classes.instructions}>
-                  All steps completed
-                </Typography>
-                <Button onClick={handleReset}>Reset</Button>
+                <div className="pb-5 pt-5" style={{ textAlign: "center" }}>
+                  <Typography className={classes.instructions}>
+                    La compra fue completada. Muchas gracias!
+                  </Typography>
+                  <Button onClick={(e) => history.push("/")}>Ir al Home</Button>
+                </div>
               </div>
             ) : (
               <div>

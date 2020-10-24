@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 export default function ShippingForm(props) {
   const classes = useStyles();
 
-  const [provinceslist, setprovinceslist] = useState([]);
   const [localityslist, setlocalityslist] = useState([]);
 
   const {

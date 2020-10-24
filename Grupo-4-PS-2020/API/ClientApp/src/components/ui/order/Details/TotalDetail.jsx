@@ -24,6 +24,8 @@ const TotalDetail = (props) => {
     setpercentage,
     subtotalprod,
     setsubtotalprod,
+    discountid,
+    setdiscountid
   } = props;
 
   //Subtotal productos
@@ -77,9 +79,9 @@ const TotalDetail = (props) => {
         },
       })
       .then(({ data }) => {
-        console.log(data);
-        if (data !== null) {
-          setpercentage(data);
+        setdiscountid(data.idDiscount);
+        if (data !== "") {
+          setpercentage(data.percentage);
         }
       })
       .catch((error) => console.log(error));
@@ -131,7 +133,7 @@ const TotalDetail = (props) => {
             <Typography variant="h6">Total</Typography>
           </Grid>
           <Grid item xs={3}>
-            <Typography variant="h6">
+            <Typography variant="h6" className="pb-3">
               $ {subtotalship + subtotalprod -((subtotalprod + subtotalship) * percentage) / 100}
             </Typography>
           </Grid>
@@ -140,7 +142,7 @@ const TotalDetail = (props) => {
           <Grid item xs={12}>
             <TextField
               id="outlined-basic"
-              label="Ingrese su codigo de descuento"
+              label="Código de descuento"
               variant="outlined"
               value={discountcode}
               onChange={(e) => setdiscountcode(e.target.value)}
