@@ -1,33 +1,36 @@
-import { Button, Grid, TextField, Typography } from '@material-ui/core'
-import React from 'react'
+import { Button, Grid, TextField, Typography } from "@material-ui/core";
+import React from "react";
 
-export const SellerComments = () => {
-    return (
-        <>
-            <Typography variant="h4" gutterBottom style={{ textAlign: "center" }}>
-                Comentarios al vendedor
-    </Typography>
-            <Grid container spacing={4}>
-                <Grid item xs={12}>
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Comentario"
-                        multiline
-                        rows={5}
-                        defaultValue="Inserte aquí su comentario, nos interesa escucharte!"
-                        variant="outlined"
-                        fullWidth
-                    />
-                </Grid>
-                <Grid container alignContent="flex-end" justify="flex-end" alignItems="flex-end">
-                    <Grid item xs={4}>
-                        <Button variant="contained" color="primary" fullWidth>
-                            Enviar y finalizar compra
-                        </Button>
-                    </Grid>
-                </Grid>
+export const SellerComments = (props) => {
 
-            </Grid>
-        </>
-    )
-}
+	const {comment, setcomment} = props;
+
+  return (
+    <>
+      <Typography variant="h4" gutterBottom style={{ textAlign: "center", paddingBottom: "2%" }}>
+        Comentario al vendedor
+      </Typography>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <TextField
+            id="outlined-multiline-static"
+            label="Escriba aquí"
+						multiline
+						value={comment}
+            rows={5}
+						variant="outlined"
+						onChange={e => setcomment(e.target.value)}
+            fullWidth
+          />
+        </Grid>
+        <Grid
+          container
+          alignContent="flex-end"
+          justify="flex-end"
+          alignItems="flex-end"
+        >
+        </Grid>
+      </Grid>
+    </>
+  );
+};

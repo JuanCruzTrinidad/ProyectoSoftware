@@ -5,7 +5,6 @@ import java.util.List;
 import com.unla.deporteonline.entities.Discount;
 import com.unla.deporteonline.services.IDiscountService;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,27 +25,27 @@ public class DiscountRestController {
 	@Qualifier("discountService")
 	private IDiscountService discountService;
 
-	//add Discount
-	@PostMapping(value ="/createDiscount", consumes="application/json")
+	// add Discount
+	@PostMapping(value = "/createDiscount", consumes = "application/json")
 	public Object createDiscount(@RequestBody Discount createDiscount) {
 		System.out.println("Discount: " + createDiscount.toString());
 		return discountService.saveDiscount(createDiscount);
 	}
 
-	//update Discount
-	@PostMapping(value ="/updateDiscount", consumes="application/json")
+	// update Discount
+	@PostMapping(value = "/updateDiscount", consumes = "application/json")
 	public Object updateDiscount(@RequestBody Discount updateDiscount) {
 		System.out.println("update Discount: " + updateDiscount.toString());
 		return discountService.saveDiscount(updateDiscount);
 	}
 
-
-	//Delete Discount
-	@DeleteMapping(value ="/deleteDiscount")
-	public String deleteDiscountPhysical(@RequestParam("idDiscount") Integer idDiscount){
+	// Delete Discount
+	@DeleteMapping(value = "/deleteDiscount")
+	public String deleteDiscountPhysical(@RequestParam("idDiscount") Integer idDiscount) {
 		discountService.deleteDiscount(idDiscount);
 		return ("Discount deleted");
 	}
+
 
 	//traer descuento por id
 	@GetMapping("/discountId") 
@@ -59,9 +58,9 @@ public class DiscountRestController {
 			return discountService.findDiscountByCode(code);
 		}
 
-	//Traes todos los descuentos
+	// Traes todos los descuentos
 	@GetMapping("/allDiscount")
-	public List<Discount> findAll(){
+	public List<Discount> findAll() {
 		return discountService.findAll();
 	}
 
