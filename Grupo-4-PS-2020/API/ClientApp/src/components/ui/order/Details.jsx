@@ -12,7 +12,18 @@ import {
 import ProductsDetail from "./Details/ProductsDetail";
 import TotalDetail from "./Details/TotalDetail";
 
-const Details = ({postalcode, province}) => {
+const Details = (props) => {
+  const {
+    postalcode,
+    province,
+    subtotalship,
+    setsubtotalship,
+    percentage,
+    setpercentage,
+    subtotalprod,
+    setsubtotalprod,
+  } = props;
+
   var cartlist = localStorage.getItem("cart");
   cartlist = JSON.parse(cartlist);
   return (
@@ -22,7 +33,12 @@ const Details = ({postalcode, province}) => {
       </Typography>
       <Grid container>
         <Grid item xs={6}>
-          <Typography variant="h5" gutterBottom style={{ textAlign: "center" }} className="pb-3">
+          <Typography
+            variant="h5"
+            gutterBottom
+            style={{ textAlign: "center" }}
+            className="pb-3"
+          >
             Productos
           </Typography>
           <Grid item xs={9} style={{ marginLeft: "auto", marginRight: "auto" }}>
@@ -45,13 +61,25 @@ const Details = ({postalcode, province}) => {
           </Grid>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="h5" gutterBottom style={{ textAlign: "center" }} className="pb-3">
+          <Typography
+            variant="h5"
+            gutterBottom
+            style={{ textAlign: "center" }}
+            className="pb-3"
+          >
             Total
           </Typography>
           <Grid item xs={9} style={{ marginLeft: "auto", marginRight: "auto" }}>
-            <TotalDetail 
-            postalcode={postalcode}
-            province={province}/>
+            <TotalDetail
+              postalcode={postalcode}
+              province={province}
+              subtotalship={subtotalship}
+              setsubtotalship={setsubtotalship}
+              percentage={percentage}
+              setpercentage={setpercentage}
+              subtotalprod={subtotalprod}
+              setsubtotalprod={setsubtotalprod}
+            />
           </Grid>
         </Grid>
       </Grid>
