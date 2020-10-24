@@ -22,6 +22,8 @@ const Details = (props) => {
     setpercentage,
     subtotalprod,
     setsubtotalprod,
+    discountid,
+    setdiscountid
   } = props;
 
   var cartlist = localStorage.getItem("cart");
@@ -79,6 +81,8 @@ const Details = (props) => {
               setpercentage={setpercentage}
               subtotalprod={subtotalprod}
               setsubtotalprod={setsubtotalprod}
+              discountid={discountid}
+              setdiscountid={setdiscountid}
             />
           </Grid>
         </Grid>
