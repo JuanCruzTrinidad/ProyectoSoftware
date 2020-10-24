@@ -66,6 +66,9 @@ public class UserRestController {
 		// da true que se haga el login, si no no.
 		lista.add(getJWTToken(user.getEmail()));
 		lista.add(user.getPassword());
+		lista.add(Integer.toString(user.getId()));
+
+
 
 		return lista;
 	}

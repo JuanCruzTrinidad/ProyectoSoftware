@@ -46,17 +46,17 @@ public class DiscountRestController {
 		return ("Discount deleted");
 	}
 
+	// traer descuento por id
+	@GetMapping("/discountId")
+	public Discount findDiscountById(@RequestParam("idDiscount") int idDiscount) {
+		return discountService.findDiscountById(idDiscount);
+	}
 
-	//traer descuento por id
-	@GetMapping("/discountId") 
-		public Discount findDiscountById(@RequestParam("idDiscount") int idDiscount) {
-			return discountService.findDiscountById(idDiscount);
-		}
-	//traer descuento por codigo
+	// traer descuento por codigo
 	@GetMapping("/discountByCode")
-		public Discount findDiscountByCode(@RequestParam("code") String code){
-			return discountService.findDiscountByCode(code);
-		}
+	public Discount findDiscountByCode(@RequestParam("code") String code) {
+		return discountService.findDiscountByCode(code);
+	}
 
 	// Traes todos los descuentos
 	@GetMapping("/allDiscount")
