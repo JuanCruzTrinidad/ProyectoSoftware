@@ -23,6 +23,10 @@ public class DiscountService implements IDiscountService {
 		return idiscountRepository.findById(id).get();
 	}
 
+	public Discount findDiscountByCode(String code){
+		return idiscountRepository.findDiscountByCode(code);
+	}
+
 	public void deleteDiscount(Integer discountId) {
 		idiscountRepository.delete(idiscountRepository.findById(discountId).get());
 	}

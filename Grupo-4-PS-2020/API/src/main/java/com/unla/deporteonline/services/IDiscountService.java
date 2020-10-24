@@ -12,5 +12,7 @@ public interface IDiscountService {
 	public void deleteDiscount(Integer discountId);
 	
 	public List<Discount> findAll();
+
+	public Discount findDiscountByCode(String code);
     
 }

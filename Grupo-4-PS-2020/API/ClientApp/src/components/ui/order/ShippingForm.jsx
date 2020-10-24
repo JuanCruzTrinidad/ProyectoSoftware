@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 export default function ShippingForm(props) {
   const classes = useStyles();
 
-  const [provinceslist, setprovinceslist] = useState([]);
   const [localityslist, setlocalityslist] = useState([]);
 
   const {
@@ -38,15 +37,6 @@ export default function ShippingForm(props) {
     error,
   } = props;
 
-  // const provincesAPI = async () => {
-  //   const url = "https://apis.datos.gob.ar/georef/api/provincias";
-
-  //   let response = await fetch(url);
-  //   let data = await response.json();
-  //   return data;
-  // };
-
-
   const localitysAPI = async (province) => {
     const url = `https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&campos=nombre&max=1500&orden=nombre`;
 
@@ -55,9 +45,6 @@ export default function ShippingForm(props) {
     return data;
   };
 
-  // useEffect(() => {
-  //   provincesAPI().then((data) => setprovinceslist(data.provincias));
-  // }, []);
 
   useEffect(() => {
     if (province !== "") {

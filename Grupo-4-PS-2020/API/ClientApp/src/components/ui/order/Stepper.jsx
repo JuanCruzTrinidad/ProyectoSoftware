@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -71,6 +71,15 @@ export default function StepperOrder() {
   const [cvc, setcvc] = useState("");
   const [paydone, setpaydone] = useState(false);
 
+  //State sellercomment
+  const [comment, setcomment] = useState("");
+
+  //States details
+  const [subtotalship, setsubtotalship] = useState(0);
+  const [percentage, setpercentage] = useState(0);
+  const [subtotalprod, setsubtotalprod] = useState(0);
+  const [discountid, setdiscountid] = useState();
+
   //Se pone el idDirection en order de localstorage
   const addDirectionLocalStorage = (iddirec) => {
     var orderls = localStorage.getItem("order");
@@ -80,6 +89,19 @@ export default function StepperOrder() {
       idDirection: iddirec,
     };
     orderls.direction = direction;
+
+    localStorage.setItem("order", JSON.stringify(orderls));
+  };
+
+  //Se pone el idPayment en order de localstorage
+  const addPaymentMethodLocalStorage = (idpm) => {
+    var orderls = localStorage.getItem("order");
+    orderls = JSON.parse(orderls);
+
+    const payment = {
+      idPayment: idpm,
+    };
+    orderls.payment = payment;
 
     localStorage.setItem("order", JSON.stringify(orderls));
   };
@@ -104,10 +126,123 @@ export default function StepperOrder() {
       .catch((error) => console.log(error));
   };
 
+  const getPaymentMethodsAPI = async () => {
+    await apiAxios
+      .get("/payment/allPayment", {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        const payment = {
+          name: paymentmethod,
+        };
+
+        if (data.length === 0) {
+          //Si la bd esta vacia
+          createPaymentMethodAPI(payment);
+        } else {
+          const paymentmethodDB = data.filter((p) => p.name === paymentmethod);
+
+          if (paymentmethodDB.length !== 0) {
+            //Si existe en la bd
+            addPaymentMethodLocalStorage(paymentmethodDB[0].idPayment);
+          } else {
+            //Si no se encuentra crear paymentmethod
+            createPaymentMethodAPI(payment);
+          }
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const createPaymentMethodAPI = (pm) => {
+    apiAxios
+      .post("/payment/createPayment", pm, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data);
+
+        //Guarda id en ls order
+        addPaymentMethodLocalStorage(data.idPayment);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const createOrderDetailAPI = (idpedido) => {
+    var cartls = localStorage.getItem("cart");
+    cartls = JSON.parse(cartls);
+
+    cartls.map((prod) => {
+      let detallePedido = {
+        fk_pedido: idpedido,
+        fk_atributos: prod.atributoselecc[0].sku,
+        cantidad: prod.cant,
+      };
+
+      apiAxios
+        .post("/detallePedido/createDetallePedido", detallePedido, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+            "Access-Control-Allow-Headers":
+              "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+        })
+        .then(({ data }) => {
+          console.log(data);
+        })
+        .catch((error) => console.log(error));
+    });
+
+    setTimeout(() => {
+      localStorage.removeItem('cart');
+      localStorage.removeItem('order');
+      localStorage.removeItem('shippingcost');
+      localStorage.removeItem('direction');
+    }, 2000);
+  };
+
+  const createOrderAPI = () => {
+    var orderls = localStorage.getItem("order");
+    orderls = JSON.parse(orderls);
+
+    apiAxios
+      .post("/pedido/createPedido", orderls, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        createOrderDetailAPI(data.idPedido);
+      })
+      .catch((error) => console.log(error));
+  };
+
   const handleNext = () => {
     //Si esta en ShippingForm
     switch (activeStep) {
-      case 2: //ShippingForm
+      case 0: //ShippingForm
         if (
           street === "" ||
           number === "" ||
@@ -131,13 +266,44 @@ export default function StepperOrder() {
         };
 
         createDirectionAPI(direction);
+
+        //Agrego el usuario al pedido
+        var orderls = localStorage.getItem("order");
+        orderls = JSON.parse(orderls);
+        var userls = localStorage.getItem("iduser");
+        userls = JSON.parse(userls);
+
+        const user = {
+          id: userls,
+        };
+
+        orderls.user = user;
+        localStorage.setItem("order", JSON.stringify(orderls));
         break;
       case 1: //Details
+        //Add shippingcost, discount, descuento y total al localstorage
+        var orderls = localStorage.getItem("order");
+        orderls = JSON.parse(orderls);
+
+        let discount;
+        if(discountid === undefined){
+          discount = null;
+        } else {
+          discount = {
+            idDiscount: discountid,
+          };
+        }
+
+        orderls.shippingCost = subtotalship;
+        orderls.descuento = ((subtotalprod + subtotalship) * percentage) / 100;
+        orderls.total =
+          subtotalship +
+          subtotalprod -
+          ((subtotalprod + subtotalship) * percentage) / 100;
+        orderls.discount = discount;
+        localStorage.setItem("order", JSON.stringify(orderls));
         break;
-      case 0: //PaymentMethod
-        console.log(paymentmethod);
-        console.log(typedoc);
-        console.log(doc);
+      case 2: //PaymentMethod
         if (
           paymentmethod.length === 0 ||
           ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
@@ -145,16 +311,27 @@ export default function StepperOrder() {
           ((paymentmethod === "creditcard" || paymentmethod === "debitcard") &&
             (cardnumber.length === 0 ||
               expiry.length === 0 ||
-              cvc.length === 0)) || (paymentmethod === "mercadopago" && paydone === false)
+              cvc.length === 0)) ||
+          (paymentmethod === "mercadopago" && paydone === false)
         ) {
           seterror(true);
           return;
         }
         seterror(false);
 
-        //Llamar a api, preguntar por los metodos de pago y guardar el que coincide con el mio.
+        //Get paymentmethods de la bd
+        getPaymentMethodsAPI();
+
         break;
       case 3: //SellerComments
+        //Agrego comment al local storage
+        var orderls = localStorage.getItem("order");
+        orderls = JSON.parse(orderls);
+
+        orderls.coment = comment;
+        localStorage.setItem("order", JSON.stringify(orderls));
+
+        createOrderAPI();
         break;
       default:
         break;
@@ -173,7 +350,7 @@ export default function StepperOrder() {
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
-      case 2:
+      case 0:
         return (
           <ShippingForm
             street={street}
@@ -194,8 +371,21 @@ export default function StepperOrder() {
           />
         );
       case 1:
-        return <Details postalcode={postalcode} province={province} />;
-      case 0:
+        return (
+          <Details
+            postalcode={postalcode}
+            province={province}
+            subtotalship={subtotalship}
+            setsubtotalship={setsubtotalship}
+            percentage={percentage}
+            setpercentage={setpercentage}
+            subtotalprod={subtotalprod}
+            setsubtotalprod={setsubtotalprod}
+            discountid={discountid}
+            setdiscountid={setdiscountid}
+          />
+        );
+      case 2:
         return (
           <PaymentMethod
             paymentmethod={paymentmethod}
@@ -217,7 +407,7 @@ export default function StepperOrder() {
           />
         );
       case 3:
-        return <SellerComments />;
+        return <SellerComments comment={comment} setcomment={setcomment} />;
       default:
         return "Unknown stepIndex";
     }
@@ -237,10 +427,12 @@ export default function StepperOrder() {
           <div>
             {activeStep === steps.length ? (
               <div>
-                <Typography className={classes.instructions}>
-                  All steps completed
-                </Typography>
-                <Button onClick={handleReset}>Reset</Button>
+                <div className="pb-5 pt-5" style={{ textAlign: "center" }}>
+                  <Typography className={classes.instructions}>
+                    La compra fue completada. Muchas gracias!
+                  </Typography>
+                  <Button onClick={(e) => history.push("/")}>Ir al Home</Button>
+                </div>
               </div>
             ) : (
               <div>
@@ -262,7 +454,7 @@ export default function StepperOrder() {
                     onClick={handleNext}
                   >
                     {activeStep === steps.length - 1
-                      ? "Finalizar"
+                      ? "Enviar y finalizar compra"
                       : "Siguiente"}
                   </Button>
                 </div>

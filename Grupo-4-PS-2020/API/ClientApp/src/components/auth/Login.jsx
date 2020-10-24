@@ -28,7 +28,7 @@ export const Login = () => {
         const pw = password.slice(0, -1); //Hay un rico bug, le tenemos que sacar la ultima letra para que funcione el login
         bcrypt.compare(pw, data[1]).then((res) => {
           if (res === true) {
-            console.log(data[0]);
+            localStorage.setItem("iduser", data[2]);
             localStorage.setItem("user", email);
             localStorage.setItem("token", data[0]);
             history.replace("/");
@@ -37,7 +37,7 @@ export const Login = () => {
         });
       })
       .catch(() => (
-        <div class="alert alert-danger" role="alert">
+        <div className="alert alert-danger" role="alert">
           Usuario no valido.
         </div>
       ));
