@@ -1,8 +1,6 @@
 package com.unla.deporteonline.services;
-
-import java.util.List;
-
 import com.unla.deporteonline.entities.User;
+import java.util.List;
 
 public interface IUserService {
     
@@ -10,10 +8,15 @@ public interface IUserService {
 
     public Object saveUser(User user);
 
-    public User findByEmailAndPassword(String email, String password);
+    public void deleteUser(User user);
 
-	public User findByEmail(String email);
+    public User findByEmailAndPassword(String email, String password);	
 
-	public User findById(int id);
+    public List<User> findByIsEnabled();
 
+    public User findUserById(final int id);
+	  
+    public User findByEmail(String email);
+
+    public User findById(int id);
 }

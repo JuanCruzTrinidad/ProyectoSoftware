@@ -5,7 +5,6 @@ import { useHistory } from "react-router";
 import bcrypt from "bcryptjs";
 
 export const Login = () => {
-
   //States
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
@@ -13,7 +12,7 @@ export const Login = () => {
   const history = useHistory();
 
   //Si el usuario esta logeado no debe poder entrar a esta pagina
-  if(localStorage.getItem("token") !== null) {
+  if (localStorage.getItem("token") !== null) {
     history.push("/");
   }
 
@@ -22,14 +21,14 @@ export const Login = () => {
 
     const formData = new FormData();
     formData.append("email", email);
-    
+
     apiAxios
       .post("/user/login", formData)
       .then(({ data }) => {
         const pw = password.slice(0, -1); //Hay un rico bug, le tenemos que sacar la ultima letra para que funcione el login
         bcrypt.compare(pw, data[1]).then((res) => {
           if (res === true) {
-            console.log(data[0])
+            localStorage.setItem("iduser", data[2]);
             localStorage.setItem("user", email);
             localStorage.setItem("token", data[0]);
             history.replace("/");
@@ -38,10 +37,10 @@ export const Login = () => {
         });
       })
       .catch(() => (
-        <div class="alert alert-danger" role="alert">
-        Usuario no valido.
-      </div>)
-      );
+        <div className="alert alert-danger" role="alert">
+          Usuario no valido.
+        </div>
+      ));
   };
 
   const handleChangeEmail = ({ target }) => {
@@ -111,7 +110,12 @@ export const Login = () => {
           </button>
           <div className="mb-3">
             <a
-              style={{ float: "right", paddingTop: "4px", color: "#457B9D", cursor: "pointer" }}
+              style={{
+                float: "right",
+                paddingTop: "4px",
+                color: "#457B9D",
+                cursor: "pointer",
+              }}
               onClick={(e) => {
                 e.preventDefault();
                 history.push("/signup");
@@ -120,7 +124,12 @@ export const Login = () => {
               ¿No tenes cuenta? Registrate!
             </a>
             <a
-              style={{ float: "left", paddingTop: "4px", color: "#457B9D", cursor: "pointer" }}
+              style={{
+                float: "left",
+                paddingTop: "4px",
+                color: "#457B9D",
+                cursor: "pointer",
+              }}
               onClick={(e) => {
                 e.preventDefault();
                 history.push("/recoverpw");

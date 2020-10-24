@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="user")
@@ -41,7 +41,15 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<Role>();
 
+    //valoracion
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "user")
+    private Set<Valoracion> valoraciones= new HashSet<Valoracion>();
 
+    //pedido
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "user")
+    private Set<Pedido> userPedido = new HashSet<Pedido>();
+
+    
     public User() {}
 
     public User(int id, String name, String lastname, LocalDate birthdate, String email, String password, boolean enabled,
@@ -57,6 +65,7 @@ public class User {
         this.roles = roles;
     }
 
+    
     public int getId() {
         return id;
     }
@@ -129,12 +138,48 @@ public class User {
         this.roles = roles;
     }
 
+    @JsonManagedReference (value = "anyName")
+    public Set<Valoracion> getValoraciones() {
+        return valoraciones;
+    }
+
+    public void setValoraciones(Set<Valoracion> valoraciones) {
+        this.valoraciones = valoraciones;
+    }
+
+    public User(int id, String name, String lastname, LocalDate birthdate, String email, String password,
+            boolean enabled, boolean islogged, Set<Role> roles, Set<Valoracion> valoraciones,
+            Set<Pedido> userPedido) {
+        this.id = id;
+        this.name = name;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.password = password;
+        this.enabled = enabled;
+        this.islogged = islogged;
+        this.roles = roles;
+        this.valoraciones = valoraciones;
+        this.userPedido = userPedido;
+    }
+
+    public Set<Pedido> getUserPedido() {
+        return userPedido;
+    }
+
+    public void setUserPedido(Set<Pedido> userPedido) {
+        this.userPedido = userPedido;
+    }
+
     @Override
     public String toString() {
         return "User [birthdate=" + birthdate + ", email=" + email + ", enabled=" + enabled + ", id=" + id
-                + ", lastname=" + lastname + ", name=" + name + ", password=" + password + ", roles=" + roles + "]";
+                + ", islogged=" + islogged + ", lastname=" + lastname + ", name=" + name + ", password=" + password
+                + ", userPedido=" + userPedido + ", roles=" + roles + ", valoraciones=" + valoraciones + "]";
     }
 
     
 
+
+    
 }
