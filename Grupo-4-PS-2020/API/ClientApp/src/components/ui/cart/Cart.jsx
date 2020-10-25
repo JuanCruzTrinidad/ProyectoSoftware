@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Grid, Paper, Typography } from "@material-ui/core";
 import TileCart from "./TileCart";
 import { useHistory } from "react-router";
+import ReplaySharpIcon from '@material-ui/icons/ReplaySharp';
 
 const Cart = () => {
   const history = useHistory();
@@ -112,12 +113,18 @@ const Cart = () => {
               style={{
                 backgroundColor: "#007A9A",
                 color: "white",
-                marginTop: "20px",
+                marginTop: "10px",
               }}
-              onClick={(e) => window.location.reload()}
+              size="small"
+              onClick={(e) => {
+                //history.push("/cart");
+                history.replace('/cart');
+                //history.go(0);
+                window.location.reload();
+              }}
             >
               <Typography variant="button" display="block">
-              &#x21bb;
+                <ReplaySharpIcon />
               </Typography>
             </Button>
             <Grid

@@ -32,9 +32,9 @@ const useStyles = makeStyles((theme) => ({
 function getSteps() {
   return [
     "Formulario de envio",
-    "Muestro costos y detalles (peso, envio, prod)",
-    "Metodo pago",
-    "Comentarios y send",
+    "Detalle de la compra",
+    "Pago",
+    "Comentarios",
   ];
 }
 
@@ -211,10 +211,10 @@ export default function StepperOrder() {
     });
 
     setTimeout(() => {
-      localStorage.removeItem('cart');
-      localStorage.removeItem('order');
-      localStorage.removeItem('shippingcost');
-      localStorage.removeItem('direction');
+      localStorage.removeItem("cart");
+      localStorage.removeItem("order");
+      localStorage.removeItem("shippingcost");
+      localStorage.removeItem("direction");
     }, 2000);
   };
 
@@ -286,7 +286,7 @@ export default function StepperOrder() {
         orderls = JSON.parse(orderls);
 
         let discount;
-        if(discountid === undefined){
+        if (discountid === undefined) {
           discount = null;
         } else {
           discount = {
@@ -341,6 +341,13 @@ export default function StepperOrder() {
   };
 
   const handleBack = () => {
+    if (activeStep === 2) {
+      setpaymentmethod("");
+      setpaydone(false);
+    } else if (activeStep === 0){
+      history.push('/cart');
+    }
+
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -441,7 +448,6 @@ export default function StepperOrder() {
                 </Typography>
                 <div className="pb-5 pt-5" style={{ textAlign: "right" }}>
                   <Button
-                    disabled={activeStep === 0}
                     onClick={handleBack}
                     className={classes.backButton}
                   >
