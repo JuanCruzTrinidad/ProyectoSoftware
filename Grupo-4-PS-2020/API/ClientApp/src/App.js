@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import {apiAxios} from './config/axios';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { NavbarDU } from './components/ui/Navbar';
 import { Auth } from './pages/Auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,6 +19,7 @@ import Catalogue from './components/ui/catalogue/Catalogue';
 import { OneProduct } from './components/ui/products/OneProduct';
 import Cart from './components/ui/cart/Cart';
 import StepperOrder from './components/ui/order/Stepper';
+import { CssBaseline } from '@material-ui/core';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -29,6 +29,7 @@ function App() {
   //realmente las url no existen en react, por lo cual se evita el problema del 404. Si vos le erras, siempre te va a llegar al home.
   return (
     <>
+    <CssBaseline />
     <Router>
         <NavbarDU/>
         <Switch>
@@ -78,6 +79,7 @@ function App() {
             <StepperOrder />
           </Route>
         </Switch>
+        <Redirect to="/"/>
         <Footer />
       </Router>
     </>
