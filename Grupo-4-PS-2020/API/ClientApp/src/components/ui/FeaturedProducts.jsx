@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { CategoryCards } from './CategoryCards';
 
 
-export const FeaturedProducts = () => {
+export const FeaturedProducts = ({ products = [], custom = false }) => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const [productlist, setproductlist] = useState([]);
 
@@ -32,17 +32,22 @@ export const FeaturedProducts = () => {
         activeItemIndex={activeItemIndex}
         numberOfCards={3}
         gutter={20}
-        leftChevron={<ChevronLeftIcon/>}
-        rightChevron={<ChevronRightIcon/>}
+        leftChevron={<ChevronLeftIcon />}
+        rightChevron={<ChevronRightIcon />}
         outsideChevron
         chevronWidth={40}
-      >     
-          {
+      >
+        {custom ? (
+          products.map((prod) => (
+            <MediaCard key={prod.idProducto} prod={prod} />
+          ))
+        ) : (
             productlist.map((prod) => (
               <MediaCard key={prod.idProducto} prod={prod} />
             ))
-          }
-          
+          )
+        }
+
       </ItemsCarousel>
     </>
   );

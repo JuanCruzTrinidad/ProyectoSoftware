@@ -187,7 +187,7 @@ export const ProductsForm = () => {
             createProductAPI(createProduct, "createProduct")
         }
         
-        history.replace('/Home');
+        history.replace('/');
     };
 
 
