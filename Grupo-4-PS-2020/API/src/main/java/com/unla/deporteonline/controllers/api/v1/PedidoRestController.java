@@ -1,7 +1,14 @@
 package com.unla.deporteonline.controllers.api.v1;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
 import com.unla.deporteonline.entities.Pedido;
 import com.unla.deporteonline.services.IPedidoService;
 import com.unla.deporteonline.entities.User;
@@ -17,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.micrometer.core.ipc.http.HttpSender.Response;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -42,9 +51,33 @@ public class PedidoRestController {
     
     //add Pedido (recibe el Pedido por json, necesita el user)(o idUser en json)
     @PostMapping(value ="/createPedido", consumes="application/json")
-    public Object createPedido(@RequestBody Pedido createPedido) {
-        System.out.println("Pedido: " + createPedido.toString());
-		return pedidoService.savePedido(createPedido);
+    public Object createPedido(@RequestBody Pedido pedido) throws IOException {
+
+		//User user = userService.findById(pedido.getUser().getId());
+		Email from = new Email("tomas.silvestre9@gmail.com");
+		String subject = "Pedido Nro. " + pedido.getIdPedido();
+		Email to = new Email("tomas.silvestre9@gmail.com");
+		Content content = new Content("text/plain", "Pedido " + pedido.getIdPedido() + ". Total: " + pedido.getTotal() + ". Comentario: " + pedido.getComent());
+		Mail mail = new Mail(from, subject, to, content);
+
+		SendGrid sg = new SendGrid("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");
+		Request request = new Request();
+
+		try {
+			request.setMethod(Method.POST);
+			request.setEndpoint("mail/send");
+			request.setBody(mail.build());
+			com.sendgrid.Response response = sg.api(request);
+			System.out.println(response.getStatusCode());
+			System.out.println(response.getBody());
+			System.out.println(response.getHeaders());
+		} catch (IOException ex) {
+			throw ex;
+		}
+
+
+        System.out.println("Pedido: " + pedido.toString());
+		return pedidoService.savePedido(pedido);
     }
 
 	//update Pedido
