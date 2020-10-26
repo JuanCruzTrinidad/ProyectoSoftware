@@ -16,6 +16,7 @@ import com.unla.deporteonline.services.IUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,10 @@ public class PedidoRestController {
     @Autowired
 	@Qualifier("userService")
 	private IUserService userService;
-
+    
+    @Value("${apiKey.sendGrid}")
+    private String keySendGrid;
+    
 	//add Pedido,recibe idUser, busca user por id
 	@PostMapping(value ="/createPedidoVacio")
 	public Object createPedidoVacio(@RequestParam("idUser") Integer idUser) {
@@ -52,7 +56,8 @@ public class PedidoRestController {
     //add Pedido (recibe el Pedido por json, necesita el user)(o idUser en json)
     @PostMapping(value ="/createPedido", consumes="application/json")
     public Object createPedido(@RequestBody Pedido pedido) throws IOException {
-
+    	
+    	pedidoService.savePedido(pedido);
 		//User user = userService.findById(pedido.getUser().getId());
 		Email from = new Email("tomas.silvestre9@gmail.com");
 		String subject = "Pedido Nro. " + pedido.getIdPedido();
@@ -60,7 +65,7 @@ public class PedidoRestController {
 		Content content = new Content("text/plain", "Pedido " + pedido.getIdPedido() + ". Total: " + pedido.getTotal() + ". Comentario: " + pedido.getComent());
 		Mail mail = new Mail(from, subject, to, content);
 
-		SendGrid sg = new SendGrid("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");
+		SendGrid sg = new SendGrid(keySendGrid);
 		Request request = new Request();
 
 		try {
@@ -77,7 +82,7 @@ public class PedidoRestController {
 
 
         System.out.println("Pedido: " + pedido.toString());
-		return pedidoService.savePedido(pedido);
+		return pedido ;
     }
 
 	//update Pedido

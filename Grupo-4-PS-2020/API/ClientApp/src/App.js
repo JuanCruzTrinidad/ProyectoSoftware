@@ -79,7 +79,7 @@ function App() {
             <StepperOrder />
           </Route>
         </Switch>
-        <Redirect from="*" to="/"/>
+        {/* <Redirect from="*" to="/"/> */}
         <Footer />
       </Router>
     </>
