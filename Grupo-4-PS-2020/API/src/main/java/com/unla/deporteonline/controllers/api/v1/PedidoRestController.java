@@ -55,9 +55,9 @@ public class PedidoRestController {
     
     //add Pedido (recibe el Pedido por json, necesita el user)(o idUser en json)
     @PostMapping(value ="/createPedido", consumes="application/json")
-    public Object createPedido(@RequestBody Pedido pedido) throws IOException {
+    public Object createPedido(@RequestBody Pedido pedidoOld) throws IOException {
     	
-    	pedidoService.savePedido(pedido);
+    	Pedido pedido  = (Pedido) pedidoService.savePedido(pedidoOld);
 		//User user = userService.findById(pedido.getUser().getId());
 		Email from = new Email("tomas.silvestre9@gmail.com");
 		String subject = "Pedido Nro. " + pedido.getIdPedido();
