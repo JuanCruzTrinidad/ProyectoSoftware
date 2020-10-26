@@ -13,13 +13,13 @@ const ResetPassword = () => {
 
   //Id del usuario
   let { iduser } = useParams();
-  var idaux = iduser.substring(1); //Elimino ":"
+  console.log(iduser)
+  debugger;
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
 
-    const id = parseInt(idaux, 10);
-
+    const id = parseInt(iduser, 10);
     const user = {
       id: id,
       name: "n",
