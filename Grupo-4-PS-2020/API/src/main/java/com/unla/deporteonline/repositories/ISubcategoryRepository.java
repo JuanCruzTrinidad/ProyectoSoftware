@@ -14,6 +14,9 @@ import com.unla.deporteonline.entities.*;
 public interface ISubcategoryRepository extends JpaRepository<Subcategory, Serializable> {
 
     @Query("SELECT s FROM Subcategory s WHERE s.category.idCategory = :idCategory")
-	public abstract List<Subcategory> findSubcategoryByCategory(@Param("idCategory") int idCategory);
+    public abstract List<Subcategory> findSubcategoryByCategory(@Param("idCategory") int idCategory);
+    
+    @Query("SELECT s FROM Subcategory s WHERE name = :name")
+	public abstract Subcategory findSubcategoryByName(@Param("name") String name);
 
 }
