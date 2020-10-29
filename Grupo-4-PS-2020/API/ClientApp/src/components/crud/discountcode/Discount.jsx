@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
-import "./Categories.css";
+import "../categories/Categories.css";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
 import Spinner from "../../ui/Spinner";
 
-const SubCategories = () => {
-  //States
-  const [subcatlist, setsubcatlist] = useState([]);
-  const [showtable, setshowtable] = useState(false);
-  const [columns, setColumns] = useState([]);
-
+const Discount = () => {
   const history = useHistory();
-
   //Si no esta logeado no debe poder entrar a esta pagina
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
@@ -20,10 +14,14 @@ const SubCategories = () => {
     history.push("/");
   }
 
+  //States
+  const [disclist, setdisclist] = useState([]);
+  const [showtable, setshowtable] = useState(false);
+
   //Conexion a API
-  const getSubcategoriesAPI = () => {
+  const getDiscountsAPI = () => {
     apiAxios
-      .get("/subcategory/allsubcategories", {
+      .get("/discount/allDiscount", {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
@@ -34,122 +32,97 @@ const SubCategories = () => {
         },
       })
       .then(({ data }) => {
-        setsubcatlist(data);
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
-  };
-
-  const createSubcategoryAPI = (newsubcat) => {
-    apiAxios
-      .post("/subcategory/createSubcategory", newsubcat, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-          "Access-Control-Allow-Headers":
-            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      })
-      .then(({ data }) => {
-        getSubcategoriesAPI();
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
-  };
-
-  const updateSubcategoryAPI = (subcat) => {
-    apiAxios
-      .post("/subcategory/updateSubcategory", subcat, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-          "Access-Control-Allow-Headers":
-            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      })
-      .then(({ data }) => {
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
-  };
-
-  const deleteSubcategoryAPI = (subcatid) => {
-    apiAxios
-      .delete("/subcategory/deleteSubcategory", {
-        params: { idSubcategory: subcatid },
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-          "Access-Control-Allow-Headers":
-            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      })
-      .then(({ data }) => {
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
-  };
-
-  const getCategoriesAPI = () => {
-    apiAxios
-      .get("/category/allcategories", {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-          "Access-Control-Allow-Headers":
-            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      })
-      .then(({ data }) => {
-        const optionsCategories = Object.fromEntries(
-          data.map((item) => [item.idCategory, `${item.idCategory} - ${item.name}`])
-        );
-        setColumns([
-          {
-            title: "ID",
-            field: "id",
-            type: "numeric",
-            align: "justify",
-            hidden: true,
-          },
-          {
-            title: "Nombre",
-            field: "name",
-            type: "string",
-          },
-          { title: "Taxonomia Google", field: "nameGoogle", type: "string" },
-          {
-            title: "Categoria",
-            field: "category.idCategory",
-            lookup: optionsCategories,
-          },
-        ]);
+        setdisclist(data);
         setshowtable(true);
       })
       .catch((error) => console.log(error));
   };
 
+  const createDiscountAPI = (newdisc) => {
+    apiAxios
+      .post("/discount/createDiscount", newdisc, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+				getDiscountsAPI();
+				console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const updateDiscountAPI = (disc) => {
+    apiAxios
+      .post("/discount/updateDiscount", disc, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const deleteDiscountAPI = (discid) => {
+    apiAxios
+      .delete("/discount/deleteDiscount", {
+        params: { idDiscount: discid },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const [columns, setColumns] = useState([
+    {
+      title: "ID",
+      field: "idDiscount",
+      type: "numeric",
+      align: "left",
+      hidden: true,
+    },
+    {
+      title: "Codigo",
+      field: "code",
+      type: "string",
+    },
+    { title: "Porcentaje", field: "percentage", type: "numeric", align: "left" },
+  ]);
+
   useEffect(() => {
-    getSubcategoriesAPI();
-    getCategoriesAPI();
+    getDiscountsAPI();
     // eslint-disable-next-line
   }, []);
 
+  //Se muestra la tabla cuando en la primer carga de la pag se cargue la tabla.
   return showtable ? (
     <div className="container-fluid contenedor">
       <div className="p-5">
         <MaterialTable
-          title="Subcategorias"
+          title="Codigos de descuento"
           columns={columns}
-          data={subcatlist}
+          data={disclist}
           options={{
             rowStyle: {
               backgroundColor: "#E0F6EF",
@@ -158,39 +131,40 @@ const SubCategories = () => {
               backgroundColor: "#C8EFE3",
               color: "#001014",
             },
-            actionsColumnIndex: 3,
+            actionsColumnIndex: 2,
             pageSize: 10,
           }}
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
-                createSubcategoryAPI(newData);
+                createDiscountAPI(newData);
                 setTimeout(() => {
-                  // setsubcatlist([...subcatlist, newData]);
+                  // setcatlist([...catlist, newData]);
                   resolve();
-                }, 6500);
+                }, 2000);
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
-                updateSubcategoryAPI(newData);
-                const dataUpdate = [...subcatlist];
+                const dataUpdate = [...disclist];
                 const index = oldData.tableData.id;
+                newData.idDiscount = oldData.idDiscount;
                 dataUpdate[index] = newData;
-                setsubcatlist([...dataUpdate]);
+                setdisclist([...dataUpdate]);
+                updateDiscountAPI(newData);
                 setTimeout(() => {
                   resolve();
-                }, 1500);
+                }, 2000);
               }),
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
-                deleteSubcategoryAPI(oldData.idSubcategory);
-                const dataDelete = [...subcatlist];
+                const dataDelete = [...disclist];
                 const index = oldData.tableData.id;
                 dataDelete.splice(index, 1);
-                setsubcatlist([...dataDelete]);
+                setdisclist([...dataDelete]);
+                deleteDiscountAPI(oldData.idDiscount);
                 setTimeout(() => {
                   resolve();
-                }, 1500);
+                }, 2000);
               }),
           }}
         />
@@ -203,4 +177,4 @@ const SubCategories = () => {
   );
 };
 
-export default SubCategories;
+export default Discount;

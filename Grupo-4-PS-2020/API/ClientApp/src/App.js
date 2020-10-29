@@ -20,6 +20,7 @@ import { OneProduct } from './components/ui/products/OneProduct';
 import Cart from './components/ui/cart/Cart';
 import StepperOrder from './components/ui/order/Stepper';
 import { CssBaseline } from '@material-ui/core';
+import Discount from './components/crud/discountcode/Discount';
 
 function App() {
   const [tokenJWT, settokenJWT] = useState('')
@@ -65,6 +66,9 @@ function App() {
           </Route>
           <Route exact strict path="/admin/products/:id">
             <ProductsForm/>
+          </Route>
+          <Route exact strict path="/admin/discounts">
+            <Discount/>
           </Route>
           <Route exact strict path="/catalogue">
             <Catalogue />

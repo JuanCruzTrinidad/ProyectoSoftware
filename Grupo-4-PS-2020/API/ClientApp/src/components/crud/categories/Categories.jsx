@@ -14,7 +14,8 @@ const Categories = () => {
 
   //Si no esta logeado no debe poder entrar a esta pagina
   const token = localStorage.getItem("token");
-  if (token === null) {
+  const role = localStorage.getItem("role");
+  if (token === null || role !== "ROLE_ADMIN") {
     history.push("/");
   }
 

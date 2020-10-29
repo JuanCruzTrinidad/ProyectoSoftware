@@ -11,6 +11,16 @@ import styles from './wizard.less';
 
 export const ProductsForm = () => {
 
+    let { id } = useParams();
+    const history = useHistory();
+
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    if (token === null || role !== "ROLE_ADMIN") {
+      history.push("/");
+    }
+
+
     const [state, updateState] = useState({
         form: {},
         currentStep: 0
@@ -18,9 +28,7 @@ export const ProductsForm = () => {
 
     const { SW, demo } = state;
 
-    let { id } = useParams();
-    const token = localStorage.getItem("token");
-    const history = useHistory();
+
     const [product, setProduct] = useState({
         id: 0,
         name: '',
