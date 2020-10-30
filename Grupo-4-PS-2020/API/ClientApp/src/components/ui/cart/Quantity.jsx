@@ -8,6 +8,7 @@ const Quantity = (props) => {
 
   useEffect(() => {
     handleChangeCant();
+    console.log(cant)
   }, [cant]);
 
   return (

@@ -4,6 +4,8 @@ import "./Categories.css";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
 import Spinner from "../../ui/Spinner";
+import LiveHelpIcon from '@material-ui/icons/LiveHelp';
+
 
 const SubCategories = () => {
   //States
@@ -192,6 +194,14 @@ const SubCategories = () => {
                 }, 1500);
               }),
           }}
+          actions={[
+            {
+              icon: LiveHelpIcon,
+              isFreeAction: true,
+              onClick: () => window.open('https://www.google.com/basepages/producttype/taxonomy-with-ids.es-ES.txt'),
+              tooltip: 'Información sobre Taxonomía de Google.'
+            }
+          ]}
         />
       </div>
     </div>

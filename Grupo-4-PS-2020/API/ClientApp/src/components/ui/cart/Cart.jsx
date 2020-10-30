@@ -6,7 +6,8 @@ import ReplaySharpIcon from '@material-ui/icons/ReplaySharp';
 
 const Cart = () => {
   const history = useHistory();
-
+  const [cant, setcant] = useState(0)
+  const [subTotal, setsubTotal] = useState(0)
   var cartlist = localStorage.getItem("cart");
   cartlist = JSON.parse(cartlist);
 
@@ -17,17 +18,21 @@ const Cart = () => {
     cartlist = JSON.parse(cartlist);
 
     if (cartlist !== null) {
+      console.log(cartlist)
       if (cartlist.length !== 0) {
         cartlist.forEach((prod) => {
+          setcant(prod.cant)
           price += prod.precio * prod.cant;
         });
       }
     }
+    localStorage.setItem("cart", JSON.stringify(cartlist));
     console.log(price);
+    setsubTotal(price);
     return price;
   };
 
-  let price = actualizarSubtotal();
+  //let price = actualizarSubtotal();
 
   const handleNext = () => {
     if (cartlist !== null) {
@@ -41,7 +46,7 @@ const Cart = () => {
             shippingCost: null,
             total: null,
             descuento: null,
-            subtotal: price,
+            subtotal: subTotal,
             discount: null,
             direction: null,
             payment: null,
@@ -51,7 +56,7 @@ const Cart = () => {
         } else {
           orderls = JSON.parse(orderls);
 
-          orderls.subtotal = price;
+          orderls.subtotal = subTotal;
 
           localStorage.setItem("order", JSON.stringify(orderls));
         }
@@ -60,6 +65,10 @@ const Cart = () => {
       }
     }
   };
+
+  useEffect(() => {
+    actualizarSubtotal();
+  }, [cant])
 
   return (
     <div style={{ backgroundColor: "#F5F5F5" }}>
@@ -108,7 +117,7 @@ const Cart = () => {
             alignItems="flex-end"
             className="pt-5 pb-3"
           >
-            <Button
+            {/* <Button
               variant="contained"
               style={{
                 backgroundColor: "#007A9A",
@@ -126,7 +135,7 @@ const Cart = () => {
               <Typography variant="button" display="block">
                 <ReplaySharpIcon />
               </Typography>
-            </Button>
+            </Button> */}
             <Grid
               container
               direction="row"
@@ -138,7 +147,7 @@ const Cart = () => {
               </Typography>
               <div className="pr-5"></div>
               <Typography variant="h5" gutterBottom>
-                $ {price}
+                $ {subTotal}
               </Typography>
             </Grid>
 

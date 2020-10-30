@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductsDetail = (props) => {
-  const { idProducto, nombre, precio, atributoselecc, cant } = props;
+  const { idProducto, nombre, precio, atributoselecc, cant} = props;
 
   const history = useHistory();
   const classes = useStyles();
