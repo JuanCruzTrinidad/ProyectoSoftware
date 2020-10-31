@@ -45,7 +45,6 @@ export default function ShippingForm(props) {
     return data;
   };
 
-
   useEffect(() => {
     if (province !== "") {
       localitysAPI(province).then((data) => setlocalityslist(data.localidades));
@@ -76,6 +75,7 @@ export default function ShippingForm(props) {
             required
             id="standard-required"
             label="Numero"
+            type="number"
             value={number}
             onChange={(e) => setnumber(e.target.value)}
             style={{ width: "15ch" }}
@@ -83,6 +83,7 @@ export default function ShippingForm(props) {
           <TextField
             id="standard-required"
             label="Piso"
+            type="number"
             value={floor}
             onChange={(e) => setfloor(e.target.value)}
             style={{ width: "15ch" }}
@@ -98,6 +99,8 @@ export default function ShippingForm(props) {
             required
             id="standard-required"
             label="Codigo Postal"
+            type="number"
+            helperText="Muy importante!"
             value={postalcode}
             onChange={(e) => setpostalcode(e.target.value)}
             style={{ width: "15ch" }}

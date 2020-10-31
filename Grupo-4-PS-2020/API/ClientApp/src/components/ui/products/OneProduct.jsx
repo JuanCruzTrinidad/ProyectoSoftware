@@ -32,6 +32,7 @@ import Spinner from "../Spinner";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Comments } from "./Comments";
+import Axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,6 +61,9 @@ export const OneProduct = () => {
   const theme = useTheme();
   const history = useHistory();
 
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
   //States
   const [activeStep, setActiveStep] = useState(0);
   const [product, setproduct] = useState({});
@@ -80,10 +84,31 @@ export const OneProduct = () => {
         params: { idProducto: idprod },
       })
       .then(({ data }) => {
-        setproduct(data);
-        console.log(data);
-        setshow(true);
-        getProductsBySubcategoryAPI(data.subcategory.idSubcategory);
+        Axios.get('https://api.currencyfreaks.com/latest?apikey=3d7f042396b94479be9821c08c21da3a&symbols=ARS,BRL,EUR,USD')
+          .then(
+            response => {
+              var values = Object.values(response.data.rates)
+              var multiple = 0;
+              switch (data.moneda) {
+                case 'ARS': multiple = parseFloat(values[0], 10)
+                  break;
+                case 'BRL': multiple = parseFloat(values[1], 10)
+                  break;
+                case 'EUR': multiple = parseFloat(values[2], 10)
+                  break;
+                case 'USD': multiple = parseFloat(values[3], 10)
+                  break;
+                default: multiple = parseFloat(values[3], 10)
+                  break;
+              }
+              data.precio = data.precio * multiple
+              data.precio = Math.round(data.precio)
+              data.precioOferta = data.precioOferta * multiple
+              data.precioOferta = Math.round(data.precioOferta)
+              setproduct(data);
+              setshow(true);
+              getProductsBySubcategoryAPI(data.subcategory.idSubcategory);
+            })
       })
       .catch((error) => console.log(error));
   };
@@ -91,11 +116,13 @@ export const OneProduct = () => {
   const getProductsBySubcategoryAPI = (subcatid) => {
     apiAxios
       .get("/product/productBySubcategory", {
-        params: { idSubcategory: subcatid }
+        params: { idSubcategory: subcatid },
       })
       .then(({ data }) => {
         console.log(data);
-        const result = data.filter(d => d.idProducto !== parseInt(idproduct, 10))
+        const result = data.filter(
+          (d) => d.idProducto !== parseInt(idproduct, 10)
+        );
         setrelationalsProduct(result.slice(0, 3));
       })
       .catch((error) => console.log(error));
@@ -108,7 +135,7 @@ export const OneProduct = () => {
     },
     {
       label: product.nombre,
-      imgPath: product.imagen,
+      imgPath: product.video,
     },
   ];
 
@@ -144,11 +171,9 @@ export const OneProduct = () => {
       product.atributoselecc = product.atributos.filter(
         (atrib) => atrib.color === color && atrib.talle === size
       );
-
-      if (cartlocalstorage === null || cartlocalstorage === undefined ||cartlocalstorage === "[]") {
+      if (cartlocalstorage === null || cartlocalstorage === undefined || cartlocalstorage === "[]") {
         product.cant = 1;
         localStorage.setItem("cart", JSON.stringify([product]));
-        alert("Producto agregado al carrito");
       } else {
         cartlocalstorage = JSON.parse(cartlocalstorage);
         //Mismo producto con el mismo sku que esta en el carrito
@@ -208,9 +233,7 @@ export const OneProduct = () => {
     getProductById(idproduct);
   }, [idproduct]);
 
-  useEffect(() => {
-
-  }, [product.valoraciones])
+  useEffect(() => {}, [product.valoraciones]);
 
   return show ? (
     <>
@@ -219,11 +242,22 @@ export const OneProduct = () => {
           <Grid item xs={6}>
             <Paper elevantion={3} style={{ padding: 20, height: 500 }}>
               <div className={classes.root}>
-                <img
-                  className={classes.img}
-                  src={imagesCard[activeStep].imgPath}
-                  alt={imagesCard[activeStep].label}
-                />
+                {
+                  activeStep === 0 ?
+                    (<img
+                      className={classes.img}
+                      src={imagesCard[0].imgPath}
+                      alt={imagesCard[0].label}
+                    />
+                    )
+                    :
+                    (
+                      <iframe width="400" height="250" marginTop="20"
+                        src={imagesCard[1].imgPath}
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    )
+                }
                 <MobileStepper
                   steps={maxSteps}
                   position="static"
@@ -239,8 +273,8 @@ export const OneProduct = () => {
                       {theme.direction === "rtl" ? (
                         <KeyboardArrowLeft />
                       ) : (
-                        <KeyboardArrowRight />
-                      )}
+                          <KeyboardArrowRight />
+                        )}
                     </Button>
                   }
                   backButton={
@@ -252,8 +286,8 @@ export const OneProduct = () => {
                       {theme.direction === "rtl" ? (
                         <KeyboardArrowRight />
                       ) : (
-                        <KeyboardArrowLeft />
-                      )}
+                          <KeyboardArrowLeft />
+                        )}
                       Anterior
                     </Button>
                   }
@@ -266,19 +300,21 @@ export const OneProduct = () => {
           </Grid>
           <Grid item xs={4}>
             <Paper elevantion={3} style={{ height: 500 }}>
-              <Grid container justify="flex-end">
-                <EditIcon
-                  onClick={(e) => {
-                    e.preventDefault();
-                    history.push("/admin/products/" + idproduct);
-                  }}
-                  style={{ cursor: "pointer" }}
-                />
-                <DeleteIcon
-                  onClick={handleDeleteProduct}
-                  style={{ cursor: "pointer" }}
-                />
-              </Grid>
+              {token !== null && role === "ROLE_ADMIN" ? (
+                <Grid container justify="flex-end">
+                  <EditIcon
+                    onClick={(e) => {
+                      e.preventDefault();
+                      history.push("/admin/products/" + idproduct);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  />
+                  <DeleteIcon
+                    onClick={handleDeleteProduct}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Grid>
+              ) : null}
               <Grid container justify="center">
                 <Typography variant="h4" align="center" style={{ padding: 20 }}>
                   {product.nombre}
@@ -327,7 +363,13 @@ export const OneProduct = () => {
                   variant="h4"
                   style={{ marginBottom: 20, fontStyle: "italic" }}
                 >
-                  $ {product.precio}
+                  ${product.precio}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  style={{ marginBottom: 20, fontStyle: "italic" }}
+                >
+                  {product.moneda}
                 </Typography>
               </Grid>
               <Grid
@@ -362,14 +404,14 @@ export const OneProduct = () => {
                     {disabled ? (
                       <MenuItem value="">Primero elija un color</MenuItem>
                     ) : (
-                      product.atributos
-                        .filter((atrib) => atrib.color === color)
-                        .map((atrib) => (
-                          <MenuItem key={atrib.talle} value={atrib.talle}>
-                            {atrib.talle}
-                          </MenuItem>
-                        ))
-                    )}
+                        product.atributos
+                          .filter((atrib) => atrib.color === color)
+                          .map((atrib) => (
+                            <MenuItem key={atrib.talle} value={atrib.talle}>
+                              {atrib.talle}
+                            </MenuItem>
+                          ))
+                      )}
                   </Select>
                 </Grid>
               </Grid>
@@ -395,34 +437,38 @@ export const OneProduct = () => {
             </Paper>
           </Grid>
         </Grid>
-        <Grid
-          container
-          spacing={5}
-          justify="center"
-        >
+        <Grid container spacing={5} justify="center">
           <div className="card-group">
             {relationalsProduct.map((prod, index) => (
-                <Grid item xs={4} key={prod.idProducto} style={{margin: 30}}>
-                  <MediaCard
-                    key={prod.idProducto}
-                    prod={prod}
-                  />
-                </Grid>
+              <Grid item xs={4} key={prod.idProducto} style={{ margin: 30 }}>
+                <MediaCard
+                  key={prod.idProducto}
+                  prod={prod}
+                />
+              </Grid>
             ))}
           </div>
         </Grid>
+        {product.valoraciones.length > 0 && (
+          <Comments
+            listComments={product.valoraciones}
+            handleClickOpen={handleClickOpen}
+            handleClose={handleClose}
+            open={open}
+            idproduct={idproduct}
+          />
+        )}
         {
-          product.valoraciones.length > 0 &&(
-            <Comments listComments={product.valoraciones} handleClickOpen={handleClickOpen} 
-            handleClose={handleClose} open={open} idproduct={idproduct}/>
+          product.valoraciones.length > 0 && (
+            <Comments listComments={product.valoraciones} handleClickOpen={handleClickOpen}
+              handleClose={handleClose} open={open} idproduct={idproduct} />
           )
         }
-
       </Container>
     </>
   ) : (
-    <div style={{ padding: "200px" }}>
-      <Spinner />
-    </div>
-  );
+      <div style={{ padding: "200px" }}>
+        <Spinner />
+      </div>
+    );
 };

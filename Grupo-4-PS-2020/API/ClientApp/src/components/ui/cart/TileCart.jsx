@@ -97,6 +97,7 @@ const TileCart = (props) => {
     actualizarSubtotal();
   };
 
+  console.log("renderiza3")
   return (
     <Paper className={classes.paper}>
       <Grid container>
@@ -164,4 +165,7 @@ const TileCart = (props) => {
   );
 };
 
-export default TileCart;
+//export default TileCart
+export default React.memo(TileCart, (prev, next) => {
+  return prev.cant === next.cant
+})

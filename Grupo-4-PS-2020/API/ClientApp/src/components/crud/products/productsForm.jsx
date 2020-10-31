@@ -1,4 +1,5 @@
 import { Container, Grid } from '@material-ui/core';
+import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router';
 import StepWizard from 'react-step-wizard';
@@ -6,10 +7,19 @@ import { apiAxios } from '../../../config/axios';
 import { First } from './First';
 import NavWizard from './NavWizard';
 import { Second } from './Second';
-import { Third } from './Third';
-import styles from './wizard.less';
+
 
 export const ProductsForm = () => {
+
+    let { id } = useParams();
+    const history = useHistory();
+
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    if (token === null || role !== "ROLE_ADMIN") {
+      history.push("/");
+    }
+
 
     const [state, updateState] = useState({
         form: {},
@@ -18,9 +28,7 @@ export const ProductsForm = () => {
 
     const { SW, demo } = state;
 
-    let { id } = useParams();
-    const token = localStorage.getItem("token");
-    const history = useHistory();
+
     const [product, setProduct] = useState({
         id: 0,
         name: '',
@@ -72,7 +80,8 @@ export const ProductsForm = () => {
                 price: data.precio,
                 ofert: data.precioOferta,
                 category: data.subcategory.category.idCategory,
-                subcategory: data.subcategory.idSubcategory
+                subcategory: data.subcategory.idSubcategory,
+                money: data.moneda
             });
             let variable = [];
             data.atributos.map(d => variable.push({
@@ -164,30 +173,59 @@ export const ProductsForm = () => {
       };
 
     const handleSubmit = () => {
-        console.log(product)
-        let createProduct = {
-            idProducto: product.id,
-            nombre: product.name,
-            descripcionCorta: product.shortDescription,
-            descripcionLarga: product.largeDescription,
-            visible: product.visibility,
-            precio: product.price,
-            precioOferta: product.ofert,
-            imagen: product.urlImage,
-            video: product.urlVideo,
-            subcategory:{
-                idSubcategory:product.subcategory
+        var newPrice = 0
+        var newOfert = 0
+        Axios.get('https://api.currencyfreaks.com/latest?apikey=3d7f042396b94479be9821c08c21da3a&symbols=ARS,BRL,EUR,USD')
+        .then(response => {
+            var values = Object.values(response.data.rates)
+            var divider = 0;
+            switch(product.money){
+                case 'ARS': divider = parseFloat(values[0], 10)
+                break;
+                case 'BRL': divider = parseFloat(values[1], 10)
+                break;
+                case 'EUR': divider = parseFloat(values[2], 10)
+                break;
+                case 'USD': divider = parseFloat(values[3], 10)
+                break;
+                default: divider = parseFloat(values[3], 10)
+                break;
             }
-        }
-        //createProductAPI(createProduct);
-        if(product.id > 0){
-            createProductAPI(createProduct, "updateProduct");
-        }
-        else{
-            createProductAPI(createProduct, "createProduct")
-        }
-        
-        history.replace('/Home');
+            let priceOld = product.price;
+            let ofertOld = product.ofert;
+            newPrice = (priceOld/divider)
+            newOfert = (ofertOld/divider)
+            newPrice = Math.round(newPrice)
+            newOfert = Math.round(newOfert)
+            debugger;
+            setProduct({...product, price: newPrice, ofert: newOfert})
+        })
+        .finally( () => {
+            let createProduct = {
+                idProducto: product.id,
+                nombre: product.name,
+                descripcionCorta: product.shortDescription,
+                descripcionLarga: product.largeDescription,
+                visible: product.visibility,
+                precio: newPrice,
+                precioOferta: newOfert,
+                imagen: product.urlImage,
+                video: product.urlVideo,
+                moneda: product.money,
+                subcategory:{
+                    idSubcategory:product.subcategory
+                }
+            }
+            console.log(createProduct)
+            if(product.id > 0){
+                createProductAPI(createProduct, "updateProduct");
+            }
+            else{
+                createProductAPI(createProduct, "createProduct")
+            }
+        })
+    
+        history.replace('/');
     };
 
 

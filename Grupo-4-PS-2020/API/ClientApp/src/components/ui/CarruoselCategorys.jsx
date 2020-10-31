@@ -3,51 +3,45 @@ import ItemsCarousel from 'react-items-carousel';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { apiAxios } from '../../config/axios';
-import MediaCard from './catalogue/Card';
 import { useEffect } from 'react';
 import { CategoryCards } from './CategoryCards';
 
 
-export const FeaturedProducts = ({ products = [], custom = false }) => {
+export const CarruoselCategorys = ({categoryCard=false}) => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
-  const [productlist, setproductlist] = useState([]);
+  const [categoryList, setcategoryList] = useState([]);
 
-  const getProductsOfertAPI = () => {
+  const getCategoriesAPI = () => {
     apiAxios
-      .get("/product/allPromotion")
+      .get("/category/allcategories")
       .then(({ data }) => {
-        setproductlist(data);
+        setcategoryList(data);
         console.log(data);
       })
       .catch((error) => console.log(error));
   };
 
   useEffect(() => {
-    getProductsOfertAPI();
+    getCategoriesAPI();
   }, [])
   return (
     <>
       <ItemsCarousel
         requestToChangeActive={setActiveItemIndex}
         activeItemIndex={activeItemIndex}
-        numberOfCards={3}
+        numberOfCards={5}
         gutter={20}
-        leftChevron={<ChevronLeftIcon />}
-        rightChevron={<ChevronRightIcon />}
+        leftChevron={<ChevronLeftIcon/>}
+        rightChevron={<ChevronRightIcon/>}
         outsideChevron
         chevronWidth={40}
-      >
-        {custom ? (
-          products.map((prod) => (
-            <MediaCard key={prod.idProducto} prod={prod} />
-          ))
-        ) : (
-            productlist.map((prod) => (
-              <MediaCard key={prod.idProducto} prod={prod} />
+      >     
+          { 
+            categoryList.map((c) => (
+              <CategoryCards categoryName={c.name}/>
             ))
-          )
-        }
-
+          }
+          
       </ItemsCarousel>
     </>
   );
