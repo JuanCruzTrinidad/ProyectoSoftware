@@ -168,7 +168,7 @@ const SubCategories = () => {
                 setTimeout(() => {
                   // setsubcatlist([...subcatlist, newData]);
                   resolve();
-                }, 6500);
+                }, 1500);
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {

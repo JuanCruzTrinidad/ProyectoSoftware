@@ -182,6 +182,27 @@ export default function StepperOrder() {
       .catch((error) => console.log(error));
   };
 
+  const sendMailPedidoAPI = (idpedido) => {
+    apiAxios
+      .get("/pedido/pedidomail", {
+        params: {
+          idPedido: idpedido
+        },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
   const createOrderDetailAPI = (idpedido) => {
     var cartls = localStorage.getItem("cart");
     cartls = JSON.parse(cartls);
@@ -215,7 +236,8 @@ export default function StepperOrder() {
       localStorage.removeItem("order");
       localStorage.removeItem("shippingcost");
       localStorage.removeItem("direction");
-    }, 2000);
+      sendMailPedidoAPI(idpedido);
+    }, 1500);
   };
 
   const createOrderAPI = () => {

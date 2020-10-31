@@ -143,7 +143,7 @@ const Categories = () => {
                 setTimeout(() => {
                   // setcatlist([...catlist, newData]);
                   resolve();
-                }, 6500);
+                }, 1500);
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {

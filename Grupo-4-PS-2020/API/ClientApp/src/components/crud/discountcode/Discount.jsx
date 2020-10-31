@@ -141,7 +141,7 @@ const Discount = () => {
                 setTimeout(() => {
                   // setcatlist([...catlist, newData]);
                   resolve();
-                }, 2000);
+                }, 1500);
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
@@ -153,7 +153,7 @@ const Discount = () => {
                 updateDiscountAPI(newData);
                 setTimeout(() => {
                   resolve();
-                }, 2000);
+                }, 1500);
               }),
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
@@ -164,7 +164,7 @@ const Discount = () => {
                 deleteDiscountAPI(oldData.idDiscount);
                 setTimeout(() => {
                   resolve();
-                }, 2000);
+                }, 1500);
               }),
           }}
         />
