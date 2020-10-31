@@ -10,18 +10,21 @@ import Axios from "axios";
 
 const useStyles = makeStyles({
   root: {
-    width: 290,
+    width: 280,
     marginBottom: 10,
     marginLeft: 15,
-    height: 340
+    height: "auto",
+    display:"block"
   },
-  media: {
-    maxWidth: "auto",
+  img: {
+    maxWidth: "80%",
     height: 220,
-    maxHeight: 220,
     padding: 10,
-    margin: 5
-  }
+    margin: 5,
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto"
+}
 });
 
 export default function MediaCard({ prod }) {
@@ -66,7 +69,7 @@ export default function MediaCard({ prod }) {
   return (
     <Card className={classes.root} >
       <CardActionArea onClick={(e) => history.push(`/product/${idProducto}`)}>
-        <CardMedia className={classes.media} image={imagen} title={nombre} />
+        <CardMedia className={classes.img} image={imagen} title={nombre} />
         <CardContent>
           {precioOferta === 0 ? (
             <Fragment>
