@@ -92,9 +92,7 @@ public class DetallePedido implements Serializable{
 
     @Override
     public String toString() {
-        return "[ID Pedido: " + fk_pedido + ", ID Atributo: " + fk_atributos + ", cantidad: " + cantidad + "]";
+        return "[ID Atributo: " + fk_atributos + ", cantidad: " + cantidad + "]";
     }
-
-    
-    
+   
 }

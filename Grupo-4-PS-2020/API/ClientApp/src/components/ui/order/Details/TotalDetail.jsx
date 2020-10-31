@@ -57,11 +57,11 @@ const TotalDetail = (props) => {
       value = valueshipping;
       setsubtotalship(Number(value));
     }
-  }, 2300);
+  }, 2500);
 
   setTimeout(() => {
     setshow(true);
-  }, 2500);
+  }, 2700);
 
   const getDiscountByCodeAPI = async (code) => {
     await apiAxios
