@@ -53,6 +53,7 @@ const Details = (props) => {
                   precio={prod.precio}
                   atributoselecc={prod.atributoselecc}
                   cant={prod.cant}
+                  setsubtotalship={setsubtotalship}
                 />
               ))
             ) : (

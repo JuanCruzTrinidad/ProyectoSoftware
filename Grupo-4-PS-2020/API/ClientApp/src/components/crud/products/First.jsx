@@ -5,6 +5,7 @@ import { apiAxios } from '../../../config/axios';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useParams } from 'react-router';
+import Axios from 'axios';
 
 export const First = ({ nextStep, product, setProduct }) => {
 
@@ -20,12 +21,20 @@ export const First = ({ nextStep, product, setProduct }) => {
     ];
     const currencies = [
         {
-            value: '$$',
-            label: '$$',
+            value: 'ARS',
+            label: 'ARS',
         },
         {
-            value: '$',
-            label: '$',
+            value: 'BRL',
+            label: 'BRL',
+        },
+        {
+            value: 'EUR',
+            label: 'EUR',
+        },
+        {
+            value: 'USD',
+            label: 'USD',
         }
     ];
 
@@ -35,6 +44,13 @@ export const First = ({ nextStep, product, setProduct }) => {
     const theme = useTheme();
     const maxSteps = images.length;
 
+    useEffect(() => {
+        getCategoriesAPI()
+    }, [])
+    useEffect(() => {
+        getSubCategoriesAPI(product.category)
+    }, [product.category])
+
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -42,6 +58,7 @@ export const First = ({ nextStep, product, setProduct }) => {
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+
 
     const getCategoriesAPI = () => {
         apiAxios
@@ -105,18 +122,7 @@ export const First = ({ nextStep, product, setProduct }) => {
     });
 
     const classes = useStyles();
-
-    // useEffect(() => {
-    //     console.log(product)
-    // }, [product])
-
-    useEffect(() => {
-        getCategoriesAPI()
-    }, [])
-    useEffect(() => {
-        getSubCategoriesAPI(product.category)
-    }, [product.category])
-
+    
     return (
         <Container maxwidht="md" spacing={5}>
             <Grid container spacing={4}>
@@ -239,7 +245,7 @@ export const First = ({ nextStep, product, setProduct }) => {
                                             label="Moneda"
                                             fullWidth
                                             value={product.money}
-                                            onChange={e => setProduct({ ...product, money: e.target.value })}
+                                            onChange={e => setProduct({...product, money: e.target.value})}
                                             SelectProps={{
                                                 native: true,
                                             }}
