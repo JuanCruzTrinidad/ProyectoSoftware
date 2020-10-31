@@ -1,4 +1,4 @@
-import { Container, Grid } from '@material-ui/core';
+import { Button, Container, Grid, Paper } from '@material-ui/core';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router';
@@ -228,7 +228,23 @@ export const ProductsForm = () => {
         history.replace('/');
     };
 
-
+    const handleUploadExcel = (event) => {
+        event.preventDefault();
+        let token = localStorage.getItem("token");
+        let formData = new FormData()
+        var file = event.target.files[0];
+        formData.append("file", file)
+        apiAxios.post("/product/import-excel", formData,{
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+              "Access-Control-Allow-Headers":
+                "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+              "Content-Type": "multipart/form-data",
+               Authorization: `${token}`,
+            },
+          });
+    }
 
     return (
         <Container maxWidth="md" fixed>
@@ -241,6 +257,24 @@ export const ProductsForm = () => {
                     <First product={product} setProduct={setProduct} key={`${product.id}`}/>
                     <Second atributes={atributes} setatributes={setatributes} handleSubmit={handleSubmit} product={product}/>
                 </StepWizard>
+            <Grid item xs={12}>
+                <Paper elevation={3} style={{width: 800, heigth: 200, margin: 30, padding: 20}}>
+                    <Grid container justify="center" alignContent="center" alignItems="center">
+                    <Grid item xs={3}>
+                        <input
+                            style={{display: 'none'}}
+                            type="file" id="subir-excel" accept="*"
+                            onChange={e => handleUploadExcel(e)}
+                        />
+                        <label htmlFor="subir-excel">
+                            <Button fullWidth variant="outlined" color="primary" component="span">
+                            Subir desde Excel
+                            </Button>
+                        </label>
+                    </Grid>
+                    </Grid>
+                </Paper>
+            </Grid>
             </Grid>
         </Container>
     )

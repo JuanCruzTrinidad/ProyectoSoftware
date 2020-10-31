@@ -105,7 +105,7 @@ public class ProductRestController {
 		return productService.findProductByName(nombre);
 	}
 
-	@RequestMapping(value = "/import-excel", method = RequestMethod.POST)
+	@RequestMapping(value = "/import-excel", method = RequestMethod.POST, headers = "Content-Type= multipart/form-data")
     public List<Producto> importExcelFile(@RequestParam("file") MultipartFile files)throws IOException {
         List<Producto> productList = new ArrayList<>();
 
@@ -126,6 +126,7 @@ public class ProductRestController {
 				producto.setVideo(formatter.formatCellValue(row.getCell(6)));
 				producto.setSubcategory(subcategoryService.findSubcategoryByName(formatter.formatCellValue(row.getCell(7))));
 				producto.setVisible(true);
+				producto.setMoneda(formatter.formatCellValue(row.getCell(8)));
 				productService.saveProduct(producto);
                 productList.add(producto);
             }

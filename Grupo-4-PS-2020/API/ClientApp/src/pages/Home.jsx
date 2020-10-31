@@ -4,6 +4,7 @@ import { FeaturedProducts } from '../components/ui/FeaturedProducts';
 import { Container, Divider, Grid, Typography } from '@material-ui/core';
 import { CarruoselCategorys } from '../components/ui/CarruoselCategorys';
 import { apiAxios } from '../config/axios';
+import Axios from 'axios';
 
 export const Home = ({ tokenJWT }) => {
 
@@ -39,6 +40,7 @@ export const Home = ({ tokenJWT }) => {
     useEffect(() => {
         getCategoriesAPI();
     }, [])
+
     return (
         <>
             <Container maxWidth="md" style={{ marginTop: 10 }}>
