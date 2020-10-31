@@ -8,9 +8,8 @@ const Quantity = (props) => {
 
   useEffect(() => {
     handleChangeCant();
-    console.log(cant)
   }, [cant]);
-
+  console.log("me renderize juju")
   return (
     <div>
       <div className="quantity-input">
@@ -38,4 +37,7 @@ const Quantity = (props) => {
   );
 };
 
-export default Quantity;
+//export default Quantity;
+export default React.memo(Quantity, (prev, next) => {
+  return prev.cant === next.cant
+})

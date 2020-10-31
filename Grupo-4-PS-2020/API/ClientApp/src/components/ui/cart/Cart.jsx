@@ -6,8 +6,8 @@ import ReplaySharpIcon from '@material-ui/icons/ReplaySharp';
 
 const Cart = () => {
   const history = useHistory();
-  const [cant, setcant] = useState(0)
-  const [subTotal, setsubTotal] = useState(0)
+
+  const [subtotal, setsubtotal] = useState(0)
   var cartlist = localStorage.getItem("cart");
   cartlist = JSON.parse(cartlist);
 
@@ -18,17 +18,14 @@ const Cart = () => {
     cartlist = JSON.parse(cartlist);
 
     if (cartlist !== null) {
-      console.log(cartlist)
       if (cartlist.length !== 0) {
         cartlist.forEach((prod) => {
-          setcant(prod.cant)
           price += prod.precio * prod.cant;
         });
       }
     }
-    localStorage.setItem("cart", JSON.stringify(cartlist));
     console.log(price);
-    setsubTotal(price);
+    setsubtotal(price)
     return price;
   };
 
@@ -46,7 +43,7 @@ const Cart = () => {
             shippingCost: null,
             total: null,
             descuento: null,
-            subtotal: subTotal,
+            subtotal: subtotal,
             discount: null,
             direction: null,
             payment: null,
@@ -56,7 +53,7 @@ const Cart = () => {
         } else {
           orderls = JSON.parse(orderls);
 
-          orderls.subtotal = subTotal;
+          orderls.subtotal = subtotal;
 
           localStorage.setItem("order", JSON.stringify(orderls));
         }
@@ -65,10 +62,6 @@ const Cart = () => {
       }
     }
   };
-
-  useEffect(() => {
-    actualizarSubtotal();
-  }, [cant])
 
   return (
     <div style={{ backgroundColor: "#F5F5F5" }}>
@@ -117,25 +110,6 @@ const Cart = () => {
             alignItems="flex-end"
             className="pt-5 pb-3"
           >
-            {/* <Button
-              variant="contained"
-              style={{
-                backgroundColor: "#007A9A",
-                color: "white",
-                marginTop: "10px",
-              }}
-              size="small"
-              onClick={(e) => {
-                //history.push("/cart");
-                history.replace('/cart');
-                //history.go(0);
-                window.location.reload();
-              }}
-            >
-              <Typography variant="button" display="block">
-                <ReplaySharpIcon />
-              </Typography>
-            </Button> */}
             <Grid
               container
               direction="row"
@@ -147,7 +121,7 @@ const Cart = () => {
               </Typography>
               <div className="pr-5"></div>
               <Typography variant="h5" gutterBottom>
-                $ {subTotal}
+                $ {subtotal}
               </Typography>
             </Grid>
 
