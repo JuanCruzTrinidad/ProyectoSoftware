@@ -61,6 +61,9 @@ export const OneProduct = () => {
   const theme = useTheme();
   const history = useHistory();
 
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
   //States
   const [activeStep, setActiveStep] = useState(0);
   const [product, setproduct] = useState({});
@@ -113,11 +116,13 @@ export const OneProduct = () => {
   const getProductsBySubcategoryAPI = (subcatid) => {
     apiAxios
       .get("/product/productBySubcategory", {
-        params: { idSubcategory: subcatid }
+        params: { idSubcategory: subcatid },
       })
       .then(({ data }) => {
         console.log(data);
-        const result = data.filter(d => d.idProducto !== parseInt(idproduct, 10))
+        const result = data.filter(
+          (d) => d.idProducto !== parseInt(idproduct, 10)
+        );
         setrelationalsProduct(result.slice(0, 3));
       })
       .catch((error) => console.log(error));
@@ -166,11 +171,9 @@ export const OneProduct = () => {
       product.atributoselecc = product.atributos.filter(
         (atrib) => atrib.color === color && atrib.talle === size
       );
-
       if (cartlocalstorage === null || cartlocalstorage === undefined || cartlocalstorage === "[]") {
         product.cant = 1;
         localStorage.setItem("cart", JSON.stringify([product]));
-        alert("Producto agregado al carrito");
       } else {
         cartlocalstorage = JSON.parse(cartlocalstorage);
         //Mismo producto con el mismo sku que esta en el carrito
@@ -230,9 +233,7 @@ export const OneProduct = () => {
     getProductById(idproduct);
   }, [idproduct]);
 
-  useEffect(() => {
-
-  }, [product.valoraciones])
+  useEffect(() => {}, [product.valoraciones]);
 
   return show ? (
     <>
@@ -299,19 +300,21 @@ export const OneProduct = () => {
           </Grid>
           <Grid item xs={4}>
             <Paper elevantion={3} style={{ height: 500 }}>
-              <Grid container justify="flex-end">
-                <EditIcon
-                  onClick={(e) => {
-                    e.preventDefault();
-                    history.push("/admin/products/" + idproduct);
-                  }}
-                  style={{ cursor: "pointer" }}
-                />
-                <DeleteIcon
-                  onClick={handleDeleteProduct}
-                  style={{ cursor: "pointer" }}
-                />
-              </Grid>
+              {token !== null && role === "ROLE_ADMIN" ? (
+                <Grid container justify="flex-end">
+                  <EditIcon
+                    onClick={(e) => {
+                      e.preventDefault();
+                      history.push("/admin/products/" + idproduct);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  />
+                  <DeleteIcon
+                    onClick={handleDeleteProduct}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Grid>
+              ) : null}
               <Grid container justify="center">
                 <Typography variant="h4" align="center" style={{ padding: 20 }}>
                   {product.nombre}
@@ -434,11 +437,7 @@ export const OneProduct = () => {
             </Paper>
           </Grid>
         </Grid>
-        <Grid
-          container
-          spacing={5}
-          justify="center"
-        >
+        <Grid container spacing={5} justify="center">
           <div className="card-group">
             {relationalsProduct.map((prod, index) => (
               <Grid item xs={4} key={prod.idProducto} style={{ margin: 30 }}>
@@ -450,13 +449,21 @@ export const OneProduct = () => {
             ))}
           </div>
         </Grid>
+        {product.valoraciones.length > 0 && (
+          <Comments
+            listComments={product.valoraciones}
+            handleClickOpen={handleClickOpen}
+            handleClose={handleClose}
+            open={open}
+            idproduct={idproduct}
+          />
+        )}
         {
           product.valoraciones.length > 0 && (
             <Comments listComments={product.valoraciones} handleClickOpen={handleClickOpen}
               handleClose={handleClose} open={open} idproduct={idproduct} />
           )
         }
-
       </Container>
     </>
   ) : (

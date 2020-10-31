@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
-import "./Categories.css";
+import "../categories/Categories.css";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
 import Spinner from "../../ui/Spinner";
-import LiveHelpIcon from '@material-ui/icons/LiveHelp';
 
-const Categories = () => {
-  //States
-  const [catlist, setcatlist] = useState([]);
-  const [showtable, setshowtable] = useState(false);
-
+const Discount = () => {
   const history = useHistory();
-
   //Si no esta logeado no debe poder entrar a esta pagina
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
@@ -20,10 +14,14 @@ const Categories = () => {
     history.push("/");
   }
 
+  //States
+  const [disclist, setdisclist] = useState([]);
+  const [showtable, setshowtable] = useState(false);
+
   //Conexion a API
-  const getCategoriesAPI = () => {
+  const getDiscountsAPI = () => {
     apiAxios
-      .get("/category/allcategories", {
+      .get("/discount/allDiscount", {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
@@ -34,16 +32,15 @@ const Categories = () => {
         },
       })
       .then(({ data }) => {
-        setcatlist(data);
-        console.log(data);
+        setdisclist(data);
         setshowtable(true);
       })
       .catch((error) => console.log(error));
   };
 
-  const createCategoryAPI = (newcat) => {
+  const createDiscountAPI = (newdisc) => {
     apiAxios
-      .post("/category/createCategory", newcat, {
+      .post("/discount/createDiscount", newdisc, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
@@ -54,15 +51,15 @@ const Categories = () => {
         },
       })
       .then(({ data }) => {
-        getCategoriesAPI();
-        console.log(data);
+				getDiscountsAPI();
+				console.log(data);
       })
       .catch((error) => console.log(error));
   };
 
-  const updateCategoryAPI = (cat) => {
+  const updateDiscountAPI = (disc) => {
     apiAxios
-      .post("/category/updateCategory", cat, {
+      .post("/discount/updateDiscount", disc, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
@@ -78,10 +75,10 @@ const Categories = () => {
       .catch((error) => console.log(error));
   };
 
-  const deleteCategoryAPI = (catid) => {
+  const deleteDiscountAPI = (discid) => {
     apiAxios
-      .delete("category/deleteCategory", {
-        params: { idCategory: catid },
+      .delete("/discount/deleteDiscount", {
+        params: { idDiscount: discid },
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
@@ -100,21 +97,21 @@ const Categories = () => {
   const [columns, setColumns] = useState([
     {
       title: "ID",
-      field: "idCategory",
+      field: "idDiscount",
       type: "numeric",
       align: "left",
       hidden: true,
     },
     {
-      title: "Nombre",
-      field: "name",
+      title: "Codigo",
+      field: "code",
       type: "string",
     },
-    { title: "Taxonomia Google", field: "nameGoogle", type: "string" },
+    { title: "Porcentaje", field: "percentage", type: "numeric", align: "left" },
   ]);
 
   useEffect(() => {
-    getCategoriesAPI();
+    getDiscountsAPI();
     // eslint-disable-next-line
   }, []);
 
@@ -123,9 +120,9 @@ const Categories = () => {
     <div className="container-fluid contenedor">
       <div className="p-5">
         <MaterialTable
-          title="Categorias"
+          title="Codigos de descuento"
           columns={columns}
-          data={catlist}
+          data={disclist}
           options={{
             rowStyle: {
               backgroundColor: "#E0F6EF",
@@ -135,12 +132,12 @@ const Categories = () => {
               color: "#001014",
             },
             actionsColumnIndex: 2,
-            pageSize: 10
+            pageSize: 10,
           }}
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
-                createCategoryAPI(newData);
+                createDiscountAPI(newData);
                 setTimeout(() => {
                   // setcatlist([...catlist, newData]);
                   resolve();
@@ -148,36 +145,28 @@ const Categories = () => {
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
-                const dataUpdate = [...catlist];
+                const dataUpdate = [...disclist];
                 const index = oldData.tableData.id;
-                newData.idCategory = oldData.idCategory;
+                newData.idDiscount = oldData.idDiscount;
                 dataUpdate[index] = newData;
-                setcatlist([...dataUpdate]);
-                updateCategoryAPI(newData);
+                setdisclist([...dataUpdate]);
+                updateDiscountAPI(newData);
                 setTimeout(() => {
                   resolve();
                 }, 1500);
               }),
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
-                const dataDelete = [...catlist];
+                const dataDelete = [...disclist];
                 const index = oldData.tableData.id;
                 dataDelete.splice(index, 1);
-                setcatlist([...dataDelete]);
-                deleteCategoryAPI(oldData.idCategory);
+                setdisclist([...dataDelete]);
+                deleteDiscountAPI(oldData.idDiscount);
                 setTimeout(() => {
                   resolve();
                 }, 1500);
               }),
           }}
-          actions={[
-            {
-              icon: LiveHelpIcon,
-              isFreeAction: true,
-              onClick: () => window.open('https://www.google.com/basepages/producttype/taxonomy-with-ids.es-ES.txt'),
-              tooltip: 'Información sobre Taxonomía de Google.'
-            }
-          ]}
         />
       </div>
     </div>
@@ -188,4 +177,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Discount;

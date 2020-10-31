@@ -17,7 +17,8 @@ const SubCategories = () => {
 
   //Si no esta logeado no debe poder entrar a esta pagina
   const token = localStorage.getItem("token");
-  if (localStorage.getItem("token") === null) {
+  const role = localStorage.getItem("role");
+  if (token === null || role !== "ROLE_ADMIN") {
     history.push("/");
   }
 
@@ -169,7 +170,7 @@ const SubCategories = () => {
                 setTimeout(() => {
                   // setsubcatlist([...subcatlist, newData]);
                   resolve();
-                }, 6500);
+                }, 1500);
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {

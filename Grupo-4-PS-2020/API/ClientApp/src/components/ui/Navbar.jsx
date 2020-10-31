@@ -8,6 +8,7 @@ import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 export const NavbarDU = () => {
   const history = useHistory();
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   return (
     <>
@@ -17,6 +18,7 @@ export const NavbarDU = () => {
             e.preventDefault();
             history.push("/");
           }}
+          style={{cursor: "pointer"}}
         >
           <img
             src="https://www.nicepng.com/png/full/338-3384104_logo-replikat-innovacion-imagen-negro-transparente-logos-con.png"
@@ -64,7 +66,7 @@ export const NavbarDU = () => {
               </NavDropdown.Item>
             </NavDropdown>
 
-            {token !== null ? (
+            {(token !== null) && (role === "ROLE_ADMIN") ? (
               <NavDropdown title="Admin" id="basic-nav-dropdown">
                 <NavDropdown.Item
                   onClick={(e) => {
@@ -89,6 +91,14 @@ export const NavbarDU = () => {
                   }}
                 >
                   Producto
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.push("/admin/discounts");
+                  }}
+                >
+                  Descuentos
                 </NavDropdown.Item>
               </NavDropdown>
             ) : null}
@@ -138,6 +148,8 @@ export const NavbarDU = () => {
                   e.preventDefault();
                   localStorage.removeItem("user");
                   localStorage.removeItem("token");
+                  localStorage.removeItem("iduser");
+                  localStorage.removeItem("role");
                   history.replace("/");
                   window.location.reload();
                 }}

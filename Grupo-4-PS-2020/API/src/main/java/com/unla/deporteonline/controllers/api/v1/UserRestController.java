@@ -71,8 +71,7 @@ public class UserRestController {
 		lista.add(getJWTToken(user.getEmail()));
 		lista.add(user.getPassword());
 		lista.add(Integer.toString(user.getId()));
-
-
+		lista.add(user.getRoles().iterator().next().getName()); //Agarro el primer role
 
 		return lista;
 	}
@@ -129,7 +128,6 @@ public class UserRestController {
 		Set<Role> roles = newUser.getRoles();
 		roles.add(roleService.findById(1));
 		newUser.setRoles(roles); // Le pongo el role de user por default
-
 		System.out.println(newUser.toString());
 		return userService.saveUser(newUser);
 	}
