@@ -7,6 +7,7 @@ import ReplaySharpIcon from '@material-ui/icons/ReplaySharp';
 const Cart = () => {
   const history = useHistory();
 
+  const [subtotal, setsubtotal] = useState(0)
   var cartlist = localStorage.getItem("cart");
   cartlist = JSON.parse(cartlist);
 
@@ -24,10 +25,11 @@ const Cart = () => {
       }
     }
     console.log(price);
+    setsubtotal(price)
     return price;
   };
 
-  let price = actualizarSubtotal();
+  //let price = actualizarSubtotal();
 
   const handleNext = () => {
     if (cartlist !== null) {
@@ -41,7 +43,7 @@ const Cart = () => {
             shippingCost: null,
             total: null,
             descuento: null,
-            subtotal: price,
+            subtotal: subtotal,
             discount: null,
             direction: null,
             payment: null,
@@ -51,7 +53,7 @@ const Cart = () => {
         } else {
           orderls = JSON.parse(orderls);
 
-          orderls.subtotal = price;
+          orderls.subtotal = subtotal;
 
           localStorage.setItem("order", JSON.stringify(orderls));
         }
@@ -108,25 +110,6 @@ const Cart = () => {
             alignItems="flex-end"
             className="pt-5 pb-3"
           >
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "#007A9A",
-                color: "white",
-                marginTop: "10px",
-              }}
-              size="small"
-              onClick={(e) => {
-                //history.push("/cart");
-                history.replace('/cart');
-                //history.go(0);
-                window.location.reload();
-              }}
-            >
-              <Typography variant="button" display="block">
-                <ReplaySharpIcon />
-              </Typography>
-            </Button>
             <Grid
               container
               direction="row"
@@ -138,7 +121,7 @@ const Cart = () => {
               </Typography>
               <div className="pr-5"></div>
               <Typography variant="h5" gutterBottom>
-                $ {price}
+                $ {subtotal}
               </Typography>
             </Grid>
 
