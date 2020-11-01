@@ -61,11 +61,11 @@ public class ProductRestController {
 
 	// Delete Product
 	@PostMapping(value = "/deleteProduct")
-	public String deleteProduct(@RequestParam("idProducto") int id) {
+	public String deleteProduct(@RequestParam("id") Integer id) {
 		Producto product = productService.findProductById(id);
 		product.setVisible(false);
 		productService.saveProduct(product);
-		return ("usuario eliminado");
+		return ("producto eliminado");
 	}
 
 	// traer producto por id
