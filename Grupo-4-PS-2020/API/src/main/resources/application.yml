@@ -5,11 +5,11 @@ spring:
     #username: uimnsbblk9y4wktt
     #password: 6UyOHjDtYUHyvxky0vJa
 
-    #url: jdbc:mysql://localhost:3306/deportesunla?serverTimezone=UTC
-    url: jdbc:mysql://localhost:3306/deporteonline?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/deportesunla?serverTimezone=UTC
+    #url: jdbc:mysql://localhost:3306/deporteonline?serverTimezone=UTC
     username: root
-    #password: Yagami40811091
-    password: localhost
+    password: Yagami40811091
+    #password: localhost
   jpa:
     show-sql: true
     hibernate:
@@ -19,5 +19,5 @@ spring:
   thymeleaf:
     cache: false
 apiKey:
-  #sendGrid: SG.lvjF-kXyTvKW9BVU5-BWTg.(ESTO SE TIENE QUE BORRAR, SOLO EL CONTENIDO EN PARENTESIS.)NoakW6UfxUejfCT4adbpv6YYrFY95scciUaJQtUuwAI
+  sendGrid: SG.lvjF-kXyTvKW9BVU5-BWTg.(ESTO SE TIENE QUE BORRAR, SOLO EL CONTENIDO EN PARENTESIS.)NoakW6UfxUejfCT4adbpv6YYrFY95scciUaJQtUuwAI
 
