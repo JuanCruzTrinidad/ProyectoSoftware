@@ -33,13 +33,19 @@ public class DetallePedido implements Serializable{
 
     public DetallePedido(){}
 
-    public DetallePedido(int fk_pedido, int fk_atributos, int cantidad, Pedido pedido, Atributos atributos) {
+    public DetallePedido(int fk_pedido, int fk_atributos, int cantidad) {
         this.fk_pedido = fk_pedido;
         this.fk_atributos = fk_atributos;
         this.cantidad = cantidad;
-        this.pedido = pedido;
-        this.atributos = atributos;
     }
+
+    // public DetallePedido(int fk_pedido, int fk_atributos, int cantidad, Pedido pedido, Atributos atributos) {
+    //     this.fk_pedido = fk_pedido;
+    //     this.fk_atributos = fk_atributos;
+    //     this.cantidad = cantidad;
+    //     this.pedido = pedido;
+    //     this.atributos = atributos;
+    // }
 
 
     public int getFk_pedido() {
@@ -86,10 +92,7 @@ public class DetallePedido implements Serializable{
 
     @Override
     public String toString() {
-        return "DetallePedido [atributos=" + atributos + ", cantidad=" + cantidad + ", fk_atributos=" + fk_atributos
-                + ", fk_pedido=" + fk_pedido + ", pedido=" + pedido + "]";
+        return "[ID Atributo: " + fk_atributos + ", cantidad: " + cantidad + "]";
     }
-
-    
-    
+   
 }

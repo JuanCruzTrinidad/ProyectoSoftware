@@ -8,7 +8,9 @@ public interface IDetallePedidoService {
     //traer todos los DetallePedido de un pedido
     public List<DetallePedido> findByPedido(final int fk_pedido);
 
-	public void deleteDetallePedido(Integer pedidoId, Integer atributosId);
+    public void deleteDetallePedido(Integer pedidoId, Integer atributosId);
+    
+    public Integer traerCantidadPedido(int fk_pedido, int fk_atributos);
     
 	public List<DetallePedido> findAll();
 }

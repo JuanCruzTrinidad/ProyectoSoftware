@@ -6,15 +6,13 @@ import { apiAxios } from '../../config/axios';
 import MediaCard from './catalogue/Card';
 import { useEffect } from 'react';
 
-
-export const FeaturedProducts = () => {
+export const FeaturedProducts = ({ products = [], custom = false }) => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const [productlist, setproductlist] = useState([]);
-  const chevronWidth = 40;
 
-  const getProductsAPI = () => {
+  const getProductsOfertAPI = () => {
     apiAxios
-      .get("/product/allproduct")
+      .get("/product/allPromotion")
       .then(({ data }) => {
         setproductlist(data);
         console.log(data);
@@ -23,37 +21,32 @@ export const FeaturedProducts = () => {
   };
 
   useEffect(() => {
-    getProductsAPI();
+    getProductsOfertAPI();
   }, [])
   return (
-    <div style={{ padding: `0 ${chevronWidth}px` }}>
+    <>
       <ItemsCarousel
         requestToChangeActive={setActiveItemIndex}
         activeItemIndex={activeItemIndex}
-        numberOfCards={2}
+        numberOfCards={3}
         gutter={20}
-        leftChevron={<ChevronLeftIcon/>}
-        rightChevron={<ChevronRightIcon/>}
+        leftChevron={<ChevronLeftIcon />}
+        rightChevron={<ChevronRightIcon />}
         outsideChevron
-        chevronWidth={chevronWidth}
+        chevronWidth={40}
       >
-        
-          {
+        {custom ? (
+          products.map((prod) => (
+            <MediaCard key={prod.idProducto} prod={prod} />
+          ))
+        ) : (
             productlist.map((prod) => (
               <MediaCard key={prod.idProducto} prod={prod} />
             ))
-          }
-                    {
-            productlist.map((prod) => (
-              <MediaCard key={prod.idProducto} prod={prod} />
-            ))
-          }
-        
-        {/* <div style={{ height: 200, background: '#EEE' }}>First card</div>
-        <div style={{ height: 200, background: '#EEE' }}>Second card</div>
-        <div style={{ height: 200, background: '#EEE' }}>Third card</div>
-        <div style={{ height: 200, background: '#EEE' }}>Fourth card</div> */}
+          )
+        }
+
       </ItemsCarousel>
-    </div>
+    </>
   );
 };

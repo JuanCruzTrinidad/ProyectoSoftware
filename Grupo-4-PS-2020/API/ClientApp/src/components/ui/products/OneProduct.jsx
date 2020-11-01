@@ -1,19 +1,4 @@
-import {
-  Breadcrumbs,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Grid,
-  MenuItem,
-  Portal,
-  Select,
-  TextField,
-  Tooltip,
-} from "@material-ui/core";
+import { Container, Grid, MenuItem, Select, Tooltip } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import MobileStepper from "@material-ui/core/MobileStepper";
@@ -60,6 +45,9 @@ export const OneProduct = () => {
   const theme = useTheme();
   const history = useHistory();
 
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
   //States
   const [activeStep, setActiveStep] = useState(0);
   const [product, setproduct] = useState({});
@@ -80,22 +68,40 @@ export const OneProduct = () => {
         params: { idProducto: idprod },
       })
       .then(({ data }) => {
-        setproduct(data);
-        console.log(data);
-        setshow(true);
-        getProductsBySubcategoryAPI(data.subcategory.idSubcategory);
-      })
+          var multiple = 0;
+          switch (data.moneda) {
+            case 'ARS': multiple = 78.33;
+            break;
+            case 'BRL': multiple = 5.74;
+            break;
+            case 'EUR': multiple = 0.86;
+            break;
+            case 'USD': multiple = 1;
+            break;
+            default: multiple = 78.33;
+            break;
+          }
+          data.precio = data.precio * multiple;
+          data.precio = Math.round(data.precio);
+          data.precioOferta = data.precioOferta * multiple;
+          data.precioOferta = Math.round(data.precioOferta);
+          setproduct(data);
+          setshow(true);
+          getProductsBySubcategoryAPI(data.subcategory.idSubcategory);
+        })
       .catch((error) => console.log(error));
   };
 
   const getProductsBySubcategoryAPI = (subcatid) => {
     apiAxios
       .get("/product/productBySubcategory", {
-        params: { idSubcategory: subcatid }
+        params: { idSubcategory: subcatid },
       })
       .then(({ data }) => {
         console.log(data);
-        const result = data.filter(d => d.idProducto !== parseInt(idproduct, 10))
+        const result = data.filter(
+          (d) => d.idProducto !== parseInt(idproduct, 10)
+        );
         setrelationalsProduct(result.slice(0, 3));
       })
       .catch((error) => console.log(error));
@@ -108,7 +114,7 @@ export const OneProduct = () => {
     },
     {
       label: product.nombre,
-      imgPath: product.imagen,
+      imgPath: product.video,
     },
   ];
 
@@ -131,7 +137,9 @@ export const OneProduct = () => {
   };
 
   const handleClose = () => {
+    console.log("se cerro?")
     setOpen(false);
+    console.log(open)
   };
 
   const handleClickCarrito = (type) => {
@@ -144,11 +152,13 @@ export const OneProduct = () => {
       product.atributoselecc = product.atributos.filter(
         (atrib) => atrib.color === color && atrib.talle === size
       );
-
-      if (cartlocalstorage === null || cartlocalstorage === undefined ||cartlocalstorage === "[]") {
+      if (
+        cartlocalstorage === null ||
+        cartlocalstorage === undefined ||
+        cartlocalstorage === "[]"
+      ) {
         product.cant = 1;
         localStorage.setItem("cart", JSON.stringify([product]));
-        alert("Producto agregado al carrito");
       } else {
         cartlocalstorage = JSON.parse(cartlocalstorage);
         //Mismo producto con el mismo sku que esta en el carrito
@@ -183,19 +193,17 @@ export const OneProduct = () => {
     }
   };
 
-  const handleDeleteProduct = (e) => {
-    e.preventDefault();
-    let token = localStorage.getItem("token");
-    apiAxios.post("/product/deleteProduct", idproduct, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-        "Access-Control-Allow-Headers":
-          "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
+  const handleDeleteProduct = (e, idproduct) => {
+    apiAxios
+      .post("product/deleteProduct", idproduct, {
+        params: { id: idproduct },
+      })
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+
+    history.push('/catalogue');
   };
 
   useEffect(() => {
@@ -206,11 +214,14 @@ export const OneProduct = () => {
 
   useEffect(() => {
     getProductById(idproduct);
+    return () => {
+      handleClose();  
+      console.log(open)
+    }
   }, [idproduct]);
 
-  useEffect(() => {
+  useEffect(() => {}, [product.valoraciones]);
 
-  }, [product.valoraciones])
 
   return show ? (
     <>
@@ -219,11 +230,23 @@ export const OneProduct = () => {
           <Grid item xs={6}>
             <Paper elevantion={3} style={{ padding: 20, height: 500 }}>
               <div className={classes.root}>
-                <img
-                  className={classes.img}
-                  src={imagesCard[activeStep].imgPath}
-                  alt={imagesCard[activeStep].label}
-                />
+                {activeStep === 0 ? (
+                  <img
+                    className={classes.img}
+                    src={imagesCard[0].imgPath}
+                    alt={imagesCard[0].label}
+                  />
+                ) : (
+                  <iframe
+                    width="400"
+                    height="250"
+                    marginTop="20"
+                    src={imagesCard[1].imgPath}
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                )}
                 <MobileStepper
                   steps={maxSteps}
                   position="static"
@@ -266,19 +289,21 @@ export const OneProduct = () => {
           </Grid>
           <Grid item xs={4}>
             <Paper elevantion={3} style={{ height: 500 }}>
-              <Grid container justify="flex-end">
-                <EditIcon
-                  onClick={(e) => {
-                    e.preventDefault();
-                    history.push("/admin/products/" + idproduct);
-                  }}
-                  style={{ cursor: "pointer" }}
-                />
-                <DeleteIcon
-                  onClick={handleDeleteProduct}
-                  style={{ cursor: "pointer" }}
-                />
-              </Grid>
+              {token !== null && role === "ROLE_ADMIN" ? (
+                <Grid container justify="flex-end">
+                  <EditIcon
+                    onClick={(e) => {
+                      e.preventDefault();
+                      history.push("/admin/products/" + idproduct);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  />
+                  <DeleteIcon
+                    onClick={e => handleDeleteProduct(e, idproduct)}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Grid>
+              ) : null}
               <Grid container justify="center">
                 <Typography variant="h4" align="center" style={{ padding: 20 }}>
                   {product.nombre}
@@ -327,7 +352,13 @@ export const OneProduct = () => {
                   variant="h4"
                   style={{ marginBottom: 20, fontStyle: "italic" }}
                 >
-                  $ {product.precio}
+                  ${product.precio}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  style={{ marginBottom: 20, fontStyle: "italic" }}
+                >
+                  {product.moneda}
                 </Typography>
               </Grid>
               <Grid
@@ -395,29 +426,23 @@ export const OneProduct = () => {
             </Paper>
           </Grid>
         </Grid>
-        <Grid
-          container
-          spacing={5}
-          justify="center"
-        >
+        <Grid container spacing={5} justify="center">
           <div className="card-group">
             {relationalsProduct.map((prod, index) => (
-                <Grid item xs={4} key={prod.idProducto} style={{margin: 30}}>
-                  <MediaCard
-                    key={prod.idProducto}
-                    prod={prod}
-                  />
-                </Grid>
+              <Grid item xs={4} key={prod.idProducto} style={{ margin: 30 }}>
+                <MediaCard key={prod.idProducto} prod={prod} />
+              </Grid>
             ))}
           </div>
         </Grid>
-        {
-          product.valoraciones.length > 0 &&(
-            <Comments listComments={product.valoraciones} handleClickOpen={handleClickOpen} 
-            handleClose={handleClose} open={open} idproduct={idproduct}/>
-          )
-        }
-
+          <Comments
+            key={idproduct}
+            listComments={product.valoraciones}
+            handleClickOpen={handleClickOpen}
+            handleClose={handleClose}
+            open={open}
+            idproduct={idproduct}
+          />
       </Container>
     </>
   ) : (

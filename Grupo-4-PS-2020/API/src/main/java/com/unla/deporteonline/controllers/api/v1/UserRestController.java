@@ -22,6 +22,7 @@ import com.unla.deporteonline.exception.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,6 +50,9 @@ public class UserRestController {
 	@Autowired
 	@Qualifier("roleService")
 	private IRoleService roleService;
+	
+    @Value("${apiKey.sendGrid}")
+    private String keySendGrid;
 
 	// cambie esto a post, porque sin desde el js no podemos mandale parametros al
 	// backend.
@@ -67,8 +71,7 @@ public class UserRestController {
 		lista.add(getJWTToken(user.getEmail()));
 		lista.add(user.getPassword());
 		lista.add(Integer.toString(user.getId()));
-
-
+		lista.add(user.getRoles().iterator().next().getName()); //Agarro el primer role
 
 		return lista;
 	}
@@ -125,7 +128,6 @@ public class UserRestController {
 		Set<Role> roles = newUser.getRoles();
 		roles.add(roleService.findById(1));
 		newUser.setRoles(roles); // Le pongo el role de user por default
-
 		System.out.println(newUser.toString());
 		return userService.saveUser(newUser);
 	}
@@ -144,17 +146,17 @@ public class UserRestController {
 
 	@PostMapping(value = "/recoverpw", consumes = "application/json")
 	public ResponseEntity<String> recoveryPassword(@RequestBody String email) throws IOException {
-
+		System.out.println(keySendGrid);
 		User user = userService.findByEmail(email);
-		Email from = new Email("juancruztrinidad97@gmail.com");
+		Email from = new Email("tomas.silvestre9@gmail.com");
 		String subject = "Resetea tu contraseña";
 		Email to = new Email(email);
 		Content content = new Content("text/plain",
-				"Por favor, ingresa a esta url para cambiar tu contraseña: http://localhost:3000/resetpw/:"
+				"Por favor, ingresa a esta url para cambiar tu contraseña: http://localhost:3000/resetpw/"
 						+ user.getId());
 		Mail mail = new Mail(from, subject, to, content);
 
-		SendGrid sg = new SendGrid("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");
+		SendGrid sg = new SendGrid(keySendGrid);
 		Request request = new Request();
 
 		try {
@@ -194,7 +196,7 @@ public class UserRestController {
 		} catch (IOException ex) {
 			throw ex;
 		}
-		return new ResponseEntity<String>("puto", HttpStatus.OK);
+		return new ResponseEntity<String>("Formulario de contacto.", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/resetpw")
@@ -205,7 +207,7 @@ public class UserRestController {
 		User user = userService.findById(id);
 
 		if (user == null) {
-			return new ResponseEntity<String>("bad", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Reset PW Bad Request", HttpStatus.BAD_REQUEST);
 		}
 
 		user.setPassword(password);

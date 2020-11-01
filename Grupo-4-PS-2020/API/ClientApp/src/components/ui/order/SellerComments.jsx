@@ -1,13 +1,16 @@
-import { Button, Grid, TextField, Typography } from "@material-ui/core";
+import { Grid, TextField, Typography } from "@material-ui/core";
 import React from "react";
 
 export const SellerComments = (props) => {
-
-	const {comment, setcomment} = props;
+  const { comment, setcomment } = props;
 
   return (
     <>
-      <Typography variant="h4" gutterBottom style={{ textAlign: "center", paddingBottom: "2%" }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        style={{ textAlign: "center", paddingBottom: "2%" }}
+      >
         Comentario al vendedor
       </Typography>
       <Grid container spacing={4}>
@@ -15,11 +18,11 @@ export const SellerComments = (props) => {
           <TextField
             id="outlined-multiline-static"
             label="Escriba aquí"
-						multiline
-						value={comment}
+            multiline
+            value={comment}
             rows={5}
-						variant="outlined"
-						onChange={e => setcomment(e.target.value)}
+            variant="outlined"
+            onChange={(e) => setcomment(e.target.value)}
             fullWidth
           />
         </Grid>
@@ -28,8 +31,7 @@ export const SellerComments = (props) => {
           alignContent="flex-end"
           justify="flex-end"
           alignItems="flex-end"
-        >
-        </Grid>
+        ></Grid>
       </Grid>
     </>
   );

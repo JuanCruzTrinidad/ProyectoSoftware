@@ -1,102 +1,61 @@
-create schema if not exists deporteonline;
+-- create schema if not exists deporteonline;
 use deporteonline;
 
+INSERT INTO `deporteonline`.`category` (`name`, `name_google`) 
+		VALUES ('Deportes', '5322'), ('Urbano', '1604'), ("Clubes", "3379"), ("Accesorios", "3515");
 
-drop schema deporteonline;
+INSERT INTO `deporteonline`.`subcategory` (`name`, `name_google`, `id_category`) 
+	VALUES 	('Futbol', '3576', 1), ('Running', '499792', 1), ('Training', '990', 1),
+			('Tenis', '6187', 1), ('Natacion', '1144', 1), ("Hockey", "499741", 1), 
+            ("Handball", "1047", 1), ('Remeras', '212', 2), ('Pantalones', '204', 2), 
+            ('Medias', '215', 2), ('Zapatillas', '187', 2), ("Boca Juniors", "3576", 3), 
+            ("Real Madrid", "3576", 3), ("Juventus", "3576", 3), ("Temperley", "3576", 3), 
+            ("Racing Club", "3576", 3), ("Gorras", "173", 4), ("Rodilleras", "499789", 4);
 
--- -- ------testeo------ 
+INSERT INTO `deporteonline`.`role` (`id`, `name`) 
+	VALUES ('1', 'ROLE_ADMIN'), ('2', 'ROLE_USER');
 
--- select u.lastname from `user` u where u.enabled= 1;
+INSERT INTO `deporteonline`.`discount` (`id_discount`, `code`, `percentage`) 
+	VALUES 	('1', '10DESC', '10'), ('2', '20MODA', '20'), ('3', '15TENIS', '15'), ('4', '20FUT', '20'),
+			('5', '10FUT', '10'), ('6', '40DESC', '40'), ('7', '20DESC', '20'), ('8', '30DESC', '30');
 
--- insert into `user` (birthdate,email,enabled,islogged,lastname,name,password) values ('1999-05-02','sol@gmail.com',1,1,'alvarez','sol','123');
--- INSERT INTO `deporteonline`.`user` (`id`, `birthdate`, `email`, `lastname`, `name`, `password`) VALUES ('2', '1999-02-22', 'pepe@g.com', 'lopez', 'pepe', '124');
--- UPDATE `deporteonline`.`user` SET `enabled` = TRUE, `islogged` = FALSE WHERE (`id` = '2');
--- INSERT INTO `deporteonline`.`role` (`id`, `name`) VALUES ('1', 'admin');
--- INSERT INTO `deporteonline`.`role` (`id`, `name`) VALUES ('2', 'vendedor');
--- INSERT INTO `deporteonline`.`role_user` (`user_id`, `role_id`) VALUES ('2', '1');
--- INSERT INTO `deporteonline`.`role_user` (`user_id`, `role_id`) VALUES ('1', '1');
--- INSERT INTO `deporteonline`.`role_user` (`user_id`, `role_id`) VALUES ('2', '2');
--- INSERT INTO `deporteonline`.`category` (`id_category`, `name`) VALUES ('1', 'DEPORTE');
--- INSERT INTO `deporteonline`.`category` (`id_category`, `name`) VALUES ('2', 'URBANO');
+insert into producto 
+		values (1, "Camiseta del club Boca Juniors perteneciente a la temporada 2020", "Camiseta del club Boca Juniors perteneciente a la temporada 2020 Camiseta del club Boca Juniors perteneciente a la temporada 2020", 
+        "https://www.templodelfutbol.com.ar/35506-large_default/camboca-h-jsy-mn-al.jpg",
+        "ARS", "Camiseta Titular Boca Jrs. 2020", 5000, 5500, "", b'1', 12),
+		(2, "Camiseta de Racing Club perteneciente a la temporada 2017", "Camiseta de Racing Club perteneciente a la temporada 2017 Camiseta de Racing Club perteneciente a la temporada 2017", 
+        "https://http2.mlstatic.com/D_NQ_NP_2X_927655-MLA43767762565_102020-F.webp",
+        "ARS", "Camiseta Titular Racing Club 2017", 3000, 0, "", b'1', 16),
+		(3, "Raqueta Tenis Wilson Grip 4 3/8 + Funda Estuche Encordado Tennis Juego", "Raqueta Tenis Wilson Grip 4 3/8 + Funda Estuche Encordado Tennis Juego Raqueta Tenis Wilson Grip 4 3/8 + Funda Estuche Encordado Tennis Juego", 
+        "https://http2.mlstatic.com/D_NQ_NP_2X_745168-MLA41110054576_032020-F.webp",
+        "ARS", "Raqueta Tenis Wilson Grip 4 3/8", 5050, 7214, "", b'1', 4),
+		(4, "Tubo De Pelotas Tenis Atp Championship | Dunlop® X 3 Balls", "Tubo De Pelotas Tenis Atp Championship | Dunlop® X 3 Balls Tubo De Pelotas Tenis Atp Championship | Dunlop® X 3 Balls", 
+        "https://http2.mlstatic.com/D_NQ_NP_2X_601022-MLA42317904417_062020-F.webp",
+        "ARS", "Tubo De Pelotas Tenis Atp", 726, 0, "", b'1', 4),
+		(5, "Palo Hockey Madera Simbra Reforzado Palos 28 Al 37 Stick Importado", "Palo Hockey Madera Simbra Reforzado Palos 28 Al 37 Stick Importado Palo Hockey Madera Simbra Reforzado Palos 28 Al 37 Stick Importado", 
+        "https://http2.mlstatic.com/D_NQ_NP_2X_892266-MLA41083300533_032020-F.webp",
+        "ARS", "Palo Hockey Madera Simbra Reforzado", 1225, 1750, "", b'1', 6),
+		(6, "Remeras Básicas De Hombre Logo Bordado Lisas C/envio #rl40", "Remeras Básicas De Hombre Logo Bordado Lisas C/envio #rl40 Remeras Básicas De Hombre Logo Bordado Lisas C/envio #rl40", 
+        "https://http2.mlstatic.com/D_NQ_NP_2X_913345-MLA41360249782_042020-F.webp",
+        "ARS", "Remeras Básicas De Hombre", 1099, 0, "", b'1', 8),
+		(7, "Remeras Camisetas Deportivas Precio Mayorista Sublimables", "Remeras Camisetas Deportivas Precio Mayorista Sublimables Remeras Camisetas Deportivas Precio Mayorista Sublimables", 
+        "https://http2.mlstatic.com/D_NQ_NP_2X_820889-MLA40812356395_022020-F.webp",
+        "ARS", "Remeras Camisetas Deportivas", 569, 599, "", b'1', 8),
+		(8, "Zapatillas adidas Running Duramo 9 Hombre In Mn", "Zapatillas adidas Running Duramo 9 Hombre In Mn Zapatillas adidas Running Duramo 9 Hombre In Mn", 
+        "https://http2.mlstatic.com/D_NQ_NP_2X_745105-MLA43724900281_102020-F.webp",
+        "ARS", "Zapatillas adidas", 6699, 0, "", b'1', 11),
+		(9, "Gorra Nike Jordan Pro Jumpman", "Gorra Nike Jordan Pro Jumpman Gorra Nike Jordan Pro Jumpman", 
+        "https://http2.mlstatic.com/D_NQ_NP_2X_663243-MLA32949791020_112019-F.webp",
+        "ARS", "Gorra Nike", 4999, 0, "", b'1', 17),
+		(10, "Gorra Nike Sb Icon Pro Black Negro Cap Trucker Visera Plana", "Gorra Nike Sb Icon Pro Black Negro Cap Trucker Visera Plana Gorra Nike Sb Icon Pro Black Negro Cap Trucker Visera Plana", 
+        "https://http2.mlstatic.com/D_NQ_NP_2X_786753-MLA31116089121_062019-F.webp",
+        "ARS", "Gorra Nike Sb Icon Pro", 3699, 3999, "", b'1', 17);
 
--- INSERT INTO `deporteonline`.`subcategory` (`id_subcategory`, `name`, `id_category`) VALUES ('1', 'FUTBOL', '1');
--- INSERT INTO `deporteonline`.`subcategory` (`id_subcategory`, `name`, `id_category`) VALUES ('2', 'TENIS', '1');
--- INSERT INTO `deporteonline`.`subcategory` (`id_subcategory`, `name`, `id_category`) VALUES ('3', 'urba', '2');
-
--- INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `nombre`, `precio`, `visible`, `id_subcategory`) VALUES ('1', 'rem', 'remera', 'rem', '200', TRUE, b'1');
--- UPDATE `deporteonline`.`producto` SET `precio_oferta` = '0' WHERE (`id_producto` = '1');
--- INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `nombre`, `precio`, `precio_oferta`, `visible`, `id_subcategory`) VALUES ('2', 'cam', 'camiseta', 'cam', '100', '50', TRUE, '2');
--- INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `nombre`, `precio`, `precio_oferta`, `visible`, `id_subcategory`) VALUES ('3', 'zap', 'zapatillas', 'zapa', '300', '100', TRUE, '3');
--- INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `nombre`, `precio`, `precio_oferta`, `visible`, `id_subcategory`) VALUES ('4', 'zap', 'zapatillas', 'zapa', '300', '0', TRUE, '3');
-
-
--- INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('1', '12', '12', 'azul', '23', '12', '13', '1');
--- INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('2', '56', '42', 'rojo', '36', '14', '56', '1');
--- INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('3', '59', '36', 'verde', '46', '12', '41', '2');
--- INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('4', '39', '86', 'amarillo', '65', '26', '56', '3');
-
--- INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('1', '2', ':)', '4');
--- INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('2', '2', 'BIEN', '3');
--- INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('3', '2', ':(', '1');
--- INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('2', '1', 'REGULAR', '2');
--- INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('4', '2', '-', '5');
-
-INSERT INTO `deporteonline`.`user` (`id`, `birthdate`, `email`, `enabled`, `islogged`, `lastname`, `name`, `password`) VALUES ('1', '1991-02-01', 'santi.fiorda04@gmail.com', TRUE, FALSE, 'Fiordalisi', 'Santiago', '1234');
-INSERT INTO `deporteonline`.`user` (`id`, `birthdate`, `email`, `enabled`, `islogged`, `lastname`, `name`, `password`) VALUES ('2', '1991-01-01', 'san@gmail.com', TRUE, FALSE, 'Fiorda', 'Santi', '1234');
-
-INSERT INTO `deporteonline`.`role` (`id`, `name`) VALUES ('1', 'admin');
-INSERT INTO `deporteonline`.`role` (`id`, `name`) VALUES ('2', 'comprador');
-
-INSERT INTO `deporteonline`.`role_user` (`user_id`, `role_id`) VALUES ('1', '1');
-INSERT INTO `deporteonline`.`role_user` (`user_id`, `role_id`) VALUES ('1', '2');
-INSERT INTO `deporteonline`.`role_user` (`user_id`, `role_id`) VALUES ('2', '1');
-
-INSERT INTO `deporteonline`.`category` (`id_category`, `name`) VALUES ('1', 'Deporte');
-INSERT INTO `deporteonline`.`category` (`id_category`, `name`) VALUES ('2', 'Urbano');
-
-INSERT INTO `deporteonline`.`subcategory` (`id_subcategory`, `name`, `id_category`) VALUES ('1', 'futbol', '1');
-INSERT INTO `deporteonline`.`subcategory` (`id_subcategory`, `name`, `id_category`) VALUES ('2', 'tenis', '1');
-INSERT INTO `deporteonline`.`subcategory` (`id_subcategory`, `name`, `id_category`) VALUES ('3', 'urban', '2');
-
-INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `imagen`, `nombre`, `precio`, `precio_oferta`, `video`, `visible`, `id_subcategory`) VALUES ('1', 'cami', 'camiseta', 'http://', 'camiseta', '200', '0', 'http://', TRUE, '1');
-INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `imagen`, `nombre`, `precio`, `precio_oferta`, `video`, `visible`, `id_subcategory`) VALUES ('2', 'short', 'short', 'http://', 'short', '150', '120', 'http://', TRUE, '1');
-INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `imagen`, `nombre`, `precio`, `precio_oferta`, `video`, `visible`, `id_subcategory`) VALUES ('3', 'cami', 'camiseta', 'http://', 'camiseta', '210', '0', 'http://', TRUE, '2');
-INSERT INTO `deporteonline`.`producto` (`id_producto`, `descripcion_corta`, `descripcion_larga`, `imagen`, `nombre`, `precio`, `precio_oferta`, `video`, `visible`, `id_subcategory`) VALUES ('4', 'zapa', 'zapatilla', 'http://', 'zapatilla', '300', '200', 'http://', TRUE, '3');
-
-INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('1', '1', 'muy bueno', '5');
-INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('2', '1', 'bueno', '4');
-INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('3', '1', 'malo', '1');
-INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('2', '2', 'bueno', '3');
-INSERT INTO `deporteonline`.`valoracion` (`fk_producto`, `fk_user`, `comentario`, `valoracion`) VALUES ('4', '2', 'regular', '2');
-
-INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('1', '20', '10', 'rojo', '20', '12', '40', '1');
-INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('2', '15', '15', 'azul', '15', '15', '30', '1');
-INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('3', '10', '10', 'verde', '10', '10', '33', '2');
-INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('4', '14', '14', 'amarillo', '14', '14', '34', '3');
-INSERT INTO `deporteonline`.`atributos` (`sku`, `alto`, `ancho`, `color`, `peso`, `profundidad`, `talle`, `id_producto`) VALUES ('5', '12', '12', 'naranja', '12', '12', '36', '4');
-
-INSERT INTO `deporteonline`.`payment` (`id_payment`, `name`) VALUES ('1', 'efectivo');
-INSERT INTO `deporteonline`.`payment` (`id_payment`, `name`) VALUES ('2', 'tarjeta');
-INSERT INTO `deporteonline`.`payment` (`id_payment`, `name`) VALUES ('3', 'mercadopago');
-
-INSERT INTO `deporteonline`.`discount` (`id_discount`, `code`, `percentage`) VALUES ('1', '20porcentaje', '20');
-INSERT INTO `deporteonline`.`discount` (`id_discount`, `code`, `percentage`) VALUES ('2', '15porcentaje', '15');
-INSERT INTO `deporteonline`.`discount` (`id_discount`, `code`, `percentage`) VALUES ('3', '10porcentaje', '10');
-
-INSERT INTO `deporteonline`.`direction` (`id_direction`, `apartment`, `flat`, `location`, `number`, `postal_code`, `province`, `street`) VALUES ('1', 'A', '11', 'CABA', '123', '1564', 'Buenos Aires', 'Corrientes');
-INSERT INTO `deporteonline`.`direction` (`id_direction`, `location`, `number`, `postal_code`, `province`, `street`) VALUES ('2', 'Burzaco', '456', '1852', 'Buenos Aires', 'Alsina');
-INSERT INTO `deporteonline`.`direction` (`id_direction`, `location`, `number`, `postal_code`, `province`, `street`) VALUES ('3', 'Lomas de Zamora', '362', '1832', 'Buenos Aires', 'Belgrano');
-
-INSERT INTO `deporteonline`.`pedido` (`id_pedido`, `descuento`, `shipping_cost`, `subtotal`, `total`, `id_direction`, `id_discount`, `id_payment`, `id_user`) VALUES ('1', '200', '100', '1200', '1000', '1', '1', '1', '1');
-INSERT INTO `deporteonline`.`pedido` (`id_pedido`, `descuento`, `shipping_cost`, `subtotal`, `total`, `id_direction`, `id_discount`, `id_payment`, `id_user`) VALUES ('2', '100', '150', '2430', '2330', '2', '2', '2', '1');
-INSERT INTO `deporteonline`.`pedido` (`id_pedido`, `coment`, `descuento`, `shipping_cost`, `subtotal`, `total`, `id_direction`, `id_discount`, `id_payment`, `id_user`) VALUES ('3', ':)', '250', '130', '2453', '2329', '3', '1', '3', '2');
-
-INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('1', '1', '2');
-INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('2', '1', '1');
-INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('3', '1', '2');
-INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('4', '2', '1');
-INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('5', '2', '4');
-INSERT INTO `deporteonline`.`detalle_pedido` (`fk_atributos`, `fk_pedido`, `cantidad`) VALUES ('2', '3', '1');
-
-
-INSERT INTO `deporteonline`.`pedido` (`id_pedido`, `shipping_cost`, `subtotal`, `total`, `id_direction`, `id_payment`, `id_user`) VALUES ('4', '123', '4521', '4500', '4', '2', '2');
+insert into atributos 
+	values 	(1, 70, 35, "Azul", 0.150, 5, "M", 1), (2, 70, 35, "Celeste", 0.150, 5, "S", 2),
+			(11, 70, 35, "Celeste", 0.150, 5, "M", 2), (12, 70, 35, "Celeste", 0.150, 5, "L", 2),
+			(3, 60, 30, "Negro", 0.500, 10, "M", 3), (4, 15, 15, "Amarillo", 0.200, 15, "-", 4),
+            (5, 100, 15, "Negro", 0.650, 6, "M", 5), (6, 70, 35, "Verde", 0.100, 5, "S", 6),
+            (7, 70, 35, "Negro", 0.100, 5, "M", 7), (8, 15, 40, "Negro", 0.300, 10, "43", 8),
+            (13, 15, 35, "Negro", 0.300, 10, "40", 8), (9, 15, 20, "Negro", 0.090, 20, "M", 9), 
+            (10, 70, 35, "Negro", 0.090, 20, "L", 10);

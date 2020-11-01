@@ -4,6 +4,8 @@ import "./Categories.css";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
 import Spinner from "../../ui/Spinner";
+import LiveHelpIcon from '@material-ui/icons/LiveHelp';
+
 
 const SubCategories = () => {
   //States
@@ -15,7 +17,8 @@ const SubCategories = () => {
 
   //Si no esta logeado no debe poder entrar a esta pagina
   const token = localStorage.getItem("token");
-  if (localStorage.getItem("token") === null) {
+  const role = localStorage.getItem("role");
+  if (token === null || role !== "ROLE_ADMIN") {
     history.push("/");
   }
 
@@ -167,7 +170,7 @@ const SubCategories = () => {
                 setTimeout(() => {
                   // setsubcatlist([...subcatlist, newData]);
                   resolve();
-                }, 6500);
+                }, 1500);
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
@@ -192,6 +195,14 @@ const SubCategories = () => {
                 }, 1500);
               }),
           }}
+          actions={[
+            {
+              icon: LiveHelpIcon,
+              isFreeAction: true,
+              onClick: () => window.open('https://www.google.com/basepages/producttype/taxonomy-with-ids.es-ES.txt'),
+              tooltip: 'Información sobre Taxonomía de Google.'
+            }
+          ]}
         />
       </div>
     </div>

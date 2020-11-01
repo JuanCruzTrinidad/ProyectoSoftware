@@ -1,10 +1,4 @@
-import {
-  responsiveFontSizes
-} from "@material-ui/core";
 import Axios from "axios";
-import {
-  useState
-} from "react";
 const API_KEY = "819eec64c7e9fe943501a6c67587f0c26d2978f7";
 const SECRET_KEY = "cc90512c17c6e50a5af9801139dd0f56a2dc4c1e";
 
@@ -52,5 +46,5 @@ export const shippingCalculate = async(
 
   
 
-  //return response
+  //return response;
 }

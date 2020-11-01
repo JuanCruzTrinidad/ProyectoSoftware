@@ -1,14 +1,9 @@
+#
 spring:
   datasource:
-    #url: jdbc:mysql://bbf2z0kunelo93cmfu1l-mysql.services.clever-cloud.com:3306/bbf2z0kunelo93cmfu1l?serverTimezone=UTC&useSSL=true&requireSSL=false
-    #username: uimnsbblk9y4wktt
-    #password: 6UyOHjDtYUHyvxky0vJa
-
-    #url: jdbc:mysql://localhost:3306/deportesunla?serverTimezone=UTC
     url: jdbc:mysql://localhost:3306/deporteonline?serverTimezone=UTC
-    username: root
-    #password: Yagami40811091
-    password: localhost
+    username: tuuser
+    password: tupassword
   jpa:
     show-sql: true
     hibernate:
@@ -17,4 +12,6 @@ spring:
       dialect: org.hibernate.dialect.MySQL5Dialect
   thymeleaf:
     cache: false
+apiKey:
+  #sendGrid: SG.lvjF-kXyTvKW9BVU5-BWTg.(ESTO SE TIENE QUE BORRAR, SOLO EL CONTENIDO EN PARENTESIS.)NoakW6UfxUejfCT4adbpv6YYrFY95scciUaJQtUuwAI
 

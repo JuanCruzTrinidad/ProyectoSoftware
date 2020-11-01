@@ -1,6 +1,6 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState} from "react";
 
-import { Grid, Typography, TextField, useControlled } from "@material-ui/core";
+import { Grid, Typography, TextField} from "@material-ui/core";
 import { shippingCalculate } from "../../../../helpers/shippingCalculate";
 import Provinces from "../../../../helpers/Provinces.json";
 import Spinner from "../../Spinner";
@@ -57,11 +57,11 @@ const TotalDetail = (props) => {
       value = valueshipping;
       setsubtotalship(Number(value));
     }
-  }, 2000);
+  }, 2500);
 
   setTimeout(() => {
     setshow(true);
-  }, 2200);
+  }, 2700);
 
   const getDiscountByCodeAPI = async (code) => {
     await apiAxios
@@ -91,48 +91,49 @@ const TotalDetail = (props) => {
     getDiscountByCodeAPI(code);
   };
 
+
   return show ? (
     <Fragment>
       <Grid container>
         <Grid container>
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <Typography variant="h6">Subtotal productos</Typography>
           </Grid>
-          <Grid item xs={3} className="pb-3">
+          <Grid item xs={4} className="pb-3">
             <Typography variant="h6">$ {subtotalprod}</Typography>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <Typography variant="h6">Subtotal envio</Typography>
           </Grid>
-          <Grid item xs={3} className="pb-3">
+          <Grid item xs={4} className="pb-3">
             <Typography variant="h6">$ {subtotalship}</Typography>
           </Grid>
           {percentage !== 0 ? (
             <Fragment>
-              <Grid item xs={9}>
+              <Grid item xs={8}>
                 <Typography variant="h6">Subtotal</Typography>
               </Grid>
-              <Grid item xs={3} className="pb-3">
+              <Grid item xs={4} className="pb-3">
                 <Typography variant="h6">
                   $ {subtotalprod + subtotalship}
                 </Typography>
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={8}>
                 <Typography variant="subtitle2">
                   Descuento %{percentage}
                 </Typography>
               </Grid>
-              <Grid item xs={3} className="pb-3">
+              <Grid item xs={4} className="pb-3">
                 <Typography variant="subtitle2">
                   $ -{((subtotalprod + subtotalship) * percentage) / 100}
                 </Typography>
               </Grid>
             </Fragment>
           ) : null}
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <Typography variant="h6">Total</Typography>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Typography variant="h6" className="pb-3">
               $ {subtotalship + subtotalprod -((subtotalprod + subtotalship) * percentage) / 100}
             </Typography>

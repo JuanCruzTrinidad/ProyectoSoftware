@@ -1,9 +1,10 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ButtonBase, Grid, Paper, Typography } from "@material-ui/core";
 import "./catalogue.css";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { useHistory } from "react-router";
+import Axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,8 +31,38 @@ const useStyles = makeStyles((theme) => ({
 const Tile = ({ prod }) => {
   const history = useHistory();
   const classes = useStyles();
+  const [price, setprice] = useState(0)
+  const [priceOfert, setpriceOfert] = useState(0)
 
-  const { idProducto, nombre, precio, precioOferta, imagen } = prod;
+  const { idProducto, nombre, precio, precioOferta, imagen, moneda } = prod;
+
+  const setPrice = () => {
+
+    var multiple = 0;
+    switch(moneda){
+        case 'ARS': multiple = 78.33;
+        break;
+        case 'BRL': multiple = 5.74;
+        break;
+        case 'EUR': multiple = 0.86;
+        break;
+        case 'USD': multiple = 1;
+        break;
+        default: multiple = 78.33;
+        break;
+    }
+
+    let newPrecio = precio * multiple
+    newPrecio = Math.round(newPrecio)
+    let newprecioOferta = precioOferta * multiple
+    newprecioOferta = Math.round(newprecioOferta)
+    setprice(newPrecio);
+    setpriceOfert(newprecioOferta);
+  }
+
+  useEffect(() => {
+    setPrice();
+  }, [])
 
   return (
     <Paper className={classes.paper}>
@@ -61,14 +92,14 @@ const Tile = ({ prod }) => {
                 {precioOferta === 0 ? (
                   <Fragment>
                   <div className="mb-4"></div>
-                  <Typography variant="h5">$ {precio}</Typography>
+                  <Typography variant="h5">$ {price}</Typography>
                   </Fragment>
                 ) : (
                   <Fragment>
                   <Typography variant="subtitle1" color="textSecondary">
-                    <del>$ {precioOferta}</del>
+                    <del>$ {priceOfert}</del>
                   </Typography>
-                  <Typography variant="h5">$ {precio}</Typography>
+                  <Typography variant="h5">$ {price}</Typography>
                   </Fragment>
                 )}
      

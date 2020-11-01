@@ -1,12 +1,6 @@
-import React, { Fragment, useState, useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
+import React, { Fragment } from "react";
 import {
-  ButtonBase,
-  Container,
   Grid,
-  Paper,
   Typography,
 } from "@material-ui/core";
 import ProductsDetail from "./Details/ProductsDetail";
@@ -53,6 +47,7 @@ const Details = (props) => {
                   precio={prod.precio}
                   atributoselecc={prod.atributoselecc}
                   cant={prod.cant}
+                  setsubtotalship={setsubtotalship}
                 />
               ))
             ) : (

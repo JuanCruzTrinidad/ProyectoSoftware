@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Button, Grid, Typography } from "@material-ui/core";
@@ -7,9 +7,9 @@ import Spinner from "../Spinner";
 
 const identityCardTypes = [
   { id: 1, value: "DNI" },
-  { id: 2, value: "DNA" },
-  { id: 3, value: "DNE" },
-  { id: 4, value: "DNO" },
+  { id: 2, value: "CI" },
+  { id: 3, value: "LE" },
+  { id: 4, value: "LC" },
 ];
 
 const PaymentMethod = (props) => {

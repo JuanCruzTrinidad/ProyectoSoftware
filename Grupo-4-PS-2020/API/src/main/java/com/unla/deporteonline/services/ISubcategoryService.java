@@ -14,5 +14,7 @@ public interface ISubcategoryService {
 	public List<Subcategory> findAll();
 
 	public List<Subcategory> findSubcategoryByCategory(final int idCategory);
+
+	public Subcategory findSubcategoryByName(final String name);
     
 }

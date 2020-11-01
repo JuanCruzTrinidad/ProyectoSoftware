@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import {
-  ButtonBase,
   Container,
   Grid,
-  Paper,
   Typography,
 } from "@material-ui/core";
 import ShippingForm from "./ShippingForm";
@@ -16,7 +14,6 @@ import Details from "./Details";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
 import { SellerComments } from "./SellerComments";
-import { useShippingCalculate } from "../../../helpers/shippingCalculate";
 import PaymentMethod from "./PaymentMethod";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,9 +29,9 @@ const useStyles = makeStyles((theme) => ({
 function getSteps() {
   return [
     "Formulario de envio",
-    "Muestro costos y detalles (peso, envio, prod)",
-    "Metodo pago",
-    "Comentarios y send",
+    "Detalle de la compra",
+    "Pago",
+    "Comentarios",
   ];
 }
 
@@ -182,6 +179,27 @@ export default function StepperOrder() {
       .catch((error) => console.log(error));
   };
 
+  const sendMailPedidoAPI = (idpedido) => {
+    apiAxios
+      .get("/pedido/pedidomail", {
+        params: {
+          idPedido: idpedido
+        },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+          "Access-Control-Allow-Headers":
+            "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
   const createOrderDetailAPI = (idpedido) => {
     var cartls = localStorage.getItem("cart");
     cartls = JSON.parse(cartls);
@@ -211,11 +229,12 @@ export default function StepperOrder() {
     });
 
     setTimeout(() => {
-      localStorage.removeItem('cart');
-      localStorage.removeItem('order');
-      localStorage.removeItem('shippingcost');
-      localStorage.removeItem('direction');
-    }, 2000);
+      localStorage.removeItem("cart");
+      localStorage.removeItem("order");
+      localStorage.removeItem("shippingcost");
+      localStorage.removeItem("direction");
+      sendMailPedidoAPI(idpedido);
+    }, 1500);
   };
 
   const createOrderAPI = () => {
@@ -286,7 +305,7 @@ export default function StepperOrder() {
         orderls = JSON.parse(orderls);
 
         let discount;
-        if(discountid === undefined){
+        if (discountid === undefined) {
           discount = null;
         } else {
           discount = {
@@ -341,6 +360,13 @@ export default function StepperOrder() {
   };
 
   const handleBack = () => {
+    if (activeStep === 2) {
+      setpaymentmethod("");
+      setpaydone(false);
+    } else if (activeStep === 0){
+      history.push('/cart');
+    }
+
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -441,7 +467,6 @@ export default function StepperOrder() {
                 </Typography>
                 <div className="pb-5 pt-5" style={{ textAlign: "right" }}>
                   <Button
-                    disabled={activeStep === 0}
                     onClick={handleBack}
                     className={classes.backButton}
                   >

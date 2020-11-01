@@ -1,9 +1,6 @@
 import {
-  ButtonBase,
   Container,
   Grid,
-  Paper,
-  Typography,
 } from "@material-ui/core";
 import React, { Fragment, useState, useEffect } from "react";
 import Tile from "./Tile";
@@ -17,7 +14,7 @@ import Spinner from "../../ui/Spinner";
 
 const Catalogue = () => {
   //States
-  const [visual, setvisual] = useState("card");
+  const [visual, setvisual] = useState("tile");
   const [search, setsearch] = useState("");
   const [order, setorder] = useState("Default");
   const [productlist, setproductlist] = useState([]);
@@ -31,6 +28,7 @@ const Catalogue = () => {
       .then(({ data }) => {
         setproductlist(data);
         console.log(data);
+        setshow(true);
       })
       .catch((error) => console.log(error));
   };
@@ -41,7 +39,6 @@ const Catalogue = () => {
       .then(({ data }) => {
         setcategorieslist(data);
         console.log(data);
-        setshow(true);
       })
       .catch((error) => console.log(error));
   };
@@ -125,7 +122,7 @@ const Catalogue = () => {
           ) : visual === "tiles" ? (
             <Grid item xs={9}>
               {productlist.map((prod) => (
-                <Tile key={prod.idProducto} prod={prod} />
+                <Tile key={prod.idProducto} prod={prod}/>
               ))}
             </Grid>
           ) : (
@@ -133,7 +130,7 @@ const Catalogue = () => {
               <Grid item xs={9}>
                 <div className="card-group">
                   {productlist.map((prod) => (
-                    <MediaCard key={prod.idProducto} prod={prod} />
+                    <MediaCard key={prod.idProducto} prod={prod}/>
                   ))}
                 </div>
               </Grid>
