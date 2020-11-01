@@ -96,44 +96,44 @@ const TotalDetail = (props) => {
     <Fragment>
       <Grid container>
         <Grid container>
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <Typography variant="h6">Subtotal productos</Typography>
           </Grid>
-          <Grid item xs={3} className="pb-3">
+          <Grid item xs={4} className="pb-3">
             <Typography variant="h6">$ {subtotalprod}</Typography>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <Typography variant="h6">Subtotal envio</Typography>
           </Grid>
-          <Grid item xs={3} className="pb-3">
+          <Grid item xs={4} className="pb-3">
             <Typography variant="h6">$ {subtotalship}</Typography>
           </Grid>
           {percentage !== 0 ? (
             <Fragment>
-              <Grid item xs={9}>
+              <Grid item xs={8}>
                 <Typography variant="h6">Subtotal</Typography>
               </Grid>
-              <Grid item xs={3} className="pb-3">
+              <Grid item xs={4} className="pb-3">
                 <Typography variant="h6">
                   $ {subtotalprod + subtotalship}
                 </Typography>
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={8}>
                 <Typography variant="subtitle2">
                   Descuento %{percentage}
                 </Typography>
               </Grid>
-              <Grid item xs={3} className="pb-3">
+              <Grid item xs={4} className="pb-3">
                 <Typography variant="subtitle2">
                   $ -{((subtotalprod + subtotalship) * percentage) / 100}
                 </Typography>
               </Grid>
             </Fragment>
           ) : null}
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <Typography variant="h6">Total</Typography>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Typography variant="h6" className="pb-3">
               $ {subtotalship + subtotalprod -((subtotalprod + subtotalship) * percentage) / 100}
             </Typography>
