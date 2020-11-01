@@ -77,8 +77,13 @@
 		    <artifactId>sendgrid-java</artifactId>
 		    <version>4.6.4</version>
 		</dependency>
-    	
-		
+    	<!-- Apache POI - import Excel file-->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>4.1.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -1,14 +1,13 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { Button, Card, CardContent, Grid } from "@material-ui/core";
 import "./catalogue.css";
 import ViewHeadlineIcon from "@material-ui/icons/ViewHeadline";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Button as ButtonRB } from "react-bootstrap";
 import SplitButton from "react-bootstrap/SplitButton";
 
 const Sidebar = (props) => {
-  const { visual, setvisual, categorieslist, order, setorder, getProductsByCategoryAPI, getProductsBySubcategoryAPI } = props;
+  const { setvisual, categorieslist, order, setorder, getProductsByCategoryAPI, getProductsBySubcategoryAPI } = props;
 
   return (
     <Card className="sidecat">

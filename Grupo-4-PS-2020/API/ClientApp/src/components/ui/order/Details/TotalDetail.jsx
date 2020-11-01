@@ -1,6 +1,6 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState} from "react";
 
-import { Grid, Typography, TextField, useControlled } from "@material-ui/core";
+import { Grid, Typography, TextField} from "@material-ui/core";
 import { shippingCalculate } from "../../../../helpers/shippingCalculate";
 import Provinces from "../../../../helpers/Provinces.json";
 import Spinner from "../../Spinner";
@@ -90,6 +90,7 @@ const TotalDetail = (props) => {
   const handleClickSearchCode = (code) => {
     getDiscountByCodeAPI(code);
   };
+
 
   return show ? (
     <Fragment>

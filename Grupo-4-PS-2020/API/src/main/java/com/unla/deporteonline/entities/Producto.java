@@ -25,6 +25,9 @@ public class Producto {
 
     @Column(name="descripcionLarga",nullable = false)
     private String descripcionLarga;
+    
+    @Column(name="moneda",nullable = false)
+    private String moneda;
 
     @Column(name = "visible",nullable = false)
     private boolean visible;
@@ -60,7 +63,7 @@ public class Producto {
 
     public Producto(int idProducto, String nombre, String descripcionCorta, String descripcionLarga, boolean visible,
         float precio, float precioOferta, String imagen, String video, Set<Valoracion> valoraciones,
-        Set<Atributos> atributos, Subcategory subcategory) {
+        Set<Atributos> atributos, Subcategory subcategory, String moneda) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcionCorta = descripcionCorta;
@@ -73,6 +76,7 @@ public class Producto {
         this.valoraciones = valoraciones;
         this.atributos = atributos;
         this.subcategory = subcategory;
+        this.moneda = moneda;
     }
 
 	/*
@@ -191,6 +195,13 @@ public class Producto {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
     }
     
     

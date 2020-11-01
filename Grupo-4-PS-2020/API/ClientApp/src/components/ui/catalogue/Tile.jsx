@@ -1,9 +1,10 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ButtonBase, Grid, Paper, Typography } from "@material-ui/core";
 import "./catalogue.css";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { useHistory } from "react-router";
+import Axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,8 +31,41 @@ const useStyles = makeStyles((theme) => ({
 const Tile = ({ prod }) => {
   const history = useHistory();
   const classes = useStyles();
+  const [price, setprice] = useState(0)
+  const [priceOfert, setpriceOfert] = useState(0)
 
-  const { idProducto, nombre, precio, precioOferta, imagen } = prod;
+  const { idProducto, nombre, precio, precioOferta, imagen, moneda } = prod;
+
+  const setPrice = () => {
+    Axios.get('https://api.currencyfreaks.com/latest?apikey=3d7f042396b94479be9821c08c21da3a&symbols=ARS,BRL,EUR,USD')
+    .then(
+    response => {
+    var values = Object.values(response.data.rates)
+    var multiple = 0;
+    switch(moneda){
+        case 'ARS': multiple = parseFloat(values[0], 10)
+        break;
+        case 'BRL': multiple = parseFloat(values[1], 10)
+        break;
+        case 'EUR': multiple = parseFloat(values[2], 10)
+        break;
+        case 'USD': multiple = parseFloat(values[3], 10)
+        break;
+        default: multiple = parseFloat(values[3], 10)
+        break;
+    }
+
+    let newPrecio = precio * multiple
+    newPrecio = Math.round(newPrecio)
+    let newprecioOferta = precioOferta * multiple
+    newprecioOferta = Math.round(newprecioOferta)
+    setprice(newPrecio);
+    setpriceOfert(newprecioOferta);
+  })}
+
+  useEffect(() => {
+    setPrice();
+  }, [])
 
   return (
     <Paper className={classes.paper}>
@@ -61,14 +95,14 @@ const Tile = ({ prod }) => {
                 {precioOferta === 0 ? (
                   <Fragment>
                   <div className="mb-4"></div>
-                  <Typography variant="h5">$ {precio}</Typography>
+                  <Typography variant="h5">$ {price}</Typography>
                   </Fragment>
                 ) : (
                   <Fragment>
                   <Typography variant="subtitle1" color="textSecondary">
-                    <del>$ {precioOferta}</del>
+                    <del>$ {priceOfert}</del>
                   </Typography>
-                  <Typography variant="h5">$ {precio}</Typography>
+                  <Typography variant="h5">$ {price}</Typography>
                   </Fragment>
                 )}
      
