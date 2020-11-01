@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Grid, Paper, Typography } from "@material-ui/core";
 import TileCart from "./TileCart";
 import { useHistory } from "react-router";
-import ReplaySharpIcon from '@material-ui/icons/ReplaySharp';
 
 const Cart = () => {
   const history = useHistory();

@@ -5,8 +5,6 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { apiAxios } from '../../config/axios';
 import MediaCard from './catalogue/Card';
 import { useEffect } from 'react';
-import { CategoryCards } from './CategoryCards';
-
 
 export const FeaturedProducts = ({ products = [], custom = false }) => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);

@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import {
-  ButtonBase,
   Container,
   Grid,
-  Paper,
   Typography,
 } from "@material-ui/core";
 import ShippingForm from "./ShippingForm";
@@ -16,7 +14,6 @@ import Details from "./Details";
 import { useHistory } from "react-router";
 import { apiAxios } from "../../../config/axios";
 import { SellerComments } from "./SellerComments";
-import { useShippingCalculate } from "../../../helpers/shippingCalculate";
 import PaymentMethod from "./PaymentMethod";
 
 const useStyles = makeStyles((theme) => ({

@@ -1,9 +1,18 @@
 package com.unla.deporteonline.controllers.api.v1;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.unla.deporteonline.entities.Producto;
 import com.unla.deporteonline.services.IProductService;
+import com.unla.deporteonline.services.ISubcategoryService;
 
 import io.micrometer.core.ipc.http.HttpSender.Method;
 
@@ -19,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -28,6 +38,10 @@ public class ProductRestController {
 	@Autowired
 	@Qualifier("productService")
 	private IProductService productService;
+
+	@Autowired
+	@Qualifier("subcategoryService")
+	private ISubcategoryService subcategoryService;
 
 	// create product
 	@PostMapping(value = "/createProduct", consumes = "application/json")
@@ -91,4 +105,33 @@ public class ProductRestController {
 		return productService.findProductByName(nombre);
 	}
 
+	@RequestMapping(value = "/import-excel", method = RequestMethod.POST)
+    public List<Producto> importExcelFile(@RequestParam("file") MultipartFile files)throws IOException {
+        List<Producto> productList = new ArrayList<>();
+
+        XSSFWorkbook workbook = new XSSFWorkbook(files.getInputStream());
+		XSSFSheet worksheet = workbook.getSheetAt(0);
+		DataFormatter formatter = new DataFormatter();
+
+        for (int index = 0; index < worksheet.getPhysicalNumberOfRows(); index++) {
+            if (index > 0) {
+                Producto producto = new Producto();
+				XSSFRow row = worksheet.getRow(index);
+				producto.setNombre(formatter.formatCellValue(row.getCell(0)));
+				producto.setDescripcionCorta(formatter.formatCellValue(row.getCell(1)));
+				producto.setDescripcionLarga(formatter.formatCellValue(row.getCell(2)));
+				producto.setPrecio(Float.valueOf(formatter.formatCellValue(row.getCell(3))));
+				producto.setPrecioOferta(Float.valueOf(formatter.formatCellValue(row.getCell(4))));
+				producto.setImagen(formatter.formatCellValue(row.getCell(5)));
+				producto.setVideo(formatter.formatCellValue(row.getCell(6)));
+				producto.setSubcategory(subcategoryService.findSubcategoryByName(formatter.formatCellValue(row.getCell(7))));
+				producto.setVisible(true);
+				productService.saveProduct(producto);
+                productList.add(producto);
+            }
+        }
+		workbook.close();
+        return productList;
+    }
+	
 }
