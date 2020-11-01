@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import "./Quantity.scss";
@@ -9,7 +9,7 @@ const Quantity = (props) => {
   useEffect(() => {
     handleChangeCant();
   }, [cant]);
-  console.log("me renderize juju")
+  //console.log("me renderize juju");
   return (
     <div>
       <div className="quantity-input">
@@ -23,7 +23,7 @@ const Quantity = (props) => {
         >
           <RemoveIcon />
         </button>
-        <input className="quantity-input__screen" value={cant} disabled/>
+        <input className="quantity-input__screen" value={cant} disabled />
         <button
           className="quantity-input__modifier quantity-input__modifier--right"
           onClick={(e) => {
@@ -39,5 +39,5 @@ const Quantity = (props) => {
 
 //export default Quantity;
 export default React.memo(Quantity, (prev, next) => {
-  return prev.cant === next.cant
-})
+  return prev.cant === next.cant;
+});

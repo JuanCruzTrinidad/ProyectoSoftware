@@ -34,7 +34,6 @@ const TileCart = (props) => {
     imagen,
     atributoselecc,
     actualizarSubtotal,
-    //setpreecio
   } = props;
 
   const history = useHistory();

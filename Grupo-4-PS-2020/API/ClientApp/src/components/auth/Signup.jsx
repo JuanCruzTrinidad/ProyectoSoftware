@@ -55,6 +55,9 @@ export const Signup = () => {
 
             bcrypt.compare(pw, data[1]).then((res) => {
               if (res === true) {
+                localStorage.setItem("role", data[3]);
+                localStorage.setItem("iduser", data[2]);
+                localStorage.setItem("user", email);
                 localStorage.setItem("token", data[0]);
                 history.replace("/");
                 window.location.reload();

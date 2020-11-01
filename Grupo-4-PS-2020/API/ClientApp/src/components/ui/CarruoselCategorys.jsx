@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import ItemsCarousel from 'react-items-carousel';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { apiAxios } from '../../config/axios';
-import { useEffect } from 'react';
-import { CategoryCards } from './CategoryCards';
+import React, { useState } from "react";
+import ItemsCarousel from "react-items-carousel";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import { apiAxios } from "../../config/axios";
+import { useEffect } from "react";
+import { CategoryCards } from "./CategoryCards";
 
-
-export const CarruoselCategorys = ({categoryCard=false}) => {
+export const CarruoselCategorys = () => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const [categoryList, setcategoryList] = useState([]);
 
@@ -23,7 +22,7 @@ export const CarruoselCategorys = ({categoryCard=false}) => {
 
   useEffect(() => {
     getCategoriesAPI();
-  }, [])
+  }, []);
   return (
     <>
       <ItemsCarousel
@@ -31,17 +30,14 @@ export const CarruoselCategorys = ({categoryCard=false}) => {
         activeItemIndex={activeItemIndex}
         numberOfCards={5}
         gutter={20}
-        leftChevron={<ChevronLeftIcon/>}
-        rightChevron={<ChevronRightIcon/>}
+        leftChevron={<ChevronLeftIcon />}
+        rightChevron={<ChevronRightIcon />}
         outsideChevron
         chevronWidth={40}
-      >     
-          { 
-            categoryList.map((c) => (
-              <CategoryCards categoryName={c.name}/>
-            ))
-          }
-          
+      >
+        {categoryList.map((c) => (
+          <CategoryCards categoryName={c.name} />
+        ))}
       </ItemsCarousel>
     </>
   );
