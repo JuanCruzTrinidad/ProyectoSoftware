@@ -17,7 +17,6 @@ import Spinner from "../Spinner";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Comments } from "./Comments";
-import Axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -138,7 +137,9 @@ export const OneProduct = () => {
   };
 
   const handleClose = () => {
+    console.log("se cerro?")
     setOpen(false);
+    console.log(open)
   };
 
   const handleClickCarrito = (type) => {
@@ -213,9 +214,14 @@ export const OneProduct = () => {
 
   useEffect(() => {
     getProductById(idproduct);
+    return () => {
+      handleClose();  
+      console.log(open)
+    }
   }, [idproduct]);
 
   useEffect(() => {}, [product.valoraciones]);
+
 
   return show ? (
     <>
@@ -429,24 +435,14 @@ export const OneProduct = () => {
             ))}
           </div>
         </Grid>
-        {product.valoraciones.length > 0 && (
           <Comments
+            key={idproduct}
             listComments={product.valoraciones}
             handleClickOpen={handleClickOpen}
             handleClose={handleClose}
             open={open}
             idproduct={idproduct}
           />
-        )}
-        {product.valoraciones.length > 0 && (
-          <Comments
-            listComments={product.valoraciones}
-            handleClickOpen={handleClickOpen}
-            handleClose={handleClose}
-            open={open}
-            idproduct={idproduct}
-          />
-        )}
       </Container>
     </>
   ) : (
