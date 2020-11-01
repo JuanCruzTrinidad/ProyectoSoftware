@@ -27,7 +27,7 @@ public class DeporteonlineApplication {
 			http.csrf().disable()
 				.addFilterAfter(new SecurityConfiguration(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/user/login", "/user/newUser", "/user/recoverpw", "/user/resetpw", "/user/contactform", "/value/createValue").permitAll()
+				.antMatchers(HttpMethod.POST, "/user/login", "/user/newUser", "/user/recoverpw", "/user/resetpw", "/user/contactform", "/value/createValue", "/product/deleteProduct").permitAll()
 				.antMatchers(HttpMethod.GET, "/user/login", "/product/allproduct", "/category/allcategories",
 							"/product/productByCategory", "/product/productBySubcategory", "/product/ProductId", "/subcategory/subcategoryByCategory/**", 
 							"/product/**").permitAll()

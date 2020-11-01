@@ -1,19 +1,4 @@
-import {
-  Breadcrumbs,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Grid,
-  MenuItem,
-  Portal,
-  Select,
-  TextField,
-  Tooltip,
-} from "@material-ui/core";
+import { Container, Grid, MenuItem, Select, Tooltip } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import MobileStepper from "@material-ui/core/MobileStepper";
@@ -84,32 +69,27 @@ export const OneProduct = () => {
         params: { idProducto: idprod },
       })
       .then(({ data }) => {
-        Axios.get('https://api.currencyfreaks.com/latest?apikey=3d7f042396b94479be9821c08c21da3a&symbols=ARS,BRL,EUR,USD')
-          .then(
-            response => {
-              var values = Object.values(response.data.rates)
-              var multiple = 0;
-              switch (data.moneda) {
-                case 'ARS': multiple = parseFloat(values[0], 10)
-                  break;
-                case 'BRL': multiple = parseFloat(values[1], 10)
-                  break;
-                case 'EUR': multiple = parseFloat(values[2], 10)
-                  break;
-                case 'USD': multiple = parseFloat(values[3], 10)
-                  break;
-                default: multiple = parseFloat(values[3], 10)
-                  break;
-              }
-              data.precio = data.precio * multiple
-              data.precio = Math.round(data.precio)
-              data.precioOferta = data.precioOferta * multiple
-              data.precioOferta = Math.round(data.precioOferta)
-              setproduct(data);
-              setshow(true);
-              getProductsBySubcategoryAPI(data.subcategory.idSubcategory);
-            })
-      })
+          var multiple = 0;
+          switch (data.moneda) {
+            case 'ARS': multiple = 78.33;
+            break;
+            case 'BRL': multiple = 5.74;
+            break;
+            case 'EUR': multiple = 0.86;
+            break;
+            case 'USD': multiple = 1;
+            break;
+            default: multiple = 78.33;
+            break;
+          }
+          data.precio = data.precio * multiple;
+          data.precio = Math.round(data.precio);
+          data.precioOferta = data.precioOferta * multiple;
+          data.precioOferta = Math.round(data.precioOferta);
+          setproduct(data);
+          setshow(true);
+          getProductsBySubcategoryAPI(data.subcategory.idSubcategory);
+        })
       .catch((error) => console.log(error));
   };
 
@@ -171,7 +151,11 @@ export const OneProduct = () => {
       product.atributoselecc = product.atributos.filter(
         (atrib) => atrib.color === color && atrib.talle === size
       );
-      if (cartlocalstorage === null || cartlocalstorage === undefined || cartlocalstorage === "[]") {
+      if (
+        cartlocalstorage === null ||
+        cartlocalstorage === undefined ||
+        cartlocalstorage === "[]"
+      ) {
         product.cant = 1;
         localStorage.setItem("cart", JSON.stringify([product]));
       } else {
@@ -208,19 +192,17 @@ export const OneProduct = () => {
     }
   };
 
-  const handleDeleteProduct = (e) => {
-    e.preventDefault();
-    let token = localStorage.getItem("token");
-    apiAxios.post("/product/deleteProduct", idproduct, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-        "Access-Control-Allow-Headers":
-          "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
+  const handleDeleteProduct = (e, idproduct) => {
+    apiAxios
+      .post("product/deleteProduct", idproduct, {
+        params: { id: idproduct },
+      })
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+
+    history.push('/catalogue');
   };
 
   useEffect(() => {
@@ -242,22 +224,23 @@ export const OneProduct = () => {
           <Grid item xs={6}>
             <Paper elevantion={3} style={{ padding: 20, height: 500 }}>
               <div className={classes.root}>
-                {
-                  activeStep === 0 ?
-                    (<img
-                      className={classes.img}
-                      src={imagesCard[0].imgPath}
-                      alt={imagesCard[0].label}
-                    />
-                    )
-                    :
-                    (
-                      <iframe width="400" height="250" marginTop="20"
-                        src={imagesCard[1].imgPath}
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    )
-                }
+                {activeStep === 0 ? (
+                  <img
+                    className={classes.img}
+                    src={imagesCard[0].imgPath}
+                    alt={imagesCard[0].label}
+                  />
+                ) : (
+                  <iframe
+                    width="400"
+                    height="250"
+                    marginTop="20"
+                    src={imagesCard[1].imgPath}
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                )}
                 <MobileStepper
                   steps={maxSteps}
                   position="static"
@@ -273,8 +256,8 @@ export const OneProduct = () => {
                       {theme.direction === "rtl" ? (
                         <KeyboardArrowLeft />
                       ) : (
-                          <KeyboardArrowRight />
-                        )}
+                        <KeyboardArrowRight />
+                      )}
                     </Button>
                   }
                   backButton={
@@ -286,8 +269,8 @@ export const OneProduct = () => {
                       {theme.direction === "rtl" ? (
                         <KeyboardArrowRight />
                       ) : (
-                          <KeyboardArrowLeft />
-                        )}
+                        <KeyboardArrowLeft />
+                      )}
                       Anterior
                     </Button>
                   }
@@ -310,7 +293,7 @@ export const OneProduct = () => {
                     style={{ cursor: "pointer" }}
                   />
                   <DeleteIcon
-                    onClick={handleDeleteProduct}
+                    onClick={e => handleDeleteProduct(e, idproduct)}
                     style={{ cursor: "pointer" }}
                   />
                 </Grid>
@@ -404,14 +387,14 @@ export const OneProduct = () => {
                     {disabled ? (
                       <MenuItem value="">Primero elija un color</MenuItem>
                     ) : (
-                        product.atributos
-                          .filter((atrib) => atrib.color === color)
-                          .map((atrib) => (
-                            <MenuItem key={atrib.talle} value={atrib.talle}>
-                              {atrib.talle}
-                            </MenuItem>
-                          ))
-                      )}
+                      product.atributos
+                        .filter((atrib) => atrib.color === color)
+                        .map((atrib) => (
+                          <MenuItem key={atrib.talle} value={atrib.talle}>
+                            {atrib.talle}
+                          </MenuItem>
+                        ))
+                    )}
                   </Select>
                 </Grid>
               </Grid>
@@ -441,10 +424,7 @@ export const OneProduct = () => {
           <div className="card-group">
             {relationalsProduct.map((prod, index) => (
               <Grid item xs={4} key={prod.idProducto} style={{ margin: 30 }}>
-                <MediaCard
-                  key={prod.idProducto}
-                  prod={prod}
-                />
+                <MediaCard key={prod.idProducto} prod={prod} />
               </Grid>
             ))}
           </div>
@@ -458,17 +438,20 @@ export const OneProduct = () => {
             idproduct={idproduct}
           />
         )}
-        {
-          product.valoraciones.length > 0 && (
-            <Comments listComments={product.valoraciones} handleClickOpen={handleClickOpen}
-              handleClose={handleClose} open={open} idproduct={idproduct} />
-          )
-        }
+        {product.valoraciones.length > 0 && (
+          <Comments
+            listComments={product.valoraciones}
+            handleClickOpen={handleClickOpen}
+            handleClose={handleClose}
+            open={open}
+            idproduct={idproduct}
+          />
+        )}
       </Container>
     </>
   ) : (
-      <div style={{ padding: "200px" }}>
-        <Spinner />
-      </div>
-    );
+    <div style={{ padding: "200px" }}>
+      <Spinner />
+    </div>
+  );
 };
