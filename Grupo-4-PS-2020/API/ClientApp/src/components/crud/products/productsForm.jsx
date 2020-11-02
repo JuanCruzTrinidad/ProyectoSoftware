@@ -63,7 +63,24 @@ export const ProductsForm = () => {
         params: { idProducto: id },
       })
       .then(({ data }) => {
-        console.log(data);
+        let multiple = 0
+        switch(data.moneda){
+          case 'ARS': multiple = 78.33;
+          break;
+          case 'BRL': multiple = 5.74;
+          break;
+          case 'EUR': multiple = 0.8547;
+          break;
+          case 'USD': multiple = 1;
+          break;
+          default: multiple = 78.33;
+          break;
+      }  
+      let newPrecio = data.precio * multiple
+      newPrecio = Math.round(newPrecio)
+      let newprecioOferta = data.precioOferta * multiple
+      newprecioOferta = Math.round(newprecioOferta)
+
         setProduct({
           ...product,
           id: data.idProducto,
@@ -73,8 +90,8 @@ export const ProductsForm = () => {
           urlImage: data.imagen,
           urlVideo: data.video,
           visibility: data.visible,
-          price: data.precio,
-          ofert: data.precioOferta,
+          price: newPrecio,
+          ofert: newprecioOferta,
           category: data.subcategory.category.idCategory,
           subcategory: data.subcategory.idSubcategory,
           money: data.moneda,
@@ -192,10 +209,10 @@ export const ProductsForm = () => {
     var divider = 0;
     switch (product.money) {
       case "ARS":
-        divider = 0.013;
+        divider = 0.0127665007;
         break;
       case "BRL":
-        divider = 0.17;
+        divider = 0.17421602787;
         break;
       case "EUR":
         divider = 1.17;
@@ -209,11 +226,10 @@ export const ProductsForm = () => {
     }
     let priceOld = product.price;
     let ofertOld = product.ofert;
-    newPrice = priceOld / divider;
-    newOfert = ofertOld / divider;
-    newPrice = Math.round(newPrice);
-    newOfert = Math.round(newOfert);
-    debugger;
+    newPrice = priceOld * divider;
+    newOfert = ofertOld * divider;
+    newPrice = newPrice.toFixed(4)
+    newOfert = newOfert.toFixed(4);
     setProduct({ ...product, price: newPrice, ofert: newOfert });
 
     let createProduct = {
