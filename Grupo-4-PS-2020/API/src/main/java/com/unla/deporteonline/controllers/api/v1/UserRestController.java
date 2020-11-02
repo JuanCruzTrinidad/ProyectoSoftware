@@ -148,7 +148,7 @@ public class UserRestController {
 	public ResponseEntity<String> recoveryPassword(@RequestBody String email) throws IOException {
 		System.out.println(keySendGrid);
 		User user = userService.findByEmail(email);
-		Email from = new Email("tomas.silvestre9@gmail.com");
+		Email from = new Email("natt.photograph@gmail.com");
 		String subject = "Resetea tu contraseña";
 		Email to = new Email(email);
 		Content content = new Content("text/plain",

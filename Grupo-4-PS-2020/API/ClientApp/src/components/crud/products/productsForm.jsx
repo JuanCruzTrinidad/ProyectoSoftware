@@ -76,10 +76,11 @@ export const ProductsForm = () => {
           default: multiple = 78.33;
           break;
       }  
-      let newPrecio = data.precio * multiple
-      newPrecio = Math.round(newPrecio)
-      let newprecioOferta = data.precioOferta * multiple
-      newprecioOferta = Math.round(newprecioOferta)
+
+      let newPrecio = data.precio * multiple;
+      newPrecio = newPrecio.toFixed(4);
+      let newprecioOferta = data.precioOferta * multiple;
+      newprecioOferta = newprecioOferta.toFixed(4);
 
         setProduct({
           ...product,
@@ -92,6 +93,8 @@ export const ProductsForm = () => {
           visibility: data.visible,
           price: newPrecio,
           ofert: newprecioOferta,
+          // price: data.precio,
+          // ofert: data.precioOferta,
           category: data.subcategory.category.idCategory,
           subcategory: data.subcategory.idSubcategory,
           money: data.moneda,
@@ -228,7 +231,7 @@ export const ProductsForm = () => {
     let ofertOld = product.ofert;
     newPrice = priceOld * divider;
     newOfert = ofertOld * divider;
-    newPrice = newPrice.toFixed(4)
+    newPrice = newPrice.toFixed(4);
     newOfert = newOfert.toFixed(4);
     setProduct({ ...product, price: newPrice, ofert: newOfert });
 
