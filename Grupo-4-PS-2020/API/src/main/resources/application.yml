@@ -2,8 +2,8 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/deporteonline?serverTimezone=UTC
-    username: root
-    password: localhost
+    username: tuuser
+    password: tupassword
   jpa:
     show-sql: true
     hibernate:
@@ -13,5 +13,5 @@ spring:
   thymeleaf:
     cache: false
 apiKey:
-  sendGrid: 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
+  sendGrid: 
 
