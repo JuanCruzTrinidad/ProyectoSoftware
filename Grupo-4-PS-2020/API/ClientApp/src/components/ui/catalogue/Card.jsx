@@ -43,7 +43,7 @@ export default function MediaCard({ prod }) {
         break;
         case 'BRL': multiple = 5.74;
         break;
-        case 'EUR': multiple = 0.86;
+        case 'EUR': multiple = 0.8547;
         break;
         case 'USD': multiple = 1;
         break;
