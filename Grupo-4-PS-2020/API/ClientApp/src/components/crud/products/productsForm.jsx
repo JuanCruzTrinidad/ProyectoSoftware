@@ -1,12 +1,11 @@
-import { Button, Container, Grid, Paper } from '@material-ui/core';
-import Axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router';
-import StepWizard from 'react-step-wizard';
-import { apiAxios } from '../../../config/axios';
-import { First } from './First';
-import NavWizard from './NavWizard';
-import { Second } from './Second';
+import { Button, Container, Grid, Paper } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router";
+import StepWizard from "react-step-wizard";
+import { apiAxios } from "../../../config/axios";
+import { First } from "./First";
+import NavWizard from "./NavWizard";
+import { Second } from "./Second";
 
 export const ProductsForm = () => {
   let { id } = useParams();
@@ -99,24 +98,24 @@ export const ProductsForm = () => {
       .catch((error) => console.log(error));
   };
 
-    const handleUploadExcel = (event) => {
-        event.preventDefault();
-        let token = localStorage.getItem("token");
-        let formData = new FormData()
-        var file = event.target.files[0];
-        formData.append("file", file)
-        apiAxios.post("/product/import-excel", formData,{
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-              "Access-Control-Allow-Headers":
-                "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-              "Content-Type": "multipart/form-data",
-               Authorization: `${token}`,
-            },
-          });
-    }
-    
+  const handleUploadExcel = (event) => {
+    event.preventDefault();
+    let token = localStorage.getItem("token");
+    let formData = new FormData();
+    var file = event.target.files[0];
+    formData.append("file", file);
+    apiAxios.post("/product/import-excel", formData, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+        "Access-Control-Allow-Headers":
+          "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
+        "Content-Type": "multipart/form-data",
+        Authorization: `${token}`,
+      },
+    });
+  };
+
   const createProductAPI = (createProduct, actionProdut) => {
     apiAxios
       .post(`/product/${actionProdut}`, createProduct, {
@@ -190,61 +189,54 @@ export const ProductsForm = () => {
   const handleSubmit = () => {
     var newPrice = 0;
     var newOfert = 0;
-    Axios.get(
-      "https://api.currencyfreaks.com/latest?apikey=3d7f042396b94479be9821c08c21da3a&symbols=ARS,BRL,EUR,USD"
-    )
-      .then((response) => {
-        var values = Object.values(response.data.rates);
-        var divider = 0;
-        switch (product.money) {
-          case "ARS":
-            divider = parseFloat(values[0], 10);
-            break;
-          case "BRL":
-            divider = parseFloat(values[1], 10);
-            break;
-          case "EUR":
-            divider = parseFloat(values[2], 10);
-            break;
-          case "USD":
-            divider = parseFloat(values[3], 10);
-            break;
-          default:
-            divider = parseFloat(values[3], 10);
-            break;
-        }
-        let priceOld = product.price;
-        let ofertOld = product.ofert;
-        newPrice = priceOld / divider;
-        newOfert = ofertOld / divider;
-        newPrice = Math.round(newPrice);
-        newOfert = Math.round(newOfert);
-        debugger;
-        setProduct({ ...product, price: newPrice, ofert: newOfert });
-      })
-      .finally(() => {
-        let createProduct = {
-          idProducto: product.id,
-          nombre: product.name,
-          descripcionCorta: product.shortDescription,
-          descripcionLarga: product.largeDescription,
-          visible: product.visibility,
-          precio: newPrice,
-          precioOferta: newOfert,
-          imagen: product.urlImage,
-          video: product.urlVideo,
-          moneda: product.money,
-          subcategory: {
-            idSubcategory: product.subcategory,
-          },
-        };
-        console.log(createProduct);
-        if (product.id > 0) {
-          createProductAPI(createProduct, "updateProduct");
-        } else {
-          createProductAPI(createProduct, "createProduct");
-        }
-      });
+    var divider = 0;
+    switch (product.money) {
+      case "ARS":
+        divider = 0.013;
+        break;
+      case "BRL":
+        divider = 0.17;
+        break;
+      case "EUR":
+        divider = 1.17;
+        break;
+      case "USD":
+        divider = 1;
+        break;
+      default:
+        divider = 1;
+        break;
+    }
+    let priceOld = product.price;
+    let ofertOld = product.ofert;
+    newPrice = priceOld / divider;
+    newOfert = ofertOld / divider;
+    newPrice = Math.round(newPrice);
+    newOfert = Math.round(newOfert);
+    debugger;
+    setProduct({ ...product, price: newPrice, ofert: newOfert });
+
+    let createProduct = {
+      idProducto: product.id,
+      nombre: product.name,
+      descripcionCorta: product.shortDescription,
+      descripcionLarga: product.largeDescription,
+      visible: product.visibility,
+      precio: newPrice,
+      precioOferta: newOfert,
+      imagen: product.urlImage,
+      video: product.urlVideo,
+      moneda: product.money,
+      subcategory: {
+        idSubcategory: product.subcategory,
+      },
+    };
+    console.log(createProduct);
+    if (product.id > 0) {
+      createProductAPI(createProduct, "updateProduct");
+    } else {
+      createProductAPI(createProduct, "createProduct");
+    }
 
     history.replace("/");
   };
@@ -269,24 +261,39 @@ export const ProductsForm = () => {
             product={product}
           />
         </StepWizard>
-                    <Grid item xs={12}>
-                <Paper elevation={3} style={{width: 800, heigth: 200, margin: 30, padding: 20}}>
-                    <Grid container justify="center" alignContent="center" alignItems="center">
-                    <Grid item xs={3}>
-                        <input
-                            style={{display: 'none'}}
-                            type="file" id="subir-excel" accept="*"
-                            onChange={e => handleUploadExcel(e)}
-                        />
-                        <label htmlFor="subir-excel">
-                            <Button fullWidth variant="outlined" color="primary" component="span">
-                            Subir desde Excel
-                            </Button>
-                        </label>
-                    </Grid>
-                    </Grid>
-                </Paper>
+        <Grid item xs={12}>
+          <Paper
+            elevation={3}
+            style={{ width: 800, heigth: 200, margin: 30, padding: 20 }}
+          >
+            <Grid
+              container
+              justify="center"
+              alignContent="center"
+              alignItems="center"
+            >
+              <Grid item xs={3}>
+                <input
+                  style={{ display: "none" }}
+                  type="file"
+                  id="subir-excel"
+                  accept="*"
+                  onChange={(e) => handleUploadExcel(e)}
+                />
+                <label htmlFor="subir-excel">
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    color="primary"
+                    component="span"
+                  >
+                    Subir desde Excel
+                  </Button>
+                </label>
+              </Grid>
             </Grid>
+          </Paper>
+        </Grid>
       </Grid>
     </Container>
   );

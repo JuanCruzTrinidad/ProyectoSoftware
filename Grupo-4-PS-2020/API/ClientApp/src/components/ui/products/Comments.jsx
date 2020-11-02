@@ -25,12 +25,9 @@ export const Comments = ({
   idproduct,
 }) => {
   const [comment, setComment] = useState({
-    title: "",
     comment: "",
     rating: 0,
   });
-
-  // const [listComments, setListComments] = useState([]);
 
   const createCommentAPI = (comment) => {
     apiAxios
@@ -50,8 +47,9 @@ export const Comments = ({
   };
 
   const handleSubmit = () => {
+    let idUser = localStorage.getItem("iduser");
     var createComment = {
-      fk_user: 1,
+      fk_user: idUser,
       fk_producto: idproduct,
       valoracion: comment.rating,
       comentario: comment.comment,
@@ -60,8 +58,6 @@ export const Comments = ({
     handleClose();
     setComment({});
   };
-
-  console.log(listComments);
   return (
     <>
       <Grid container spacing={5} justify="center">
@@ -101,7 +97,9 @@ export const Comments = ({
         })}
         <Dialog
           open={open}
+          onExit={handleClose}
           onClose={handleClose}
+          onBackdropClick={handleClose}
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">Valoración</DialogTitle>
@@ -125,17 +123,6 @@ export const Comments = ({
               autoFocus
               margin="dense"
               id="name"
-              label="Título del comentario"
-              value={comment.title}
-              onChange={(e) =>
-                setComment({ ...comment, title: e.target.value })
-              }
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
               label="Comentario"
               value={comment.comment}
               onChange={(e) =>
@@ -147,7 +134,7 @@ export const Comments = ({
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={e => handleClose()} color="primary">
               Cancel
             </Button>
             <Button onClick={handleSubmit} color="primary">

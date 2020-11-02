@@ -36,21 +36,18 @@ export default function MediaCard({ prod }) {
   const { idProducto, nombre, precio, precioOferta, imagen, moneda } = prod;
 
   const setPrice = () => {
-    Axios.get('https://api.currencyfreaks.com/latest?apikey=3d7f042396b94479be9821c08c21da3a&symbols=ARS,BRL,EUR,USD')
-    .then(
-    response => {
-    var values = Object.values(response.data.rates)
+
     var multiple = 0;
     switch(moneda){
-        case 'ARS': multiple = parseFloat(values[0], 10)
+        case 'ARS': multiple = 78.33;
         break;
-        case 'BRL': multiple = parseFloat(values[1], 10)
+        case 'BRL': multiple = 5.74;
         break;
-        case 'EUR': multiple = parseFloat(values[2], 10)
+        case 'EUR': multiple = 0.86;
         break;
-        case 'USD': multiple = parseFloat(values[3], 10)
+        case 'USD': multiple = 1;
         break;
-        default: multiple = parseFloat(values[3], 10)
+        default: multiple = 78.33;
         break;
     }
 
@@ -60,7 +57,7 @@ export default function MediaCard({ prod }) {
     newprecioOferta = Math.round(newprecioOferta)
     setprice(newPrecio);
     setpriceOfert(newprecioOferta);
-  })}
+  }
 
   useEffect(() => {
     setPrice();
