@@ -13,5 +13,5 @@ spring:
   thymeleaf:
     cache: false
 apiKey:
-  #sendGrid: SG.lvjF-kXyTvKW9BVU5-BWTg.(ESTO SE TIENE QUE BORRAR, SOLO EL CONTENIDO EN PARENTESIS.)NoakW6UfxUejfCT4adbpv6YYrFY95scciUaJQtUuwAI
+  sendGrid: 
 

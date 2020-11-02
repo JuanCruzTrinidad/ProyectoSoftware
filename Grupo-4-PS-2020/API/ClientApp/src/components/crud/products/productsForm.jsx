@@ -63,7 +63,25 @@ export const ProductsForm = () => {
         params: { idProducto: id },
       })
       .then(({ data }) => {
-        console.log(data);
+        let multiple = 0
+        switch(data.moneda){
+          case 'ARS': multiple = 1;
+          break;
+          case 'BRL': multiple = 0.073;
+          break;
+          case 'EUR': multiple = 0.011;
+          break;
+          case 'USD': multiple = 0.013;
+          break;
+          default: multiple = 1;
+          break;
+      }  
+
+      let newPrecio = data.precio * multiple;
+      newPrecio = newPrecio.toFixed(3);
+      let newprecioOferta = data.precioOferta * multiple;
+      newprecioOferta = newprecioOferta.toFixed(3);
+
         setProduct({
           ...product,
           id: data.idProducto,
@@ -73,8 +91,10 @@ export const ProductsForm = () => {
           urlImage: data.imagen,
           urlVideo: data.video,
           visibility: data.visible,
-          price: data.precio,
-          ofert: data.precioOferta,
+          price: newPrecio,
+          ofert: newprecioOferta,
+          // price: data.precio,
+          // ofert: data.precioOferta,
           category: data.subcategory.category.idCategory,
           subcategory: data.subcategory.idSubcategory,
           money: data.moneda,
@@ -192,16 +212,16 @@ export const ProductsForm = () => {
     var divider = 0;
     switch (product.money) {
       case "ARS":
-        divider = 0.013;
+        divider = 1;
         break;
       case "BRL":
-        divider = 0.17;
+        divider = 13.66;
         break;
       case "EUR":
-        divider = 1.17;
+        divider = 91.30;
         break;
       case "USD":
-        divider = 1;
+        divider = 78.41;
         break;
       default:
         divider = 1;
@@ -209,11 +229,10 @@ export const ProductsForm = () => {
     }
     let priceOld = product.price;
     let ofertOld = product.ofert;
-    newPrice = priceOld / divider;
-    newOfert = ofertOld / divider;
-    newPrice = Math.round(newPrice);
-    newOfert = Math.round(newOfert);
-    debugger;
+    newPrice = priceOld * divider;
+    newOfert = ofertOld * divider;
+    newPrice = newPrice.toFixed(3);
+    newOfert = newOfert.toFixed(3);
     setProduct({ ...product, price: newPrice, ofert: newOfert });
 
     let createProduct = {

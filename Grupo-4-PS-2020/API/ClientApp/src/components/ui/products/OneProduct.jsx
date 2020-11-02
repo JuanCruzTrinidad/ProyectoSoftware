@@ -68,27 +68,32 @@ export const OneProduct = () => {
         params: { idProducto: idprod },
       })
       .then(({ data }) => {
-          var multiple = 0;
-          switch (data.moneda) {
-            case 'ARS': multiple = 78.33;
+        var multiple = 0;
+        switch (data.moneda) {
+          case "ARS":
+            multiple = 1;
             break;
-            case 'BRL': multiple = 5.74;
+          case "BRL":
+            multiple = 0.073;
             break;
-            case 'EUR': multiple = 0.86;
+          case "EUR":
+            multiple = 0.011;
             break;
-            case 'USD': multiple = 1;
+          case "USD":
+            multiple = 0.013;
             break;
-            default: multiple = 78.33;
+          default:
+            multiple = 1;
             break;
-          }
-          data.precio = data.precio * multiple;
-          data.precio = Math.round(data.precio);
-          data.precioOferta = data.precioOferta * multiple;
-          data.precioOferta = Math.round(data.precioOferta);
-          setproduct(data);
-          setshow(true);
-          getProductsBySubcategoryAPI(data.subcategory.idSubcategory);
-        })
+        }
+        data.precio = data.precio * multiple;
+        data.precio = Math.round(data.precio);
+        data.precioOferta = data.precioOferta * multiple;
+        data.precioOferta = Math.round(data.precioOferta);
+        setproduct(data);
+        setshow(true);
+        getProductsBySubcategoryAPI(data.subcategory.idSubcategory);
+      })
       .catch((error) => console.log(error));
   };
 
@@ -137,9 +142,9 @@ export const OneProduct = () => {
   };
 
   const handleClose = () => {
-    console.log("se cerro?")
+    console.log("se cerro?");
     setOpen(false);
-    console.log(open)
+    console.log(open);
   };
 
   const handleClickCarrito = (type) => {
@@ -203,7 +208,7 @@ export const OneProduct = () => {
       })
       .catch((error) => console.log(error));
 
-    history.push('/catalogue');
+    history.push("/catalogue");
   };
 
   useEffect(() => {
@@ -215,13 +220,12 @@ export const OneProduct = () => {
   useEffect(() => {
     getProductById(idproduct);
     return () => {
-      handleClose();  
-      console.log(open)
-    }
+      handleClose();
+      console.log(open);
+    };
   }, [idproduct]);
 
   useEffect(() => {}, [product.valoraciones]);
-
 
   return show ? (
     <>
@@ -299,7 +303,7 @@ export const OneProduct = () => {
                     style={{ cursor: "pointer" }}
                   />
                   <DeleteIcon
-                    onClick={e => handleDeleteProduct(e, idproduct)}
+                    onClick={(e) => handleDeleteProduct(e, idproduct)}
                     style={{ cursor: "pointer" }}
                   />
                 </Grid>
@@ -435,14 +439,14 @@ export const OneProduct = () => {
             ))}
           </div>
         </Grid>
-          <Comments
-            key={idproduct}
-            listComments={product.valoraciones}
-            handleClickOpen={handleClickOpen}
-            handleClose={handleClose}
-            open={open}
-            idproduct={idproduct}
-          />
+        <Comments
+          key={idproduct}
+          listComments={product.valoraciones}
+          handleClickOpen={handleClickOpen}
+          handleClose={handleClose}
+          open={open}
+          idproduct={idproduct}
+        />
       </Container>
     </>
   ) : (

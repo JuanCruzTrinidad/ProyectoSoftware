@@ -1,5 +1,4 @@
-import React, { Fragment, useState} from "react";
-
+import React, { Fragment, useState, useEffect} from "react";
 import { Grid, Typography, TextField} from "@material-ui/core";
 import { shippingCalculate } from "../../../../helpers/shippingCalculate";
 import Provinces from "../../../../helpers/Provinces.json";
@@ -50,18 +49,21 @@ const TotalDetail = (props) => {
 
   setTimeout(() => {
     shipls = localStorage.getItem("shippingcost");
-    var valueshipping = shipls.split("valor");
-    if (valueshipping[1] !== undefined) {
+    if (shipls !== null){
+      var valueshipping = shipls.split("valor");
       valueshipping = valueshipping[1].split('"');
       valueshipping = valueshipping[2].slice(0, -1);
       value = valueshipping;
       setsubtotalship(Number(value));
+    } else {
+      value = 560;
+      setsubtotalship(Number(value));
     }
-  }, 2500);
+  }, 3500);
 
   setTimeout(() => {
     setshow(true);
-  }, 2700);
+  }, 3700);
 
   const getDiscountByCodeAPI = async (code) => {
     await apiAxios

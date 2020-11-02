@@ -98,9 +98,9 @@ public class PedidoRestController {
 		User user = userService.findById(pedido.getUser().getId());
 		Direction direction = directionService.findDirectionById(pedido.getDirection().getIdDirection());
 
-		Email from = new Email("tomas.silvestre9@gmail.com");
+		Email from = new Email("natt.photograph@gmail.com");
 		String subject = "Pedido Nro. " + pedido.getIdPedido();
-		Email to = new Email("tomas.silvestre9@gmail.com");
+		Email to = new Email("natt.photograph@gmail.com");
 		Content content = new Content("text/html", "ID pedido: " + pedido.getIdPedido() + ".<br/> Fecha: " + LocalDate.now() + ".<br/> Usuario: " + user.getEmail() + ".<br/> Dirección: " + direction.getStreet() + " " + direction.getNumber() + ", " + direction.getLocation() + ", " + direction.getProvince() + ".<br/> Productos: " + detallepedido + ".<br/> Total: $ " + pedido.getTotal() + ".<br/> Comentario: " + pedido.getComent());
 		Mail mail = new Mail(from, subject, to, content);
 

@@ -14,7 +14,7 @@ import Spinner from "../../ui/Spinner";
 
 const Catalogue = () => {
   //States
-  const [visual, setvisual] = useState("tile");
+  const [visual, setvisual] = useState("tiles");
   const [search, setsearch] = useState("");
   const [order, setorder] = useState("Default");
   const [productlist, setproductlist] = useState([]);
