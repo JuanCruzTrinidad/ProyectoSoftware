@@ -318,7 +318,7 @@ export const First = ({ nextStep, product, setProduct }) => {
                       type="number"
                       fullWidth
                       value={product.price}
-                      helperText="Dolares"
+                      helperText="Pesos"
                       onChange={(e) =>
                         setProduct({
                           ...product,
@@ -335,7 +335,7 @@ export const First = ({ nextStep, product, setProduct }) => {
                       margin="dense"
                       type="number"
                       fullWidth
-                      helperText="Dolares"
+                      helperText="Pesos"
                       value={product.ofert}
                       onChange={(e) =>
                         setProduct({

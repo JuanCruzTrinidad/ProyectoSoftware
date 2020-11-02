@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     marginBottom: 10,
     marginLeft: 15,
     height: "auto",
-    display:"block"
+    display: "block",
   },
   img: {
     maxWidth: "80%",
@@ -23,48 +23,52 @@ const useStyles = makeStyles({
     margin: 5,
     display: "block",
     marginLeft: "auto",
-    marginRight: "auto"
-}
+    marginRight: "auto",
+  },
 });
 
 export default function MediaCard({ prod }) {
   const classes = useStyles();
   const history = useHistory();
-  const [price, setprice] = useState(0)
-  const [priceOfert, setpriceOfert] = useState(0)
+  const [price, setprice] = useState(0);
+  const [priceOfert, setpriceOfert] = useState(0);
 
   const { idProducto, nombre, precio, precioOferta, imagen, moneda } = prod;
 
   const setPrice = () => {
-
     var multiple = 0;
-    switch(moneda){
-        case 'ARS': multiple = 78.33;
+    switch (moneda) {
+      case "ARS":
+        multiple = 1;
         break;
-        case 'BRL': multiple = 5.74;
+      case "BRL":
+        multiple = 0.073;
         break;
-        case 'EUR': multiple = 0.8547;
+      case "EUR":
+        multiple = 0.011;
         break;
-        case 'USD': multiple = 1;
+      case "USD":
+        multiple = 0.0127665007;
         break;
-        default: multiple = 78.33;
+      default:
+        multiple = 1;
         break;
     }
 
-    let newPrecio = precio * multiple
-    newPrecio = Math.round(newPrecio)
-    let newprecioOferta = precioOferta * multiple
-    newprecioOferta = Math.round(newprecioOferta)
+    let newPrecio = precio * multiple;
+    newPrecio = Math.round(newPrecio);
+    let newprecioOferta = precioOferta * multiple;
+    newprecioOferta = Math.round(newprecioOferta);
     setprice(newPrecio);
     setpriceOfert(newprecioOferta);
-  }
+  };
 
   useEffect(() => {
     setPrice();
-  }, [])
- 
+  }, []);
+
   return (
-    <Card className={classes.root} >
+    <Card className={classes.root}>
       <CardActionArea onClick={(e) => history.push(`/product/${idProducto}`)}>
         <CardMedia className={classes.img} image={imagen} title={nombre} />
         <CardContent>

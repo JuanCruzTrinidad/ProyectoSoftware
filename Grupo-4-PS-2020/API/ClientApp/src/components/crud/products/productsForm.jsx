@@ -65,22 +65,22 @@ export const ProductsForm = () => {
       .then(({ data }) => {
         let multiple = 0
         switch(data.moneda){
-          case 'ARS': multiple = 78.33;
+          case 'ARS': multiple = 1;
           break;
-          case 'BRL': multiple = 5.74;
+          case 'BRL': multiple = 0.073;
           break;
-          case 'EUR': multiple = 0.8547;
+          case 'EUR': multiple = 0.011;
           break;
-          case 'USD': multiple = 1;
+          case 'USD': multiple = 0.013;
           break;
-          default: multiple = 78.33;
+          default: multiple = 1;
           break;
       }  
 
       let newPrecio = data.precio * multiple;
-      newPrecio = newPrecio.toFixed(4);
+      newPrecio = newPrecio.toFixed(3);
       let newprecioOferta = data.precioOferta * multiple;
-      newprecioOferta = newprecioOferta.toFixed(4);
+      newprecioOferta = newprecioOferta.toFixed(3);
 
         setProduct({
           ...product,
@@ -212,16 +212,16 @@ export const ProductsForm = () => {
     var divider = 0;
     switch (product.money) {
       case "ARS":
-        divider = 0.0127665007;
+        divider = 1;
         break;
       case "BRL":
-        divider = 0.17421602787;
+        divider = 13.66;
         break;
       case "EUR":
-        divider = 1.17;
+        divider = 91.30;
         break;
       case "USD":
-        divider = 1;
+        divider = 78.41;
         break;
       default:
         divider = 1;
@@ -231,8 +231,8 @@ export const ProductsForm = () => {
     let ofertOld = product.ofert;
     newPrice = priceOld * divider;
     newOfert = ofertOld * divider;
-    newPrice = newPrice.toFixed(4);
-    newOfert = newOfert.toFixed(4);
+    newPrice = newPrice.toFixed(3);
+    newOfert = newOfert.toFixed(3);
     setProduct({ ...product, price: newPrice, ofert: newOfert });
 
     let createProduct = {

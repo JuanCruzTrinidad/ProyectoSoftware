@@ -13,5 +13,5 @@ spring:
   thymeleaf:
     cache: false
 apiKey:
-  sendGrid: 
+  sendGrid: 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
 
